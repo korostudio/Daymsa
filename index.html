@@ -140,6 +140,42 @@ window.__resources = {
     .dy-hero-p { font-size: 14.5px; }
   }
 
+
+  /* ===== Banda de cifras: suben desde cero al entrar en pantalla ===== */
+  .dy-cifras {
+    display: grid; grid-template-columns: repeat(auto-fit, minmax(160px, 1fr));
+    gap: 1px; background: #e4ebe0; border: 1px solid #e4ebe0;
+    border-radius: 6px; overflow: hidden; margin-top: 20px;
+  }
+  .dy-cifra {
+    background: #fff; padding: 26px 22px;
+    transition: background .25s ease;
+  }
+  .dy-cifra:hover { background: #fbfdfa; }
+  .dy-cifra-n {
+    font-size: 40px; font-weight: 800; line-height: 1;
+    letter-spacing: -.02em; color: #22301d;
+    font-variant-numeric: tabular-nums;   /* no baila de ancho al contar */
+    transition: color .25s ease;
+  }
+  .dy-cifra:hover .dy-cifra-n { color: #2f8b20; }
+  .dy-cifra-suf { color: #3daf29; }
+  .dy-cifra-t {
+    font-size: 11px; color: #6f7d6a; font-weight: 600;
+    letter-spacing: .04em; text-transform: uppercase; margin-top: 7px;
+  }
+  /* la subraya se dibuja de izquierda a derecha al pasar por encima */
+  .dy-cifra-t::after {
+    content: ""; display: block; height: 2px; width: 0; margin-top: 8px;
+    background: #3daf29; transition: width .35s ease;
+  }
+  .dy-cifra:hover .dy-cifra-t::after { width: 34px; }
+
+  @media (max-width: 720px) {
+    .dy-cifra { padding: 20px 18px; }
+    .dy-cifra-n { font-size: 32px; }
+  }
+
   /* ===== Tablet y movil (<= 900px) ===== */
   @media (max-width: 900px) {
     .dy-cat { grid-template-columns: 1fr !important; }
@@ -289,23 +325,13 @@ window.__resources = {
 
     <main style="max-width:1240px;margin:0 auto;padding:28px 28px 80px">
 
-      <section style="display:grid;grid-template-columns:repeat(auto-fit,minmax(160px,1fr));gap:1px;background:#e4ebe0;border:1px solid #e4ebe0;border-radius:6px;overflow:hidden;margin-top:20px">
-        <div style="background:#fff;padding:22px">
-          <div style="font-size:28px;font-weight:700;line-height:1">{{ totalProductos }}</div>
-          <div style="font-size:11px;color:#6f7d6a;font-weight:600;letter-spacing:.04em;text-transform:uppercase;margin-top:4px">Productos</div>
-        </div>
-        <div style="background:#fff;padding:22px">
-          <div style="font-size:28px;font-weight:700;line-height:1">{{ totalCultivos }}</div>
-          <div style="font-size:11px;color:#6f7d6a;font-weight:600;letter-spacing:.04em;text-transform:uppercase;margin-top:4px">Cultivos</div>
-        </div>
-        <div style="background:#fff;padding:22px">
-          <div style="font-size:28px;font-weight:700;line-height:1">5</div>
-          <div style="font-size:11px;color:#6f7d6a;font-weight:600;letter-spacing:.04em;text-transform:uppercase;margin-top:4px">Gamas</div>
-        </div>
-        <div style="background:#fff;padding:22px">
-          <div style="font-size:28px;font-weight:700;line-height:1">40</div>
-          <div style="font-size:11px;color:#6f7d6a;font-weight:600;letter-spacing:.04em;text-transform:uppercase;margin-top:4px">Años junto al agricultor</div>
-        </div>
+      <section id="dy-cifras" class="dy-cifras">
+        <sc-for list="{{ cifras }}" as="c" hint-placeholder-count="4">
+          <div class="dy-cifra">
+            <div class="dy-cifra-n">{{ c.valor }}<span class="dy-cifra-suf">{{ c.sufijo }}</span></div>
+            <div class="dy-cifra-t">{{ c.etiqueta }}</div>
+          </div>
+        </sc-for>
       </section>
 
       <section style="margin-top:44px">
@@ -1396,6 +1422,14 @@ const FICHAS = {
 /* Carrusel del hero. Las fotos son del slider de daymsa.com y los textos
    son los tres valores de la propia web. `pos` encuadra cada foto sobre su
    sujeto: son 1600x600 muy apaisadas y en movil el recorte es agresivo. */
+/* Banda de cifras. `n` es el valor final; se cuenta desde 0 al entrar en pantalla. */
+const CIFRAS = [
+  ['Productos', 0, ''],                    // 0 = se rellena con el total real
+  ['Cultivos', 0, ''],
+  ['Gamas', 5, ''],
+  ['Años junto al agricultor', 40, '']
+];
+
 const HERO = [
   ['img/hero/slider_2.jpg', '25% center', '26% center', 'Plántula brotando de la tierra',
    'Trabajando por un futuro sostenible',
@@ -1431,10 +1465,52 @@ const NOTICIAS = [
 const normalizar = (s) => s.toLowerCase().normalize('NFD').replace(/[\u0300-\u036f]/g, '');
 
 class Component extends DCLogic {
-  state = { hero: 0, screen: 'inicio', gamaSel: [], necSel: [], cultivo: null, culMax: 8, q: '', qc: '', producto: 'Raiza®', cultivoView: 'Café', tab: 0, comparar: [], comparando: false, modal: false, acepto: false, desbloqueada: false };
+  state = { hero: 0, cuenta: 0, screen: 'inicio', gamaSel: [], necSel: [], cultivo: null, culMax: 8, q: '', qc: '', producto: 'Raiza®', cultivoView: 'Café', tab: 0, comparar: [], comparando: false, modal: false, acepto: false, desbloqueada: false };
 
-  componentDidMount() { this.arrancarHero(); }
-  componentWillUnmount() { clearInterval(this.tHero); }
+  componentDidMount() { this.arrancarHero(); this.vigilarCifras(); }
+  componentWillUnmount() {
+    clearInterval(this.tHero);
+    clearInterval(this.tBusca);
+    cancelAnimationFrame(this.rafCifras);
+    this.obs && this.obs.disconnect();
+  }
+
+  /* Las cifras suben de 0 a su valor cuando la banda entra en pantalla.
+     Se espera a que exista el nodo: el render puede no haber terminado. */
+  vigilarCifras() {
+    clearInterval(this.tBusca);
+    let intentos = 0;
+    this.tBusca = setInterval(() => {
+      const el = document.getElementById('dy-cifras');
+      if (!el) { if (++intentos > 60) clearInterval(this.tBusca); return; }
+      clearInterval(this.tBusca);
+      this.obs && this.obs.disconnect();
+      this.obs = new IntersectionObserver((entradas) => {
+        if (entradas.some((e) => e.isIntersecting)) {
+          this.obs.disconnect();
+          this.contar();
+        }
+        /* El borde inferior se recorta un 22%: la banda asoma bajo el hero y, sin
+           esto, la cuenta arrancaba nada mas cargar y nadie llegaba a verla. */
+      }, { threshold: 0.4, rootMargin: '0px 0px -22% 0px' });
+      this.obs.observe(el);
+    }, 120);
+  }
+
+  contar() {
+    const DUR = 1500;
+    const t0 = performance.now();
+    const paso = (ahora) => {
+      const t = Math.min(1, (ahora - t0) / DUR);
+      const suave = 1 - Math.pow(1 - t, 3);   // arranca rapido y frena al llegar
+      this.setState({ cuenta: suave });
+      if (t < 1) this.rafCifras = requestAnimationFrame(paso);
+    };
+    this.setState({ cuenta: 0 });
+    this.rafCifras = requestAnimationFrame(paso);
+  }
+
+
 
   /* El carrusel avanza solo; al tocar un punto se reinicia la cuenta para que
      no cambie de foto justo despues de elegirla. */
@@ -1447,7 +1523,11 @@ class Component extends DCLogic {
 
   verHero(i) { this.setState({ hero: i }); this.arrancarHero(); }
 
-  ir(screen) { this.setState({ screen: screen, menu: false, sheet: false }); window.scrollTo(0, 0); }
+  ir(screen) {
+    this.setState({ screen: screen, menu: false, sheet: false });
+    window.scrollTo(0, 0);
+    if (screen === 'inicio') { this.setState({ cuenta: 0 }); this.vigilarCifras(); }
+  }
 
   abrirProducto(nombre) { this.setState({ screen: 'producto', producto: nombre, tab: 0, menu: false, sheet: false }); window.scrollTo(0, 0); }
 
@@ -1570,6 +1650,10 @@ class Component extends DCLogic {
     return {
       isInicio: s.screen === 'inicio',
       goInicio: () => this.ir('inicio'),
+      cifras: CIFRAS.map((c, i) => {
+        const fin = c[1] || (i === 0 ? PRODUCTOS.length : CULTIVOS.length);
+        return { valor: Math.round(fin * (s.cuenta || 0)), sufijo: c[2], etiqueta: c[0] };
+      }),
       heroSlides: HERO.map((h, i) => ({
         img: h[0], pos: h[1], posm: h[2], alt: h[3], titulo: h[4], texto: h[5],
         clase: (s.hero || 0) === i ? 'dy-slide-on' : 'dy-slide'
