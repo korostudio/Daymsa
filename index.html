@@ -176,6 +176,45 @@ window.__resources = {
     .dy-cifra-n { font-size: 32px; }
   }
 
+
+  /* ===== Banner de página interior: mismo lenguaje que el hero, más bajo ===== */
+  .dy-banner {
+    position: relative; overflow: hidden; background: #16240f;
+    height: 44vh; min-height: 290px; max-height: 440px;
+  }
+  .dy-banner img { width: 100%; height: 100%; object-fit: cover; display: block; }
+  .dy-banner::after {
+    content: ""; position: absolute; inset: 0; pointer-events: none;
+    background: linear-gradient(to top,
+      rgba(11,22,8,.90) 0%,
+      rgba(11,22,8,.72) 24%,
+      rgba(11,22,8,.38) 50%,
+      rgba(11,22,8,0)   78%);
+  }
+  .dy-banner-txt {
+    position: absolute; left: 0; right: 0; bottom: 0; z-index: 2;
+    padding: 0 28px 40px;
+  }
+  .dy-banner-in { max-width: 1240px; margin: 0 auto; color: #fff; }
+  .dy-banner-h1 {
+    font-size: 40px; font-weight: 700; line-height: 1.1;
+    margin: 0 0 12px; max-width: 20ch;
+    text-shadow: 0 2px 18px rgba(0,0,0,.35);
+  }
+  .dy-banner-p {
+    font-size: 15.5px; line-height: 1.5; color: #e4ece0;
+    max-width: 62ch; margin: 0 0 22px;
+    text-shadow: 0 1px 12px rgba(0,0,0,.40);
+  }
+
+  @media (max-width: 900px) {
+    .dy-banner { height: 40vh; min-height: 260px; }
+    .dy-banner-txt { padding: 0 20px 32px; }
+    .dy-banner-h1 { font-size: 27px; max-width: 18ch; }
+    .dy-banner-p { font-size: 14.5px; margin-bottom: 18px; }
+    .dy-banner img { object-position: 36% center !important; }
+  }
+
   /* ===== Tablet y movil (<= 900px) ===== */
   @media (max-width: 900px) {
     .dy-cat { grid-template-columns: 1fr !important; }
@@ -417,38 +456,23 @@ window.__resources = {
   </sc-if>
 
   <sc-if value="{{ isCatalogo }}" hint-placeholder-val="{{ false }}">
+    <section class="dy-banner">
+      <img src="img/hero/slider_7.jpg" alt="Brote recibiendo agua sobre la tierra" style="object-position:32% center">
+      <div class="dy-banner-txt">
+        <div class="dy-banner-in">
+          <span class="dy-hero-kicker">Catálogo</span>
+          <h1 class="dy-banner-h1">Encuentra el producto para tu cultivo</h1>
+          <p class="dy-banner-p">Filtra por gama o por cultivo y accede a la ficha técnica de cada producto. Bionutrientes, microorganismos, especialidades, mejoradores de suelo y correctores de carencias.</p>
+          <div class="dy-hero-btns">
+            <button onClick="{{ goCultivos }}" class="dy-hero-b1">Buscar por cultivo</button>
+            <button onClick="{{ limpiar }}" class="dy-hero-b2">Ver todos</button>
+          </div>
+        </div>
+      </div>
+    </section>
+
     <main style="max-width:1240px;margin:0 auto;padding:0 28px 80px">
       <div style="padding:16px 0;font-size:13px;color:#6f7d6a"><span onClick="{{ goInicio }}" class="dylink">Inicio</span> / Productos</div>
-
-      <section class="dy-two dy-pad" style="background:#ffffff;border:1px solid #e4ebe0;border-radius:6px;padding:40px;display:grid;grid-template-columns:minmax(0,1.3fr) minmax(0,1fr);gap:40px;align-items:center;box-shadow:none">
-        <div>
-          <span style="display:block;color:#2f8b20;font-weight:700;font-size:10.5px;letter-spacing:.14em;text-transform:uppercase;margin-bottom:14px">Catálogo</span>
-          <h1 style="font-size:36px;font-weight:700;line-height:1.14;margin:0 0 14px">Encuentra el producto para tu cultivo</h1>
-          <p style="font-size:15px;color:#55634f;max-width:56ch;margin:0 0 24px">Filtra por gama o por cultivo y accede a la ficha técnica de cada producto. Bionutrientes, microorganismos, especialidades, mejoradores de suelo y correctores de carencias.</p>
-          <div style="display:flex;gap:10px;flex-wrap:wrap">
-            <button onClick="{{ goCultivos }}" style="border:1px solid #3daf29;border-radius:6px;background:#3daf29;color:#fff;font:inherit;font-weight:600;font-size:13px;padding:8px 15px;cursor:pointer">Buscar por cultivo</button>
-            <button onClick="{{ limpiar }}" style="border:1px solid #d6e0d2;border-radius:6px;background:#fff;color:#22301d;font:inherit;font-weight:600;font-size:13px;padding:8px 15px;cursor:pointer">Ver todos</button>
-          </div>
-        </div>
-        <div style="display:grid;grid-template-columns:1fr 1fr;gap:14px">
-          <div style="background:#fff;border:1px solid #e4ebe0;border-radius:6px;padding:20px">
-            <div style="font-size:28px;font-weight:700;line-height:1">{{ totalProductos }}</div>
-            <div style="font-size:11px;color:#6f7d6a;font-weight:600;letter-spacing:.04em;text-transform:uppercase;margin-top:4px">productos</div>
-          </div>
-          <div style="background:#fff;border:1px solid #e4ebe0;border-radius:6px;padding:20px">
-            <div style="font-size:28px;font-weight:700;line-height:1">{{ totalCultivos }}</div>
-            <div style="font-size:11px;color:#6f7d6a;font-weight:600;letter-spacing:.04em;text-transform:uppercase;margin-top:4px">cultivos</div>
-          </div>
-          <div style="background:#fff;border:1px solid #e4ebe0;border-radius:6px;padding:20px">
-            <div style="font-size:28px;font-weight:700;line-height:1">5</div>
-            <div style="font-size:11px;color:#6f7d6a;font-weight:600;letter-spacing:.04em;text-transform:uppercase;margin-top:4px">gamas</div>
-          </div>
-          <div style="background:#fff;border:1px solid #e4ebe0;border-radius:6px;padding:20px">
-            <div style="font-size:28px;font-weight:700;line-height:1">+40</div>
-            <div style="font-size:11px;color:#6f7d6a;font-weight:600;letter-spacing:.04em;text-transform:uppercase;margin-top:4px">países</div>
-          </div>
-        </div>
-      </section>
 
       <div class="dy-cat" style="display:grid;grid-template-columns:270px minmax(0,1fr);gap:28px;margin-top:32px;align-items:start">
         <aside class="{{ asideClase }}" style="background:#fff;border:1px solid #e4ebe0;border-radius:6px;padding:24px;position:sticky;top:96px;max-height:calc(100vh - 116px);overflow:auto">
