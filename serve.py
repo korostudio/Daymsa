@@ -12,7 +12,7 @@ import sys
 from pathlib import Path
 
 ROOT = Path(__file__).resolve().parent
-HOME = "Daymsa Rediseño v2.dc.html"   # pagina que se sirve en "/"
+HOME = "index.html"                   # pagina que se sirve en "/"
 PORT = int(sys.argv[1]) if len(sys.argv) > 1 else 5173
 
 

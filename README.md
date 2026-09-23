@@ -15,7 +15,7 @@ python serve.py 8080     # otro puerto
 
 Ábrela en `http://127.0.0.1:5173/`.
 
-> Hay que servirla por HTTP. Si abres el `.dc.html` directamente con doble clic
+> Hay que servirla por HTTP. Si abres el `index.html` directamente con doble clic
 > (`file://`), las rutas relativas del framework no resuelven y verás una página en blanco.
 
 ## Qué incluye
@@ -41,7 +41,7 @@ sin internet:
 ## Estructura
 
 ```
-Daymsa Rediseño v2.dc.html   la maqueta entera (marcado + datos + lógica)
+index.html                   la maqueta entera (marcado + datos + lógica)
 support.js                   runtime del design-canvas
 _ds/                         design system (tokens y estilos)
 serve.py                     servidor estático local
