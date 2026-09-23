@@ -207,12 +207,28 @@ window.__resources = {
     text-shadow: 0 1px 12px rgba(0,0,0,.40);
   }
 
+  /* Mosaico: 8x2 retícula de fotos de cultivo que hace de imagen de fondo */
+  .dy-mosaico {
+    position: absolute; inset: 0; display: grid; gap: 2px;
+    grid-template-columns: repeat(8, 1fr);
+    grid-template-rows: repeat(2, 1fr);
+  }
+  .dy-mosaico img { width: 100%; height: 100%; object-fit: cover; display: block; }
+  /* velo que unifica las 16 fotos en una sola imagen y calma el color */
+  .dy-banner-mosaico::before {
+    content: ""; position: absolute; inset: 0; z-index: 1; pointer-events: none;
+    background: linear-gradient(to bottom, rgba(11,22,8,.56) 0%, rgba(11,22,8,.34) 28%, rgba(11,22,8,.34) 100%);
+  }
+  .dy-banner-mosaico::after { z-index: 1; }
+
   @media (max-width: 900px) {
     .dy-banner { height: 40vh; min-height: 260px; }
     .dy-banner-txt { padding: 0 20px 32px; }
     .dy-banner-h1 { font-size: 27px; max-width: 18ch; }
     .dy-banner-p { font-size: 14.5px; margin-bottom: 18px; }
     .dy-banner img { object-position: 36% center !important; }
+    .dy-mosaico { grid-template-columns: repeat(3, 1fr); grid-template-rows: repeat(3, 1fr); }
+    .dy-mosaico img { object-position: center; }
   }
 
   /* ===== Tablet y movil (<= 900px) ===== */
@@ -618,12 +634,26 @@ window.__resources = {
   </sc-if>
 
   <sc-if value="{{ isCultivos }}" hint-placeholder-val="{{ false }}">
+    <section class="dy-banner dy-banner-mosaico">
+      <div class="dy-mosaico">
+        <sc-for list="{{ mosaico }}" as="m" hint-placeholder-count="16">
+          <img src="{{ m }}" alt="" aria-hidden="true" loading="lazy">
+        </sc-for>
+      </div>
+      <div class="dy-banner-txt">
+        <div class="dy-banner-in">
+          <span class="dy-hero-kicker">{{ totalCultivos }} cultivos</span>
+          <h1 class="dy-banner-h1">Soluciones por cultivo</h1>
+          <p class="dy-banner-p">Programas de nutrición y bioestimulación adaptados a cada cultivo. Estos treinta y dos están cargados con su programa completo en la maqueta.</p>
+          <div class="dy-hero-btns">
+            <button onClick="{{ goCatalogo }}" class="dy-hero-b1">Ir al catálogo</button>
+          </div>
+        </div>
+      </div>
+    </section>
+
     <main style="max-width:1240px;margin:0 auto;padding:0 28px 80px">
       <div style="padding:16px 0;font-size:13px;color:#6f7d6a"><span onClick="{{ goInicio }}" class="dylink">Inicio</span> / Cultivos</div>
-      <div style="margin-bottom:26px">
-        <h1 style="font-size:34px;font-weight:700;margin:0 0 10px">Soluciones por cultivo</h1>
-        <p style="font-size:15px;color:#55634f;max-width:66ch;margin:0">Programas de nutrición y bioestimulación adaptados a cada cultivo. Daymsa trabaja sobre {{ totalCultivos }} cultivos; estos treinta y dos están cargados con su programa completo en la maqueta.</p>
-      </div>
 
       <div style="display:grid;grid-template-columns:repeat(auto-fill,minmax(230px,1fr));gap:18px">
         <sc-for list="{{ gridCultivos }}" as="c" hint-placeholder-count="12">
@@ -1446,6 +1476,19 @@ const FICHAS = {
 /* Carrusel del hero. Las fotos son del slider de daymsa.com y los textos
    son los tres valores de la propia web. `pos` encuadra cada foto sobre su
    sujeto: son 1600x600 muy apaisadas y en movil el recorte es agresivo. */
+/* Mosaico del banner de Cultivos: 16 fotos de cultivo de la propia Daymsa.
+   Ninguna coincide con los primeros cultivos de la rejilla de abajo, que se ven
+   en la misma pantalla; se alternan dorados, rojos y verdes para que la retícula
+   no quede plana. En móvil solo caben las 9 primeras. */
+const MOSAICO = [
+  'Trigo-wheat-1.jpg', 'cerezas-cherries.jpg', 'Lechuga.jpg',
+  'mandarinas-tangerines.jpg', 'almendras-almond.jpg', 'arroz-rice.jpg',
+  'melocoton-peach.jpg', 'Berenjena.jpg', 'kiwi.jpg',
+  'banana-platano.jpg', 'nueces-walnuts.jpg', 'sandia-watermelon.jpg',
+  'Melon.jpg', 'cebada-barley.jpg', 'pepino-cucumber.jpg',
+  'Limon.jpg'
+].map((n) => 'img/web/' + n);
+
 /* Banda de cifras. `n` es el valor final; se cuenta desde 0 al entrar en pantalla. */
 const CIFRAS = [
   ['Productos', 0, ''],                    // 0 = se rellena con el total real
@@ -1674,6 +1717,7 @@ class Component extends DCLogic {
     return {
       isInicio: s.screen === 'inicio',
       goInicio: () => this.ir('inicio'),
+      mosaico: MOSAICO,
       cifras: CIFRAS.map((c, i) => {
         const fin = c[1] || (i === 0 ? PRODUCTOS.length : CULTIVOS.length);
         return { valor: Math.round(fin * (s.cuenta || 0)), sufijo: c[2], etiqueta: c[0] };
