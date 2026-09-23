@@ -1,0 +1,11 @@
+# Capturas pegadas durante el diseño: no las usa la web y contienen notas internas
+uploads/
+
+# Sistema
+Thumbs.db
+desktop.ini
+.DS_Store
+
+# Python
+__pycache__/
+*.pyc

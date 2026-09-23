@@ -1,0 +1,1610 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<script>
+// React/ReactDOM/Babel desde copias locales (carpeta vendor/) en vez de unpkg.com,
+// para que la maqueta funcione sin conexion a internet.
+window.__resources = {
+  "https://unpkg.com/react@18.3.1/umd/react.production.min.js": "vendor/react.production.min.js",
+  "https://unpkg.com/react-dom@18.3.1/umd/react-dom.production.min.js": "vendor/react-dom.production.min.js",
+  "https://unpkg.com/@babel/standalone@7.29.0/babel.min.js": "vendor/babel.min.js"
+};
+</script>
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<title>Daymsa</title>
+<link rel="icon" type="image/svg+xml" href="favicon.svg">
+<link rel="stylesheet" href="_ds/modernist-d2749fb8-62b8-4f9f-b7c3-109cc0ff5556/styles.css">
+<script src="_ds/modernist-d2749fb8-62b8-4f9f-b7c3-109cc0ff5556/_ds_bundle.js"></script>
+<link rel="stylesheet" href="vendor/fonts/nunito.css">
+<style>
+  body { margin: 0; background: #f6f8f4; color: #22301d; font-family: "Nunito Sans", system-ui, sans-serif; }
+  h1, h2, h3, h4, h5, h6 { font-family: "Nunito Sans", system-ui, sans-serif; letter-spacing: -0.01em; }
+  a { color: #2f8b20; }
+  a:hover { color: #3daf29; }
+  .dyc { transition: transform .18s ease, box-shadow .18s ease; cursor: pointer; }
+  .dyc:hover { border-color: #b9c8b2; }
+  .dyp { transition: background .15s ease, color .15s ease, border-color .15s ease; cursor: pointer; }
+  .dyp:hover { border-color: #3daf29; color: #2f8b20; }
+  .dylink { cursor: pointer; text-decoration: none; color: inherit; }
+  .dylink:hover { color: #3daf29; }
+  .dyscroll::-webkit-scrollbar { width: 6px; }
+  .dyscroll::-webkit-scrollbar-thumb { background: #cdd8c8; border-radius: 2px; }
+  input:focus-visible, button:focus-visible { outline: 2px solid #3daf29; outline-offset: 2px; }
+  button { white-space: nowrap; }
+  .dy-fbar { display: none; }
+  .dy-sheetfoot { display: none; }
+  .dy-burger { display: none; }
+  .dy-xclose { display: none; }
+  /* el boton de WhatsApp sube para no tapar la barra de comparacion */
+  .dy-fab.subido { bottom: 88px !important; }
+  .dy-menu { display: contents; }
+
+  /* ===== Tablet y movil (<= 900px) ===== */
+  @media (max-width: 900px) {
+    .dy-cat { grid-template-columns: 1fr !important; }
+    .dy-two { grid-template-columns: 1fr !important; }
+
+    /* --- Cabecera con menu hamburguesa --- */
+    .dy-head {
+      position: relative;
+      flex-wrap: nowrap !important;
+      gap: 12px !important;
+      padding: 12px 18px !important;
+    }
+    .dy-burger {
+      display: inline-flex; align-items: center; justify-content: center;
+      width: 42px; height: 42px; flex: none; padding: 0;
+      border: 1px solid #d6e0d2; border-radius: 8px;
+      background: #fff; color: #22301d; cursor: pointer;
+    }
+    .dy-burger:hover { border-color: #3daf29; color: #2f8b20; }
+    .dy-menu { display: none; }
+    .dy-menu.open {
+      display: block; position: absolute; left: 0; right: 0; top: 100%;
+      background: #fff; border-bottom: 1px solid #e4ebe0;
+      box-shadow: 0 12px 26px rgba(24,38,20,.12);
+      padding: 4px 0 14px; z-index: 50;
+      max-height: calc(100vh - 68px); overflow: auto;
+    }
+    .dy-menu.open .dy-nav {
+      flex-direction: column !important;
+      align-items: stretch !important;
+      justify-content: flex-start !important;
+      gap: 0 !important;
+    }
+    .dy-menu.open .dy-nav > span {
+      padding: 14px 22px; font-size: 15px; border-top: 1px solid #f1f5ef;
+    }
+    .dy-menu.open .dy-navcta {
+      display: block !important; flex: none !important; padding: 14px 22px 2px;
+    }
+    .dy-menu.open .dy-navcta > button {
+      width: 100%; padding: 12px 14px !important; font-size: 14px !important;
+    }
+
+    /* --- Filtros del catalogo: panel a pantalla completa --- */
+    .dy-aside { display: none; }
+    .dy-aside.open {
+      display: block !important;
+      position: fixed !important;
+      top: 0 !important; right: 0 !important; bottom: 0 !important; left: 0 !important;
+      width: auto !important; height: 100% !important; max-height: none !important;
+      margin: 0 !important;
+      padding: 16px 20px 104px !important;
+      border: 0 !important; border-radius: 0 !important;
+      z-index: 80 !important; overflow: auto !important;
+      -webkit-overflow-scrolling: touch;
+    }
+    .dy-fbar { display: flex; }
+    .dy-xclose { display: inline-flex; flex: none; }
+    .dy-sheetfoot {
+      display: flex !important; position: fixed !important;
+      left: 0; right: 0; bottom: 0; z-index: 81;
+      background: #fff; border-top: 1px solid #d6e0d2;
+      padding: 12px 20px calc(12px + env(safe-area-inset-bottom, 0px));
+      box-shadow: 0 -6px 18px rgba(24,38,20,.10);
+    }
+    .dy-sheetfoot > button { flex: 0 1 auto; }
+
+    /* el boton flotante no debe tapar la barra de filtros */
+    .dy-fab {
+      width: 48px !important; height: 48px !important;
+      right: 14px !important; bottom: 14px !important; z-index: 40 !important;
+    }
+    .dy-fab.subido { bottom: 128px !important; }
+  }
+
+  @media (max-width: 720px) {
+    .dy-pad { padding: 24px !important; }
+    .dy-pad-lg { padding: 28px 22px !important; }
+    main { padding-left: 18px !important; padding-right: 18px !important; }
+    h1 { font-size: 28px !important; }
+    h2 { font-size: 20px !important; }
+  }
+
+  @media (max-width: 420px) {
+    h1 { font-size: 24px !important; }
+    .dy-pad { padding: 18px !important; }
+    .dy-pad-lg { padding: 22px 18px !important; }
+    main { padding-left: 14px !important; padding-right: 14px !important; }
+  }
+</style>
+</helmet>
+<div style="min-height:100vh;background:#f6f8f4">
+
+  <header style="position:sticky;top:0;z-index:30;background:#ffffff;border-bottom:1px solid #e4ebe0">
+    <div class="dy-head" style="max-width:1240px;margin:0 auto;padding:16px 28px;display:flex;align-items:center;gap:28px">
+      <div onClick="{{ goInicio }}" class="dylink" style="display:flex;align-items:center;gap:10px;flex:1 1 0">
+        <svg width="26" height="26" viewBox="0 0 24 24" fill="#3daf29" style="display:block;flex:none"><path d="M11 20A7 7 0 0 1 9.8 6.1C15.5 5 17 4.48 19 2c1 2 2 4.18 2 8 0 5.5-4.78 10-10 10Z"></path><path d="M2 21c0-3 1.85-5.36 5.08-6C9.5 14.52 12 13 13 12" stroke="#3daf29" stroke-width="1.8" stroke-linecap="round" fill="none"></path></svg>
+        <span style="font-weight:700;font-size:19px;letter-spacing:.02em">Daymsa</span>
+      </div>
+      <div class="{{ menuClase }}">
+      <nav class="dy-nav" style="display:flex;align-items:center;justify-content:center;gap:26px;font-size:14px;font-weight:600">
+        <span onClick="{{ goInicio }}" class="dylink">Inicio</span>
+        <span onClick="{{ goCatalogo }}" class="dylink">Productos</span>
+        <span onClick="{{ goCultivos }}" class="dylink">Cultivos</span>
+        <span class="dylink">Nosotros</span>
+        <span class="dylink">Noticias</span>
+      </nav>
+      <div class="dy-navcta" style="flex:1 1 0;display:flex;justify-content:flex-end">
+        <button onClick="{{ goCultivos }}" style="border:1px solid #cfe0c9;border-radius:6px;background:#fff;color:#2f8b20;font:inherit;font-weight:600;font-size:13px;padding:8px 14px;cursor:pointer;white-space:nowrap">Asesoría técnica</button>
+      </div>
+      </div>
+      <button class="dy-burger" onClick="{{ toggleMenu }}" aria-label="Abrir o cerrar el menú" aria-expanded="{{ menuAbierto }}">
+        <sc-if value="{{ menuAbierto }}" hint-placeholder-val="{{ false }}">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M18 6 6 18"></path><path d="m6 6 12 12"></path></svg>
+        </sc-if>
+        <sc-if value="{{ menuCerrado }}" hint-placeholder-val="{{ true }}">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M3 6h18"></path><path d="M3 12h18"></path><path d="M3 18h18"></path></svg>
+        </sc-if>
+      </button>
+    </div>
+  </header>
+
+  <sc-if value="{{ isInicio }}" hint-placeholder-val="{{ true }}">
+    <main style="max-width:1240px;margin:0 auto;padding:28px 28px 80px">
+      <section class="dy-two" style="background:#fff;border:1px solid #e4ebe0;border-radius:6px;overflow:hidden;display:grid;grid-template-columns:minmax(0,1.05fr) minmax(0,1fr)">
+        <div class="dy-pad-lg" style="padding:48px 44px">
+          <span style="display:block;color:#2f8b20;font-weight:700;font-size:10.5px;letter-spacing:.14em;text-transform:uppercase;margin-bottom:16px">Desarrollo Agrícola y Minero, S.A. · Grupo Samca</span>
+          <h1 style="font-size:40px;font-weight:700;line-height:1.14;margin:0 0 16px">Trabajando por un futuro sostenible</h1>
+          <p style="font-size:16px;color:#55634f;max-width:52ch;margin:0 0 28px">Respeto y cuidado del medioambiente gracias al origen natural de nuestros productos. Bionutrientes, microorganismos, especialidades, mejoradores de suelo y correctores de carencias para {{ totalCultivos }} cultivos.</p>
+          <div style="display:flex;gap:10px;flex-wrap:wrap">
+            <button onClick="{{ goCatalogo }}" style="border:1px solid #3daf29;border-radius:6px;background:#3daf29;color:#fff;font:inherit;font-weight:600;font-size:13px;padding:8px 15px;cursor:pointer">Ver catálogo de productos</button>
+            <button onClick="{{ goCultivos }}" style="border:1px solid #d6e0d2;border-radius:6px;background:#fff;color:#22301d;font:inherit;font-weight:600;font-size:13px;padding:8px 15px;cursor:pointer">Buscar por cultivo</button>
+          </div>
+        </div>
+        <img src="img/web/cereal.jpg" alt="Campo de cereal" style="width:100%;height:100%;min-height:340px;object-fit:cover">
+      </section>
+
+      <section style="display:grid;grid-template-columns:repeat(auto-fit,minmax(160px,1fr));gap:1px;background:#e4ebe0;border:1px solid #e4ebe0;border-radius:6px;overflow:hidden;margin-top:20px">
+        <div style="background:#fff;padding:22px">
+          <div style="font-size:28px;font-weight:700;line-height:1">{{ totalProductos }}</div>
+          <div style="font-size:11px;color:#6f7d6a;font-weight:600;letter-spacing:.04em;text-transform:uppercase;margin-top:4px">Productos</div>
+        </div>
+        <div style="background:#fff;padding:22px">
+          <div style="font-size:28px;font-weight:700;line-height:1">{{ totalCultivos }}</div>
+          <div style="font-size:11px;color:#6f7d6a;font-weight:600;letter-spacing:.04em;text-transform:uppercase;margin-top:4px">Cultivos</div>
+        </div>
+        <div style="background:#fff;padding:22px">
+          <div style="font-size:28px;font-weight:700;line-height:1">5</div>
+          <div style="font-size:11px;color:#6f7d6a;font-weight:600;letter-spacing:.04em;text-transform:uppercase;margin-top:4px">Gamas</div>
+        </div>
+        <div style="background:#fff;padding:22px">
+          <div style="font-size:28px;font-weight:700;line-height:1">40</div>
+          <div style="font-size:11px;color:#6f7d6a;font-weight:600;letter-spacing:.04em;text-transform:uppercase;margin-top:4px">Años junto al agricultor</div>
+        </div>
+      </section>
+
+      <section style="margin-top:44px">
+        <h2 style="font-size:22px;font-weight:700;margin:0 0 4px">Gamas de producto</h2>
+        <p style="margin:0 0 18px;font-size:15px;color:#6f7d6a">Cinco familias que cubren el ciclo completo del cultivo.</p>
+        <div style="display:grid;grid-template-columns:repeat(auto-fill,minmax(230px,1fr));gap:18px">
+          <sc-for list="{{ gamasInicio }}" as="g" hint-placeholder-count="5">
+            <div onClick="{{ g.sel }}" class="dyc" style="background:#fff;border:1px solid #e4ebe0;border-radius:6px;padding:22px;display:flex;flex-direction:column;gap:9px">
+              <div style="font-size:10.5px;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:#6f7d6a">{{ g.n }}</div>
+              <div style="font-weight:700;font-size:17px;line-height:1.25">{{ g.label }}</div>
+              <p style="margin:0;font-size:13px;color:#61705b;flex:1">{{ g.desc }}</p>
+              <span style="font-size:13px;font-weight:700;color:#2f8b20">Ver productos →</span>
+            </div>
+          </sc-for>
+        </div>
+      </section>
+
+      <section style="margin-top:44px">
+        <div style="display:flex;align-items:baseline;gap:14px;flex-wrap:wrap;margin-bottom:18px">
+          <h2 style="font-size:22px;font-weight:700;margin:0">Soluciones por cultivo</h2>
+          <span onClick="{{ goCultivos }}" class="dylink" style="margin-left:auto;font-size:13px;font-weight:700;color:#2f8b20">Ver todos los cultivos →</span>
+        </div>
+        <div style="display:grid;grid-template-columns:repeat(auto-fill,minmax(180px,1fr));gap:18px">
+          <sc-for list="{{ cultivosInicio }}" as="c" hint-placeholder-count="6">
+            <div onClick="{{ c.sel }}" class="dyc" style="background:#fff;border:1px solid #e4ebe0;border-radius:6px;overflow:hidden">
+              {{ c.img }}
+              <div style="padding:12px 14px;border-top:1px solid #eef2eb;display:flex;align-items:center;justify-content:space-between;gap:8px">
+                <span style="font-weight:700;font-size:15px">{{ c.label }}</span>
+                <span style="font-size:11px;font-weight:700;color:#2f8b20">{{ c.n }}</span>
+              </div>
+            </div>
+          </sc-for>
+        </div>
+      </section>
+
+      <section style="margin-top:44px;display:grid;grid-template-columns:repeat(auto-fit,minmax(240px,1fr));gap:1px;background:#e4ebe0;border:1px solid #e4ebe0;border-radius:6px;overflow:hidden">
+        <div style="background:#fff;padding:28px">
+          <svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="#2f8b20" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" style="display:block;margin-bottom:14px"><path d="M11 20A7 7 0 0 1 9.8 6.1C15.5 5 17 4.48 19 2c1 2 2 4.18 2 8 0 5.5-4.78 10-10 10Z"></path><path d="M2 21c0-3 1.85-5.36 5.08-6C9.5 14.52 12 13 13 12"></path></svg>
+          <div style="font-weight:700;font-size:17px;line-height:1.25;margin-bottom:8px">Trabajando por un futuro sostenible</div>
+          <p style="margin:0;font-size:14px;color:#61705b">Respeto y cuidado del medioambiente gracias al origen natural de nuestros productos</p>
+        </div>
+        <div style="background:#fff;padding:28px">
+          <svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="#2f8b20" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" style="display:block;margin-bottom:14px"><path d="M7 20h10"></path><path d="M10 20c5.5-2.5.8-6.4 3-10"></path><path d="M9.5 9.4c1.1.8 1.8 2.2 2.3 3.7-2 .4-3.5.4-4.8-.3-1.2-.6-2.3-1.9-3-4.2 2.8-.5 4.4 0 5.5.8Z"></path><path d="M14.1 6a7 7 0 0 0-1.1 4c1.9-.1 3.3-.6 4.3-1.4 1-1 1.6-2.3 1.7-4.6-2.7.1-4 1-4.9 2Z"></path></svg>
+          <div style="font-weight:700;font-size:17px;line-height:1.25;margin-bottom:8px">Desarrollo y compromiso</div>
+          <p style="margin:0;font-size:14px;color:#61705b">Creciendo junto al agricultor, resolviendo y aportando soluciones eficaces desde hace 40 años.</p>
+        </div>
+        <div style="background:#fff;padding:28px">
+          <svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="#2f8b20" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" style="display:block;margin-bottom:14px"><path d="M10 2v7.31"></path><path d="M14 9.3V2"></path><path d="M8.5 2h7"></path><path d="M14 9.3a6.5 6.5 0 1 1-4 0"></path><path d="M5.58 16.5h12.85"></path></svg>
+          <div style="font-weight:700;font-size:17px;line-height:1.25;margin-bottom:8px">Investigación al servicio de la agricultura</div>
+          <p style="margin:0;font-size:14px;color:#61705b">Con una apuesta constante por la superación y la investigación de nuevas tecnologías, desarrollamos nuevos productos que cumplan todas las exigencias</p>
+        </div>
+      </section>
+
+      <section style="margin-top:44px">
+        <div style="display:flex;align-items:baseline;gap:14px;flex-wrap:wrap;margin-bottom:18px">
+          <h2 style="font-size:22px;font-weight:700;margin:0">Últimas noticias</h2>
+          <span class="dylink" style="margin-left:auto;font-size:13px;font-weight:700;color:#2f8b20">Toda la actualidad →</span>
+        </div>
+        <div style="display:grid;grid-template-columns:repeat(auto-fill,minmax(280px,1fr));gap:18px">
+          <sc-for list="{{ noticias }}" as="n" hint-placeholder-count="3">
+            <div class="dyc" style="background:#fff;border:1px solid #e4ebe0;border-radius:6px;padding:24px;display:flex;flex-direction:column;gap:10px">
+              <div style="font-size:10.5px;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:#6f7d6a">Ensayo de campo</div>
+              <div style="font-weight:700;font-size:16px;line-height:1.3">{{ n.titulo }}</div>
+              <p style="margin:0;font-size:13px;color:#61705b;flex:1">{{ n.extracto }}</p>
+              <span style="font-size:13px;font-weight:700;color:#2f8b20">Leer más →</span>
+            </div>
+          </sc-for>
+        </div>
+      </section>
+
+      <section class="dy-two dy-pad" style="margin-top:44px;background:#fff;border:1px solid #e4ebe0;border-radius:6px;padding:32px;display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1fr);gap:32px;align-items:center">
+        <div>
+          <h2 style="font-size:20px;font-weight:700;margin:0 0 6px">Suscríbete a nuestra newsletter</h2>
+          <p style="margin:0;font-size:14px;color:#61705b">Mantente informado sobre las últimas noticias y novedades de Daymsa.</p>
+        </div>
+        <div style="display:flex;gap:10px;flex-wrap:wrap">
+          <input type="text" placeholder="Nombre" style="flex:1;min-width:140px;border:1px solid #dde5d8;border-radius:6px;padding:11px 14px;font:inherit;font-size:14px;background:#fbfcfa">
+          <input type="email" placeholder="Email" style="flex:1;min-width:160px;border:1px solid #dde5d8;border-radius:6px;padding:11px 14px;font:inherit;font-size:14px;background:#fbfcfa">
+          <button style="border:1px solid #3daf29;border-radius:6px;background:#3daf29;color:#fff;font:inherit;font-weight:600;font-size:13px;padding:8px 15px;cursor:pointer">Suscribirme</button>
+        </div>
+      </section>
+    </main>
+  </sc-if>
+
+  <sc-if value="{{ isCatalogo }}" hint-placeholder-val="{{ false }}">
+    <main style="max-width:1240px;margin:0 auto;padding:0 28px 80px">
+      <div style="padding:16px 0;font-size:13px;color:#6f7d6a"><span onClick="{{ goInicio }}" class="dylink">Inicio</span> / Productos</div>
+
+      <section class="dy-two dy-pad" style="background:#ffffff;border:1px solid #e4ebe0;border-radius:6px;padding:40px;display:grid;grid-template-columns:minmax(0,1.3fr) minmax(0,1fr);gap:40px;align-items:center;box-shadow:none">
+        <div>
+          <span style="display:block;color:#2f8b20;font-weight:700;font-size:10.5px;letter-spacing:.14em;text-transform:uppercase;margin-bottom:14px">Catálogo</span>
+          <h1 style="font-size:36px;font-weight:700;line-height:1.14;margin:0 0 14px">Encuentra el producto para tu cultivo</h1>
+          <p style="font-size:15px;color:#55634f;max-width:56ch;margin:0 0 24px">Filtra por gama o por cultivo y accede a la ficha técnica de cada producto. Bionutrientes, microorganismos, especialidades, mejoradores de suelo y correctores de carencias.</p>
+          <div style="display:flex;gap:10px;flex-wrap:wrap">
+            <button onClick="{{ goCultivos }}" style="border:1px solid #3daf29;border-radius:6px;background:#3daf29;color:#fff;font:inherit;font-weight:600;font-size:13px;padding:8px 15px;cursor:pointer">Buscar por cultivo</button>
+            <button onClick="{{ limpiar }}" style="border:1px solid #d6e0d2;border-radius:6px;background:#fff;color:#22301d;font:inherit;font-weight:600;font-size:13px;padding:8px 15px;cursor:pointer">Ver todos</button>
+          </div>
+        </div>
+        <div style="display:grid;grid-template-columns:1fr 1fr;gap:14px">
+          <div style="background:#fff;border:1px solid #e4ebe0;border-radius:6px;padding:20px">
+            <div style="font-size:28px;font-weight:700;line-height:1">{{ totalProductos }}</div>
+            <div style="font-size:11px;color:#6f7d6a;font-weight:600;letter-spacing:.04em;text-transform:uppercase;margin-top:4px">productos</div>
+          </div>
+          <div style="background:#fff;border:1px solid #e4ebe0;border-radius:6px;padding:20px">
+            <div style="font-size:28px;font-weight:700;line-height:1">{{ totalCultivos }}</div>
+            <div style="font-size:11px;color:#6f7d6a;font-weight:600;letter-spacing:.04em;text-transform:uppercase;margin-top:4px">cultivos</div>
+          </div>
+          <div style="background:#fff;border:1px solid #e4ebe0;border-radius:6px;padding:20px">
+            <div style="font-size:28px;font-weight:700;line-height:1">5</div>
+            <div style="font-size:11px;color:#6f7d6a;font-weight:600;letter-spacing:.04em;text-transform:uppercase;margin-top:4px">gamas</div>
+          </div>
+          <div style="background:#fff;border:1px solid #e4ebe0;border-radius:6px;padding:20px">
+            <div style="font-size:28px;font-weight:700;line-height:1">+40</div>
+            <div style="font-size:11px;color:#6f7d6a;font-weight:600;letter-spacing:.04em;text-transform:uppercase;margin-top:4px">países</div>
+          </div>
+        </div>
+      </section>
+
+      <div class="dy-cat" style="display:grid;grid-template-columns:270px minmax(0,1fr);gap:28px;margin-top:32px;align-items:start">
+        <aside class="{{ asideClase }}" style="background:#fff;border:1px solid #e4ebe0;border-radius:6px;padding:24px;position:sticky;top:96px;max-height:calc(100vh - 116px);overflow:auto">
+          <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:18px">
+            <span style="font-weight:700;font-size:15px">Filtros</span>
+            <span onClick="{{ limpiar }}" class="dylink" style="font-size:13px;font-weight:700;color:#2f8b20;margin-left:auto">Limpiar</span>
+            <button class="dy-xclose" onClick="{{ cerrarSheet }}" aria-label="Cerrar los filtros" style="margin-left:14px;border:1px solid #d6e0d2;border-radius:8px;background:#fff;color:#22301d;width:34px;height:34px;padding:0;cursor:pointer;align-items:center;justify-content:center">
+              <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M18 6 6 18"></path><path d="m6 6 12 12"></path></svg>
+            </button>
+          </div>
+
+          <label for="dy-q" style="display:flex;align-items:center;gap:7px;font-size:12px;font-weight:700;color:#6f7d6a;margin-bottom:6px">
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><circle cx="11" cy="11" r="8"></circle><path d="m21 21-4.3-4.3"></path></svg>
+            Buscar producto
+          </label>
+          <input id="dy-q" type="text" placeholder="Nombre comercial" value="{{ q }}" onChange="{{ setQ }}" style="width:100%;border:1px solid #dde5d8;border-radius:6px;padding:11px 14px;font:inherit;font-size:14px;background:#fbfcfa;margin-bottom:18px">
+
+          <div onClick="{{ toggleGama }}" class="dyp" style="display:flex;align-items:center;gap:8px;border-top:1px solid #eef2eb;padding:13px 0;cursor:pointer">
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#6f7d6a" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m12.83 2.18a2 2 0 0 0-1.66 0L2.6 6.08a1 1 0 0 0 0 1.83l8.58 3.91a2 2 0 0 0 1.66 0l8.58-3.9a1 1 0 0 0 0-1.83Z"></path><path d="m6.08 11-3.5 1.6a1 1 0 0 0 0 1.81l8.6 3.91a2 2 0 0 0 1.65 0l8.58-3.9a1 1 0 0 0 0-1.83L17.9 11"></path></svg>
+            <span style="font-weight:700;font-size:13px;margin-right:auto">Gama</span>
+            <span style="font-size:11px;color:#8a9585">{{ resumenGama }}</span>
+            <span style="font-size:13px;color:#8a9585;width:12px;text-align:center">{{ signoGama }}</span>
+          </div>
+          <sc-if value="{{ openGama }}" hint-placeholder-val="{{ true }}">
+            <div style="display:flex;flex-direction:column;gap:2px;padding-bottom:16px">
+              <sc-for list="{{ gamas }}" as="g" hint-placeholder-count="5">
+                <label class="dyp" style="display:flex;align-items:center;gap:9px;padding:7px 2px;font-size:13px;cursor:pointer;color:{{ g.fg }}">
+                  <input type="checkbox" checked="{{ g.on }}" onChange="{{ g.sel }}" style="width:15px;height:15px;accent-color:#3daf29;margin:0;flex:none">
+                  <span style="margin-right:auto">{{ g.label }}</span>
+                  <span style="font-size:11px;color:#8a9585">{{ g.count }}</span>
+                </label>
+              </sc-for>
+            </div>
+          </sc-if>
+
+          <div onClick="{{ toggleNec }}" class="dyp" style="display:flex;align-items:center;gap:8px;border-top:1px solid #eef2eb;padding:13px 0;cursor:pointer">
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#6f7d6a" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M7 20h10"></path><path d="M10 20c5.5-2.5.8-6.4 3-10"></path><path d="M9.5 9.4c1.1.8 1.8 2.2 2.3 3.7-2 .4-3.5.4-4.8-.3-1.2-.6-2.3-1.9-3-4.2 2.8-.5 4.4 0 5.5.8z"></path><path d="M14.1 6a7 7 0 0 0-1.1 4c1.9-.1 3.3-.6 4.3-1.4 1-1 1.6-2.3 1.7-4.6-2.7.1-4 1-4.9 2z"></path></svg>
+            <span style="font-weight:700;font-size:13px;margin-right:auto">Necesidad</span>
+            <span style="font-size:10px;font-weight:700;color:#a07b1a;background:#fdf6e3;border:1px solid #f0e3bd;border-radius:4px;padding:1px 5px">propuesta</span>
+            <span style="font-size:11px;color:#8a9585">{{ resumenNec }}</span>
+            <span style="font-size:13px;color:#8a9585;width:12px;text-align:center">{{ signoNec }}</span>
+          </div>
+          <sc-if value="{{ openNec }}" hint-placeholder-val="{{ false }}">
+            <div style="display:flex;flex-direction:column;gap:2px;padding-bottom:16px">
+              <sc-for list="{{ necesidades }}" as="n" hint-placeholder-count="7">
+                <label class="dyp" style="display:flex;align-items:center;gap:9px;padding:7px 2px;font-size:13px;cursor:pointer;color:{{ n.fg }}">
+                  <input type="checkbox" checked="{{ n.on }}" onChange="{{ n.sel }}" style="width:15px;height:15px;accent-color:#3daf29;margin:0;flex:none">
+                  <span style="margin-right:auto">{{ n.label }}</span>
+                  <span style="font-size:11px;color:#8a9585">{{ n.count }}</span>
+                </label>
+              </sc-for>
+            </div>
+          </sc-if>
+
+          <div onClick="{{ toggleCul }}" class="dyp" style="display:flex;align-items:center;gap:8px;border-top:1px solid #eef2eb;padding:13px 0;cursor:pointer">
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#6f7d6a" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M11 20A7 7 0 0 1 9.8 6.1C15.5 5 17 4.48 19 2c1 2 2 4.18 2 8 0 5.5-4.78 10-10 10Z"></path><path d="M2 21c0-3 1.85-5.36 5.08-6C9.5 14.52 12 13 13 12"></path></svg>
+            <span style="font-weight:700;font-size:13px;margin-right:auto">Cultivo <span style="font-weight:400;color:#8a9585">· uno</span></span>
+            <span style="font-size:11px;color:#8a9585">{{ resumenCultivo }}</span>
+            <span style="font-size:13px;color:#8a9585;width:12px;text-align:center">{{ signoCul }}</span>
+          </div>
+          <sc-if value="{{ openCul }}" hint-placeholder-val="{{ false }}">
+            <div style="padding-bottom:16px">
+              <input type="text" placeholder="Buscar cultivo" value="{{ qc }}" onChange="{{ setQc }}" style="width:100%;border:1px solid #dde5d8;border-radius:6px;padding:10px 14px;font:inherit;font-size:14px;background:#fbfcfa;margin-bottom:10px">
+              <div style="display:flex;flex-direction:column;gap:2px">
+                <sc-for list="{{ cultivosFiltrados }}" as="c" hint-placeholder-count="8">
+                  <label class="dyp" style="display:flex;align-items:center;gap:9px;padding:7px 2px;font-size:13px;cursor:pointer;color:{{ c.fg }}">
+                    <input type="radio" name="dy-cultivo" checked="{{ c.on }}" onClick="{{ c.sel }}" style="width:15px;height:15px;accent-color:#3daf29;margin:0;flex:none">
+                    <span>{{ c.label }}</span>
+                  </label>
+                </sc-for>
+              </div>
+              <sc-if value="{{ hayMasCultivos }}" hint-placeholder-val="{{ true }}">
+                <span onClick="{{ verMasCultivos }}" class="dylink" style="display:inline-block;margin-top:10px;font-size:12.5px;font-weight:700;color:#2f8b20;text-decoration:underline">Mostrar {{ culRestantes }} más</span>
+              </sc-if>
+            </div>
+          </sc-if>
+
+          <div class="dy-sheetfoot" style="align-items:center;gap:10px">
+            <span onClick="{{ limpiar }}" class="dylink" style="font-size:13px;font-weight:700;color:#2f8b20;margin-right:auto">Limpiar</span>
+            <button onClick="{{ cerrarSheet }}" style="border:1px solid #3daf29;border-radius:6px;background:#3daf29;color:#fff;font:inherit;font-weight:600;font-size:13px;padding:10px 18px;cursor:pointer">Ver {{ nResultados }} productos</button>
+          </div>
+        </aside>
+
+        <section>
+          <div class="dy-fbar" style="align-items:center;gap:10px;margin-bottom:14px">
+            <button onClick="{{ abrirSheet }}" style="display:inline-flex;align-items:center;gap:8px;border:1px solid #d6e0d2;border-radius:6px;background:#fff;color:#22301d;font:inherit;font-weight:600;font-size:13px;padding:9px 15px;cursor:pointer">
+              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M3 6h18"></path><path d="M7 12h10"></path><path d="M10 18h4"></path></svg>
+              Filtros {{ etiquetaFiltros }}
+            </button>
+          </div>
+
+          <div style="display:flex;align-items:center;gap:14px;flex-wrap:wrap;margin-bottom:14px">
+            <div style="margin-right:auto;font-size:15px;color:#55634f"><strong style="color:#22301d">{{ nResultados }}</strong> productos</div>
+          </div>
+
+          <sc-if value="{{ hayChips }}" hint-placeholder-val="{{ false }}">
+            <div style="display:flex;align-items:center;gap:8px;flex-wrap:wrap;margin-bottom:18px">
+              <sc-for list="{{ chipsActivos }}" as="a" hint-placeholder-count="2">
+                <span onClick="{{ a.quitar }}" class="dyp" style="display:inline-flex;align-items:center;gap:8px;border:1px solid #cfe0c9;border-radius:6px;padding:6px 12px;font-size:12px;font-weight:600;color:#2f8b20;background:#fff">{{ a.label }} <span style="color:#8a9585">✕</span></span>
+              </sc-for>
+              <span onClick="{{ limpiar }}" class="dylink" style="font-size:12px;font-weight:700;color:#6f7d6a">Limpiar todo</span>
+            </div>
+          </sc-if>
+
+          <sc-if value="{{ sinDatosCultivo }}" hint-placeholder-val="{{ false }}">
+            <div style="background:#fff;border:1px solid #e4ebe0;border-radius:6px;padding:26px;border:1px dashed #cfe0c9">
+              <div style="font-weight:700;font-size:16px;margin-bottom:6px">Cruce cultivo × producto pendiente de carga</div>
+              <p style="margin:0;font-size:14px;color:#55634f;max-width:70ch">La relación de productos recomendados existe en la base de datos de Daymsa para los {{ totalCultivos }} cultivos. En esta maqueta solo está cargado <strong>Café</strong> como ejemplo del mecanismo.</p>
+            </div>
+          </sc-if>
+
+          <sc-if value="{{ sinResultados }}" hint-placeholder-val="{{ false }}">
+            <div style="background:#fff;border:1px solid #e4ebe0;border-radius:6px;padding:32px;text-align:center">
+              <div style="font-weight:700;font-size:16px;margin-bottom:6px">Sin resultados</div>
+              <p style="margin:0 0 16px;font-size:14px;color:#61705b">Ningún producto coincide con estos filtros.</p>
+              <button onClick="{{ limpiar }}" style="border:1px solid #d6e0d2;border-radius:6px;background:#fff;color:#22301d;font:inherit;font-weight:600;font-size:13px;padding:8px 15px;cursor:pointer">Limpiar filtros</button>
+            </div>
+          </sc-if>
+
+          <sc-if value="{{ hayResultados }}" hint-placeholder-val="{{ true }}">
+            <div style="display:grid;grid-template-columns:repeat(auto-fill,minmax(240px,1fr));gap:18px">
+              <sc-for list="{{ resultados }}" as="p" hint-placeholder-count="9">
+                <div onClick="{{ p.open }}" class="dyc" style="background:#fff;border:1px solid #e4ebe0;border-radius:6px;overflow:hidden;box-shadow:none;display:flex;flex-direction:column">
+                  <div style="padding:16px 18px 18px;display:flex;flex-direction:column;gap:7px;flex:1">
+                    <span style="color:#8a9585;font-size:10px;font-weight:700;letter-spacing:.1em;text-transform:uppercase">{{ p.gama }}</span>
+                    <div style="font-weight:700;font-size:16px;line-height:1.25">{{ p.n }}</div>
+                    <p style="margin:0;font-size:13px;color:#61705b;flex:1">{{ p.d }}</p>
+                    <div style="display:flex;align-items:center;justify-content:space-between;gap:8px;border-top:1px solid #eef2eb;padding-top:10px">
+                      <span style="font-size:13px;font-weight:700;color:#2f8b20">Ver detalles →</span>
+                      <span onClick="{{ p.cmpSel }}" style="font-size:12px;font-weight:600;color:{{ p.cmpFg }}">{{ p.cmpLabel }}</span>
+                    </div>
+                  </div>
+                </div>
+              </sc-for>
+            </div>
+          </sc-if>
+        </section>
+      </div>
+    </main>
+  </sc-if>
+
+  <sc-if value="{{ isCultivos }}" hint-placeholder-val="{{ false }}">
+    <main style="max-width:1240px;margin:0 auto;padding:0 28px 80px">
+      <div style="padding:16px 0;font-size:13px;color:#6f7d6a"><span onClick="{{ goInicio }}" class="dylink">Inicio</span> / Cultivos</div>
+      <div style="margin-bottom:26px">
+        <h1 style="font-size:34px;font-weight:700;margin:0 0 10px">Soluciones por cultivo</h1>
+        <p style="font-size:15px;color:#55634f;max-width:66ch;margin:0">Programas de nutrición y bioestimulación adaptados a cada cultivo. Daymsa trabaja sobre {{ totalCultivos }} cultivos; estos treinta y dos están cargados con su programa completo en la maqueta.</p>
+      </div>
+
+      <div style="display:grid;grid-template-columns:repeat(auto-fill,minmax(230px,1fr));gap:18px">
+        <sc-for list="{{ gridCultivos }}" as="c" hint-placeholder-count="12">
+          <div onClick="{{ c.sel }}" class="dyc" style="background:#fff;border:1px solid #e4ebe0;border-radius:6px;overflow:hidden">
+            {{ c.img }}
+            <div style="padding:14px 16px;display:flex;align-items:center;justify-content:space-between;border-top:1px solid #eef2eb">
+              <span style="font-weight:700;font-size:16px">{{ c.label }}</span>
+              <span style="font-size:12px;font-weight:700;color:#2f8b20">{{ c.n }}</span>
+            </div>
+          </div>
+        </sc-for>
+      </div>
+
+      <div style="background:#fff;border:1px solid #e4ebe0;border-radius:6px;padding:24px;margin-top:22px;display:flex;align-items:center;gap:18px;flex-wrap:wrap;box-shadow:none">
+        <div style="margin-right:auto">
+          <div style="font-weight:700;font-size:16px;margin-bottom:4px">¿No encuentras tu cultivo?</div>
+          <p style="margin:0;font-size:14px;color:#55634f">Busca entre los {{ totalCultivos }} cultivos desde el filtro del catálogo.</p>
+        </div>
+        <button onClick="{{ goCatalogo }}" style="border:1px solid #3daf29;border-radius:6px;background:#3daf29;color:#fff;font:inherit;font-weight:600;font-size:13px;padding:8px 15px;cursor:pointer">Ir al catálogo</button>
+      </div>
+    </main>
+  </sc-if>
+
+  <sc-if value="{{ isCultivo }}" hint-placeholder-val="{{ false }}">
+    <main style="max-width:1240px;margin:0 auto;padding:0 28px 80px">
+      <div style="padding:16px 0;font-size:13px;color:#6f7d6a"><span onClick="{{ goCultivos }}" class="dylink">Cultivos</span> / {{ cultivoNombre }}</div>
+
+      <section class="dy-two" style="background:#fff;border:1px solid #e4ebe0;border-radius:6px;overflow:hidden;display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1fr);box-shadow:none">
+        <div class="dy-pad" style="padding:40px">
+          <span style="display:block;color:#2f8b20;font-weight:700;font-size:10.5px;letter-spacing:.14em;text-transform:uppercase;margin-bottom:14px">Programa por cultivo</span>
+          <h1 style="font-size:38px;font-weight:700;margin:0 0 12px">{{ cultivoNombre }}</h1>
+          <p style="font-size:15px;color:#55634f;max-width:50ch;margin:0 0 22px">{{ cultivoLead }}</p>
+
+          <div style="display:flex;gap:32px;border-top:1px solid #e9eee5;border-bottom:1px solid #e9eee5;padding:16px 0;margin-bottom:22px">
+            <div>
+              <div style="font-size:24px;font-weight:700;line-height:1">{{ nProductosCultivo }}</div>
+              <div style="font-size:10.5px;letter-spacing:.12em;text-transform:uppercase;color:#8a9585;margin-top:4px">Productos</div>
+            </div>
+            <div>
+              <div style="font-size:24px;font-weight:700;line-height:1">{{ nGamasCultivo }}</div>
+              <div style="font-size:10.5px;letter-spacing:.12em;text-transform:uppercase;color:#8a9585;margin-top:4px">Gamas</div>
+            </div>
+          </div>
+
+          <div style="display:flex;gap:10px;flex-wrap:wrap">
+            <button onClick="{{ goCatalogoCultivo }}" style="border:1px solid #3daf29;border-radius:6px;background:#3daf29;color:#fff;font:inherit;font-weight:600;font-size:13px;padding:8px 15px;cursor:pointer">Ver en el catálogo</button>
+            <button style="border:1px solid #d6e0d2;border-radius:6px;background:#fff;color:#22301d;font:inherit;font-weight:600;font-size:13px;padding:8px 15px;cursor:pointer">Solicitar asesoramiento</button>
+          </div>
+        </div>
+        <div style="min-height:320px">{{ heroImg }}</div>
+      </section>
+
+      <section style="display:flex;align-items:center;gap:12px;flex-wrap:wrap;margin-top:24px">
+        <span style="font-size:10.5px;letter-spacing:.14em;text-transform:uppercase;color:#8a9585">Gamas en este programa</span>
+        <sc-for list="{{ chipsCultivo }}" as="g" hint-placeholder-count="3">
+          <span onClick="{{ g.sel }}" class="dyp" style="border:1px solid #cfe0c9;border-radius:6px;padding:7px 13px;font-size:12.5px;font-weight:600;color:#2f8b20;background:#fff">{{ g.label }} · {{ g.n }}</span>
+        </sc-for>
+      </section>
+
+      <section style="margin-top:20px">
+        <h2 style="font-size:22px;font-weight:700;margin:0 0 4px">Productos recomendados</h2>
+        <p style="margin:0 0 18px;font-size:15px;color:#6f7d6a">{{ nProductosCultivo }} referencias en el programa de {{ cultivoNombre }}</p>
+        <div style="display:grid;grid-template-columns:repeat(auto-fill,minmax(230px,1fr));gap:18px">
+          <sc-for list="{{ productosCultivo }}" as="p" hint-placeholder-count="5">
+            <div onClick="{{ p.open }}" class="dyc" style="background:#fff;border:1px solid #e4ebe0;border-radius:6px;overflow:hidden;display:flex;flex-direction:column">
+              <div style="height:130px;background:#f4f6f2;border-bottom:1px solid #eef2eb;display:flex;align-items:flex-end;padding:14px">
+                <span style="color:#6f7d6a;font-size:10.5px;font-weight:700;letter-spacing:.1em;text-transform:uppercase">{{ p.gama }}</span>
+              </div>
+              <div style="padding:16px 18px 18px;display:flex;flex-direction:column;gap:7px;flex:1">
+                <div style="font-weight:700;font-size:16px">{{ p.n }}</div>
+                <p style="margin:0;font-size:13px;color:#61705b;flex:1">{{ p.d }}</p>
+                <span style="font-size:13px;font-weight:700;color:#2f8b20">Ver detalles →</span>
+              </div>
+            </div>
+          </sc-for>
+        </div>
+      </section>
+
+      <sc-if value="{{ verPrograma }}" hint-placeholder-val="{{ true }}">
+        <section class="dy-two dy-pad" style="background:#fff;border:1px solid #e4ebe0;border-radius:6px;padding:36px;margin-top:32px;display:grid;grid-template-columns:minmax(0,260px) minmax(0,1fr);gap:40px;box-shadow:none">
+          <div>
+            <h2 style="font-size:22px;font-weight:700;margin:0 0 8px">Programa nutricional</h2>
+            <p style="margin:0;font-size:14px;color:#6f7d6a">Recomendaciones técnicas de Daymsa para este cultivo.</p>
+          </div>
+          <div style="max-width:70ch;color:#3f4c3a">
+            <sc-for list="{{ cultivoTexto }}" as="t" hint-placeholder-count="4">
+              <p style="font-size:15px">{{ t }}</p>
+            </sc-for>
+          </div>
+        </section>
+      </sc-if>
+
+      <section class="dy-two" style="display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1fr);gap:20px;margin-top:20px">
+        <div style="background:#fff;border:1px solid #e4ebe0;border-radius:6px;padding:28px">
+          <h2 style="font-size:20px;font-weight:700;margin:0 0 6px">Consulta sobre este programa</h2>
+          <p style="margin:0 0 18px;font-size:14px;color:#6f7d6a">El equipo técnico de Daymsa responde con la recomendación adaptada a su parcela.</p>
+          <div class="dy-two" style="display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-bottom:12px">
+            <div>
+              <label for="dy-cn" style="display:block;font-size:12px;font-weight:700;color:#6f7d6a;margin-bottom:6px">Nombre</label>
+              <input id="dy-cn" type="text" style="width:100%;border:1px solid #dde5d8;border-radius:6px;padding:11px 14px;font:inherit;font-size:14px;background:#fbfcfa">
+            </div>
+            <div>
+              <label for="dy-ce" style="display:block;font-size:12px;font-weight:700;color:#6f7d6a;margin-bottom:6px">Correo electrónico</label>
+              <input id="dy-ce" type="email" style="width:100%;border:1px solid #dde5d8;border-radius:6px;padding:11px 14px;font:inherit;font-size:14px;background:#fbfcfa">
+            </div>
+          </div>
+          <label for="dy-cm" style="display:block;font-size:12px;font-weight:700;color:#6f7d6a;margin-bottom:6px">Mensaje</label>
+          <textarea id="dy-cm" rows="3" style="width:100%;border:1px solid #dde5d8;border-radius:6px;padding:11px 14px;font:inherit;font-size:14px;background:#fbfcfa;resize:vertical;margin-bottom:16px"></textarea>
+          <button style="border:1px solid #3daf29;border-radius:6px;background:#3daf29;color:#fff;font:inherit;font-weight:600;font-size:13px;padding:8px 15px;cursor:pointer">Enviar consulta</button>
+        </div>
+
+        <div style="background:#fff;border:1px solid #e4ebe0;border-radius:6px;padding:28px">
+          <h2 style="font-size:20px;font-weight:700;margin:0 0 6px">Otros cultivos</h2>
+          <p style="margin:0 0 18px;font-size:14px;color:#6f7d6a">Programas cargados en la maqueta.</p>
+          <div style="display:flex;gap:8px;flex-wrap:wrap;margin-bottom:22px">
+            <sc-for list="{{ otrosCultivos }}" as="o" hint-placeholder-count="7">
+              <span data-c="{{ o.label }}" onClick="{{ abrirCultivo }}" class="dyp" style="border:1px solid #e0e7dc;border-radius:6px;padding:7px 13px;font-size:12.5px;font-weight:600;color:#3f4c3a">{{ o.label }}</span>
+            </sc-for>
+          </div>
+          <div style="border-top:1px solid #eef2eb;padding-top:18px">
+            <div style="font-size:10.5px;letter-spacing:.14em;text-transform:uppercase;color:#8a9585;margin-bottom:8px">Buscar entre todos</div>
+            <p style="margin:0 0 14px;font-size:14px;color:#61705b">Daymsa trabaja sobre {{ totalCultivos }} cultivos. El filtro del catálogo permite llegar a cualquiera de ellos.</p>
+            <button onClick="{{ goCatalogo }}" style="border:1px solid #d6e0d2;border-radius:6px;background:#fff;color:#22301d;font:inherit;font-weight:600;font-size:13px;padding:8px 15px;cursor:pointer">Ir al catálogo</button>
+          </div>
+        </div>
+      </section>
+    </main>
+  </sc-if>
+
+  <sc-if value="{{ isProducto }}" hint-placeholder-val="{{ false }}">
+    <main style="max-width:1240px;margin:0 auto;padding:0 28px 80px">
+      <div style="padding:16px 0;font-size:13px;color:#6f7d6a"><span onClick="{{ goCatalogo }}" class="dylink">Productos</span> / {{ prodGama }} / {{ prodNombre }}</div>
+
+      <section class="dy-two dy-pad" style="background:#fff;border:1px solid #e4ebe0;border-radius:6px;padding:36px;display:grid;grid-template-columns:minmax(0,340px) minmax(0,1fr);gap:44px;box-shadow:none">
+        <div>
+          <div style="background:#f6faf4;border:1px solid #e4ebe0;border-radius:6px;padding:26px;display:grid;place-items:center;min-height:340px">
+            <sc-if value="{{ esRaiza }}" hint-placeholder-val="{{ false }}">
+              <img src="img/web/raiza-197x300.png" alt="Envase de Raiza®" style="max-height:290px;width:auto">
+            </sc-if>
+            <sc-if value="{{ esNaturamin }}" hint-placeholder-val="{{ false }}">
+              <img src="img/web/NATURAMIN-WSP_1kg-3-228x300.png" alt="Envase de Naturamin®WSP" style="max-height:290px;width:auto">
+            </sc-if>
+            <sc-if value="{{ sinImg }}" hint-placeholder-val="{{ false }}">
+              <div style="display:flex;flex-direction:column;align-items:center;gap:16px">
+                <div style="width:150px;height:222px;display:flex;flex-direction:column;align-items:center;filter:drop-shadow(0 8px 18px rgba(34,48,29,.16))">
+                  <div style="width:44px;height:17px;background:#3c4a37;border-radius:3px 3px 0 0"></div>
+                  <div style="width:56px;height:16px;background:#cfd8c9"></div>
+                  <div style="flex:1;width:100%;background:#fff;border:1px solid #dbe3d6;border-radius:8px;display:flex;align-items:center;padding:10px">
+                    <div style="width:100%;background:{{ prodColor }};padding:18px 8px;border-radius:3px;display:flex;align-items:center;justify-content:center;min-height:92px">
+                      <span style="font-size:15px;font-weight:800;color:#fff;text-align:center;line-height:1.2;overflow-wrap:break-word;max-width:100%">{{ prodNCorto }}</span>
+                    </div>
+                  </div>
+                </div>
+                <span style="font-size:12px;color:#8a9585">Mockup provisional · pendiente packshot real</span>
+              </div>
+            </sc-if>
+          </div>
+          <div style="display:flex;align-items:center;gap:10px;margin:18px 0 16px">
+            <span style="font-size:13px;color:#6f7d6a;font-weight:600">Formatos:</span>
+            <span style="font-weight:700;font-size:14px">{{ prodFormatos }}</span>
+          </div>
+          <button onClick="{{ irAlFormulario }}" style="width:100%;border:1px solid #3daf29;border-radius:6px;background:#3daf29;color:#fff;font:inherit;font-weight:600;font-size:13.5px;padding:11px;cursor:pointer;margin-bottom:8px">{{ ctaFicha }}</button>
+          <a href="https://wa.me/34XXXXXXXXX" target="_blank" rel="noopener" style="margin-top:8px;display:flex;align-items:center;justify-content:center;gap:9px;width:100%;box-sizing:border-box;border:1px solid #25d366;border-radius:6px;background:#fff;color:#128c4a;font-weight:600;font-size:13.5px;padding:11px;text-decoration:none" style-hover="background:#f0fbf4">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="#25d366" aria-hidden="true"><path d="M12.04 2C6.58 2 2.13 6.45 2.13 11.91c0 1.75.46 3.45 1.32 4.95L2 22l5.25-1.38a9.9 9.9 0 0 0 4.79 1.22h.01c5.46 0 9.91-4.45 9.91-9.91C21.96 6.45 17.5 2 12.04 2Zm0 18.15h-.01a8.2 8.2 0 0 1-4.18-1.15l-.3-.18-3.12.82.83-3.04-.2-.31a8.17 8.17 0 0 1-1.26-4.38c0-4.54 3.7-8.23 8.24-8.23a8.23 8.23 0 0 1 .01 16.47Zm4.52-6.16c-.25-.12-1.47-.72-1.69-.81-.23-.08-.39-.12-.56.13-.16.24-.64.8-.79.97-.14.16-.29.18-.54.06-.25-.13-1.05-.39-2-1.23-.74-.66-1.24-1.47-1.38-1.72-.15-.25-.02-.38.11-.5.11-.11.25-.29.37-.43.13-.15.17-.25.25-.41.08-.17.04-.31-.02-.43-.06-.12-.56-1.35-.77-1.84-.2-.48-.4-.42-.55-.43h-.48c-.16 0-.43.06-.65.31-.23.25-.86.84-.86 2.05s.88 2.38 1 2.54c.12.17 1.73 2.64 4.19 3.7.58.26 1.04.41 1.4.52.59.19 1.13.16 1.55.1.47-.07 1.47-.6 1.67-1.18.21-.58.21-1.07.15-1.18-.06-.1-.23-.16-.48-.29Z"/></svg>
+            Consultar por WhatsApp
+          </a>
+          <sc-if value="{{ fichaDesbloqueada }}" hint-placeholder-val="{{ false }}">
+            <p style="margin:12px 0 0;font-size:12px;color:#6f7d6a">Datos ya facilitados en esta sesión. Las siguientes descargas son directas.</p>
+          </sc-if>
+        </div>
+
+        <div>
+          <span style="display:block;color:#2f8b20;font-weight:700;font-size:10.5px;letter-spacing:.14em;text-transform:uppercase;margin-bottom:14px">{{ prodGama }}</span>
+          <h1 style="font-size:36px;font-weight:700;margin:0 0 10px">{{ prodNombre }}</h1>
+          <p style="font-size:17px;color:#55634f;max-width:52ch;margin:0 0 22px">{{ prodDesc }}</p>
+
+          <div style="display:flex;gap:6px;flex-wrap:wrap;border-bottom:1px solid #e6ece2;padding-bottom:12px;margin-bottom:22px">
+            <sc-for list="{{ tabs }}" as="t" hint-placeholder-count="4">
+              <span onClick="{{ t.sel }}" class="dyp" style="border:1px solid #e0e7dc;border-radius:6px;padding:7px 13px;font-size:12.5px;font-weight:600;background:{{ t.bg }};color:{{ t.fg }}">{{ t.label }}</span>
+            </sc-for>
+          </div>
+
+          <sc-if value="{{ tab1 }}" hint-placeholder-val="{{ false }}">
+            <div style="background:#fafbf9;border:1px solid #e9eee5;border-radius:6px;padding:20px;margin-bottom:24px">
+              <div style="font-weight:700;font-size:14px;margin-bottom:6px">Composición y riquezas</div>
+              <p style="margin:0;font-size:14px;color:#61705b;max-width:60ch">Este bloque se rellena con la composición declarada en la ficha técnica de Daymsa. No se publica ningún valor sin ese documento.</p>
+            </div>
+          </sc-if>
+          <sc-if value="{{ tab2 }}" hint-placeholder-val="{{ false }}">
+            <div style="background:#fafbf9;border:1px solid #e9eee5;border-radius:6px;padding:20px;margin-bottom:24px">
+              <div style="font-weight:700;font-size:14px;margin-bottom:6px">Dosis y momento de aplicación</div>
+              <p style="margin:0;font-size:14px;color:#61705b;max-width:60ch">Dosis por cultivo, vía de aplicación y momento fenológico, según la etiqueta registrada. Pendiente de aportar por el equipo técnico.</p>
+            </div>
+          </sc-if>
+          <sc-if value="{{ tab3 }}" hint-placeholder-val="{{ false }}">
+            <div style="background:#fafbf9;border:1px solid #e9eee5;border-radius:6px;padding:20px;margin-bottom:24px">
+              <div style="font-weight:700;font-size:14px;margin-bottom:6px">Modo de acción y precauciones</div>
+              <p style="margin:0;font-size:14px;color:#61705b;max-width:60ch">Modo de acción, compatibilidades, incompatibilidades y condiciones de almacenamiento. Pendiente de aportar por el equipo técnico.</p>
+            </div>
+          </sc-if>
+
+          <sc-if value="{{ tieneBeneficios }}" hint-placeholder-val="{{ false }}">
+            <div style="margin-bottom:28px">
+              <div style="font-weight:700;font-size:15px;margin-bottom:12px">Recomendado para</div>
+              <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(210px,1fr));gap:12px">
+                <sc-for list="{{ beneficios }}" as="b" hint-placeholder-count="3">
+                  <div style="background:#fff;border:1px solid #e9eee5;border-radius:6px;padding:16px;font-size:14px;line-height:1.45;color:#3f4c3a">{{ b }}</div>
+                </sc-for>
+              </div>
+            </div>
+          </sc-if>
+
+          <sc-if value="{{ verTexto }}" hint-placeholder-val="{{ true }}">
+            <div style="max-width:68ch;color:#3f4c3a">
+              <sc-for list="{{ parrafos }}" as="t" hint-placeholder-count="3">
+                <p style="font-size:15px">{{ t }}</p>
+              </sc-for>
+              <sc-if value="{{ sinTextoTab }}" hint-placeholder-val="{{ false }}">
+                <p style="font-size:14px;color:#8a9585;margin:0">Texto ampliado de la ficha pendiente de migrar desde la web actual.</p>
+              </sc-if>
+            </div>
+          </sc-if>
+
+          <div style="border-top:1px solid #e6ece2;margin-top:28px;padding-top:24px;display:grid;grid-template-columns:repeat(auto-fit,minmax(230px,1fr));gap:32px">
+            <div>
+              <div style="font-weight:700;font-size:14px;margin-bottom:12px">Cultivos recomendados</div>
+              <sc-if value="{{ tieneCultivos }}" hint-placeholder-val="{{ false }}">
+                <div style="display:flex;gap:8px;flex-wrap:wrap">
+                  <sc-for list="{{ prodCultivos }}" as="c" hint-placeholder-count="2">
+                    <span onClick="{{ c.open }}" class="dyp" style="white-space:nowrap;border:1px solid #cfe0c9;border-radius:6px;padding:7px 14px;font-size:13px;font-weight:600;color:#2f8b20">{{ c.label }}</span>
+                  </sc-for>
+                </div>
+              </sc-if>
+              <sc-if value="{{ sinCultivos }}" hint-placeholder-val="{{ false }}">
+                <p style="margin:0;font-size:13px;color:#8a9585">Relación de cultivos pendiente de carga.</p>
+              </sc-if>
+            </div>
+            <sc-if value="{{ tieneRelacionados }}" hint-placeholder-val="{{ false }}">
+              <div>
+                <div style="font-weight:700;font-size:14px;margin-bottom:12px">Productos relacionados</div>
+                <div style="display:flex;gap:8px;flex-wrap:wrap">
+                  <sc-for list="{{ prodRelacionados }}" as="r" hint-placeholder-count="1">
+                    <span onClick="{{ r.open }}" class="dyp" style="white-space:nowrap;border:1px solid #dde5d8;border-radius:6px;padding:7px 14px;font-size:13px;font-weight:600">{{ r.label }}</span>
+                  </sc-for>
+                </div>
+              </div>
+            </sc-if>
+          </div>
+        </div>
+      </section>
+
+      <section id="dy-form" class="dy-two dy-pad" style="background:#fff;border:1px solid #e4ebe0;border-radius:6px;padding:36px;margin-top:20px;display:grid;grid-template-columns:minmax(0,320px) minmax(0,1fr);gap:40px">
+        <div>
+          <h2 style="font-size:22px;font-weight:700;margin:0 0 10px">Solicitar la ficha técnica</h2>
+          <p style="margin:0 0 14px;font-size:14px;color:#61705b">Rellene el formulario y recibirá la ficha técnica de <strong>{{ prodNombre }}</strong> en su correo.</p>
+          <p style="margin:0;font-size:13px;color:#8a9585">La ficha incluye composición, dosis por cultivo y condiciones de aplicación. Los datos se tratan según la política de privacidad de Daymsa.</p>
+        </div>
+        <div>
+          <sc-if value="{{ pedirDatos }}" hint-placeholder-val="{{ true }}">
+            <div>
+              <div class="dy-two" style="display:grid;grid-template-columns:1fr 1fr;gap:14px;margin-bottom:14px">
+                <div>
+                  <label for="dy-fn" style="display:block;font-size:12px;font-weight:700;color:#6f7d6a;margin-bottom:6px">Nombre y apellidos</label>
+                  <input id="dy-fn" type="text" style="width:100%;border:1px solid #dde5d8;border-radius:6px;padding:11px 14px;font:inherit;font-size:14px;background:#fbfcfa">
+                </div>
+                <div>
+                  <label for="dy-fe" style="display:block;font-size:12px;font-weight:700;color:#6f7d6a;margin-bottom:6px">Correo electrónico</label>
+                  <input id="dy-fe" type="email" style="width:100%;border:1px solid #dde5d8;border-radius:6px;padding:11px 14px;font:inherit;font-size:14px;background:#fbfcfa">
+                </div>
+                <div>
+                  <label for="dy-fc" style="display:block;font-size:12px;font-weight:700;color:#6f7d6a;margin-bottom:6px">Empresa</label>
+                  <input id="dy-fc" type="text" style="width:100%;border:1px solid #dde5d8;border-radius:6px;padding:11px 14px;font:inherit;font-size:14px;background:#fbfcfa">
+                </div>
+                <div>
+                  <label for="dy-fp" style="display:block;font-size:12px;font-weight:700;color:#6f7d6a;margin-bottom:6px">País</label>
+                  <input id="dy-fp" type="text" style="width:100%;border:1px solid #dde5d8;border-radius:6px;padding:11px 14px;font:inherit;font-size:14px;background:#fbfcfa">
+                </div>
+              </div>
+              <div style="margin-bottom:16px">
+                <label for="dy-fpr" style="display:block;font-size:12px;font-weight:700;color:#6f7d6a;margin-bottom:6px">Producto</label>
+                <input id="dy-fpr" type="text" value="{{ prodNombre }}" readonly="true" style="width:100%;border:1px solid #e9eee5;border-radius:6px;padding:11px 14px;font:inherit;font-size:14px;background:#f4f6f2;color:#3f4c3a">
+              </div>
+              <label style="display:flex;align-items:flex-start;gap:10px;font-size:13px;color:#55634f;margin-bottom:18px;cursor:pointer">
+                <input type="checkbox" checked="{{ aceptado }}" onChange="{{ toggleAcepto }}" style="margin-top:3px;width:15px;height:15px;accent-color:#3daf29;flex:none">
+                <span>Acepto las condiciones de tratamiento de datos</span>
+              </label>
+              <button onClick="{{ enviarFicha }}" style="border:1px solid #3daf29;border-radius:6px;background:#3daf29;color:#fff;font:inherit;font-weight:600;font-size:13px;padding:10px 18px;cursor:pointer">Solicitar ficha técnica</button>
+            </div>
+          </sc-if>
+          <sc-if value="{{ fichaDesbloqueada }}" hint-placeholder-val="{{ false }}">
+            <div style="background:#fafbf9;border:1px solid #e9eee5;border-radius:6px;padding:26px">
+              <div style="font-weight:700;font-size:16px;margin-bottom:6px">Solicitud registrada</div>
+              <p style="margin:0 0 18px;font-size:14px;color:#61705b">La ficha técnica de {{ prodNombre }} ya está disponible. No volveremos a pedirle los datos durante esta sesión.</p>
+              <button style="border:1px solid #3daf29;border-radius:6px;background:#3daf29;color:#fff;font:inherit;font-weight:600;font-size:13px;padding:10px 18px;cursor:pointer">Descargar PDF</button>
+            </div>
+          </sc-if>
+        </div>
+      </section>
+
+      <sc-if value="{{ hayRelacionadosGama }}" hint-placeholder-val="{{ true }}">
+        <section style="margin-top:32px">
+          <h2 style="font-size:22px;font-weight:700;margin:0 0 4px">Otros productos de {{ gamaActual }}</h2>
+          <p style="margin:0 0 18px;font-size:15px;color:#6f7d6a">Referencias de la misma gama en el catálogo de Daymsa.</p>
+          <div style="display:grid;grid-template-columns:repeat(auto-fill,minmax(230px,1fr));gap:18px">
+            <sc-for list="{{ relacionadosGama }}" as="p" hint-placeholder-count="4">
+              <div onClick="{{ p.open }}" class="dyc" style="background:#fff;border:1px solid #e4ebe0;border-radius:6px;overflow:hidden;display:flex;flex-direction:column">
+                <div style="height:120px;background:#f4f6f2;border-bottom:1px solid #eef2eb;display:flex;align-items:flex-end;padding:14px">
+                  <span style="color:#6f7d6a;font-size:10.5px;font-weight:700;letter-spacing:.1em;text-transform:uppercase">{{ p.gama }}</span>
+                </div>
+                <div style="padding:16px 18px 18px;display:flex;flex-direction:column;gap:7px;flex:1">
+                  <div style="font-weight:700;font-size:16px">{{ p.n }}</div>
+                  <p style="margin:0;font-size:13px;color:#61705b;flex:1">{{ p.d }}</p>
+                  <span style="font-size:13px;font-weight:700;color:#2f8b20">Ver detalles →</span>
+                </div>
+              </div>
+            </sc-for>
+          </div>
+        </section>
+      </sc-if>
+    </main>
+  </sc-if>
+
+
+  <sc-if value="{{ hayComparar }}" hint-placeholder-val="{{ false }}">
+    <div style="position:sticky;bottom:0;z-index:25;background:#fff;border-top:1px solid #d6e0d2;box-shadow:none">
+      <div style="max-width:1240px;margin:0 auto;padding:12px 28px;display:flex;align-items:center;gap:12px;flex-wrap:wrap">
+        <span style="font-size:13px;font-weight:700">Comparar ({{ nComparar }}/3)</span>
+        <span style="font-size:12px;color:#6f7d6a">{{ gamaComparar }}</span>
+        <div style="display:flex;gap:8px;flex-wrap:wrap;margin-right:auto">
+          <sc-for list="{{ comparar }}" as="c" hint-placeholder-count="2">
+            <span onClick="{{ c.quitar }}" class="dyp" style="display:inline-flex;align-items:center;gap:8px;border:1px solid #cfe0c9;border-radius:6px;padding:6px 12px;font-size:12px;font-weight:600;color:#2f8b20">{{ c.label }} <span style="color:#8a9585">✕</span></span>
+          </sc-for>
+        </div>
+        <button onClick="{{ vaciarComparar }}" style="border:1px solid #d6e0d2;border-radius:6px;background:#fff;color:#22301d;font:inherit;font-weight:600;font-size:13px;padding:8px 15px;cursor:pointer">Vaciar</button>
+        <button onClick="{{ abrirComparador }}" style="border:1px solid #3daf29;border-radius:6px;background:#3daf29;color:#fff;font:inherit;font-weight:600;font-size:13px;padding:8px 15px;cursor:pointer">Ver comparación</button>
+      </div>
+    </div>
+  </sc-if>
+
+  <sc-if value="{{ comparando }}" hint-placeholder-val="{{ false }}">
+    <div style="position:fixed;inset:0;z-index:60;display:grid;place-items:center;padding:24px;background:rgba(24,38,20,.5)">
+      <div style="width:min(980px,100%);max-height:86vh;overflow:auto;background:#fff;border-radius:6px;padding:28px;box-shadow:0 8px 28px rgba(24,38,20,.18)">
+        <div style="display:flex;align-items:center;gap:12px;margin-bottom:20px">
+          <div style="margin-right:auto">
+            <div style="font-weight:700;font-size:20px">Comparación de productos</div>
+            <p style="margin:2px 0 0;font-size:13px;color:#6f7d6a">{{ gamaComparar }}</p>
+          </div>
+          <button onClick="{{ cerrarComparador }}" style="border:1px solid #d6e0d2;border-radius:6px;background:#fff;color:#22301d;font:inherit;font-weight:600;font-size:13px;padding:8px 15px;cursor:pointer">Cerrar</button>
+        </div>
+        <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(240px,1fr));gap:16px">
+          <sc-for list="{{ colsComparar }}" as="c" hint-placeholder-count="2">
+            <div style="border:1px solid #e4ebe0;border-radius:6px;overflow:hidden">
+              <div style="background:#fafbf9;padding:16px;border-bottom:1px solid #e4ebe0">
+                <div style="font-weight:700;font-size:17px">{{ c.n }}</div>
+                <div style="font-size:12px;color:#2f8b20;font-weight:700;margin-top:2px">{{ c.gama }}</div>
+              </div>
+              <div style="padding:16px;display:flex;flex-direction:column;gap:14px">
+                <div>
+                  <div style="font-size:11px;letter-spacing:.06em;text-transform:uppercase;color:#8a9585;margin-bottom:3px">Descripción</div>
+                  <div style="font-size:13px;color:#3f4c3a">{{ c.d }}</div>
+                </div>
+                <div>
+                  <div style="font-size:11px;letter-spacing:.06em;text-transform:uppercase;color:#8a9585;margin-bottom:3px">Necesidad</div>
+                  <div style="font-size:13px;color:#3f4c3a">{{ c.necesidad }}</div>
+                </div>
+                <div>
+                  <div style="font-size:11px;letter-spacing:.06em;text-transform:uppercase;color:#8a9585;margin-bottom:3px">Formatos</div>
+                  <div style="font-size:13px;color:#3f4c3a">{{ c.formatos }}</div>
+                </div>
+                <div>
+                  <div style="font-size:11px;letter-spacing:.06em;text-transform:uppercase;color:#8a9585;margin-bottom:3px">Cultivos cargados</div>
+                  <div style="font-size:13px;color:#3f4c3a">{{ c.cultivos }}</div>
+                </div>
+                <span onClick="{{ c.open }}" class="dylink" style="font-size:13px;font-weight:700;color:#2f8b20">Ver ficha →</span>
+              </div>
+            </div>
+          </sc-for>
+        </div>
+      </div>
+    </div>
+  </sc-if>
+
+  <footer style="background:#22301d;color:#e6ece2;margin-top:20px">
+    <div style="max-width:1240px;margin:0 auto;padding:44px 28px;display:grid;grid-template-columns:repeat(auto-fit,minmax(210px,1fr));gap:32px">
+      <div>
+        <div style="display:flex;align-items:center;gap:10px;margin-bottom:12px">
+          <svg width="26" height="26" viewBox="0 0 24 24" fill="#3daf29" style="display:block;flex:none"><path d="M11 20A7 7 0 0 1 9.8 6.1C15.5 5 17 4.48 19 2c1 2 2 4.18 2 8 0 5.5-4.78 10-10 10Z"></path><path d="M2 21c0-3 1.85-5.36 5.08-6C9.5 14.52 12 13 13 12" stroke="#3daf29" stroke-width="1.8" stroke-linecap="round" fill="none"></path></svg>
+          <span style="font-weight:700;font-size:17px">Daymsa</span>
+        </div>
+        <p style="margin:0;font-size:13px;color:#aebaa8">Desarrollo Agrícola y Minero, S.A.<br>Camino de Enmedio nº 120, 50013 Zaragoza (España)<br>Tel. +34 976 46 15 16</p>
+      </div>
+      <div>
+        <div style="font-weight:700;font-size:13px;letter-spacing:.02em;margin-bottom:12px">Gamas</div>
+        <div style="display:flex;flex-direction:column;gap:8px;font-size:13px;color:#aebaa8">
+          <sc-for list="{{ gamasFooter }}" as="g" hint-placeholder-count="5">
+            <span onClick="{{ g.sel }}" class="dylink">{{ g.label }}</span>
+          </sc-for>
+        </div>
+      </div>
+      <div>
+        <div style="font-weight:700;font-size:13px;letter-spacing:.02em;margin-bottom:12px">Información</div>
+        <div style="display:flex;flex-direction:column;gap:8px;font-size:13px;color:#aebaa8">
+          <span class="dylink">Quiénes somos</span>
+          <span class="dylink">Noticias</span>
+          <span class="dylink">Contacto</span>
+          <span class="dylink">Política de privacidad</span>
+        </div>
+      </div>
+    </div>
+  </footer>
+
+  <a class="{{ fabClase }}" href="https://wa.me/34XXXXXXXXX" target="_blank" rel="noopener" title="WhatsApp — número pendiente de confirmar" style="position:fixed;right:22px;bottom:22px;z-index:70;display:flex;align-items:center;justify-content:center;width:56px;height:56px;background:#128c4a;color:#fff;border-radius:999px;text-decoration:none;box-shadow:0 6px 20px rgba(0,0,0,.22)" style-hover="background:#0e7a40">
+    <svg width="28" height="28" viewBox="0 0 24 24" fill="#fff" aria-hidden="true"><path d="M12.04 2C6.58 2 2.13 6.45 2.13 11.91c0 1.75.46 3.45 1.32 4.95L2 22l5.25-1.38a9.9 9.9 0 0 0 4.79 1.22h.01c5.46 0 9.91-4.45 9.91-9.91C21.96 6.45 17.5 2 12.04 2Zm0 18.15h-.01a8.2 8.2 0 0 1-4.18-1.15l-.3-.18-3.12.82.83-3.04-.2-.31a8.17 8.17 0 0 1-1.26-4.38c0-4.54 3.7-8.23 8.24-8.23a8.23 8.23 0 0 1 .01 16.47Zm4.52-6.16c-.25-.12-1.47-.72-1.69-.81-.23-.08-.39-.12-.56.13-.16.24-.64.8-.79.97-.14.16-.29.18-.54.06-.25-.13-1.05-.39-2-1.23-.74-.66-1.24-1.47-1.38-1.72-.15-.25-.02-.38.11-.5.11-.11.25-.29.37-.43.13-.15.17-.25.25-.41.08-.17.04-.31-.02-.43-.06-.12-.56-1.35-.77-1.84-.2-.48-.4-.42-.55-.43h-.48c-.16 0-.43.06-.65.31-.23.25-.86.84-.86 2.05s.88 2.38 1 2.54c.12.17 1.73 2.64 4.19 3.7.58.26 1.04.41 1.4.52.59.19 1.13.16 1.55.1.47-.07 1.47-.6 1.67-1.18.21-.58.21-1.07.15-1.18-.06-.1-.23-.16-.48-.29Z"/></svg>
+  </a>
+</div>
+
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props="{&quot;gateFicha&quot;:{&quot;editor&quot;:&quot;boolean&quot;,&quot;default&quot;:true,&quot;tsType&quot;:&quot;boolean&quot;,&quot;section&quot;:&quot;Ficha de producto&quot;},&quot;mostrarPrograma&quot;:{&quot;editor&quot;:&quot;boolean&quot;,&quot;default&quot;:true,&quot;tsType&quot;:&quot;boolean&quot;,&quot;section&quot;:&quot;Ficha de cultivo&quot;}}">
+const GAMA_COLOR = ['#2f8b20', '#1f6f4a', '#5f7d2e', '#7a6a3a', '#2c6e8f'];
+
+/* Forma del envase deducida del formato declarado en la ficha: kg/g = sólido
+   (sobre o saco), el resto = líquido (botella / garrafa). */
+const esSolido = (n) => {
+  const f = (FICHAS[n] && FICHAS[n].formatos) || '';
+  return /kg|\bg\b|gr\b/i.test(f);
+};
+
+const GAMAS = ['Bionutrientes', 'Especialidades', 'Microorganismos', 'Mejoradores de suelo y agua', 'Correctores de carencias'];
+
+const PRODUCTOS = [
+  ['AfterFruit®', 4, 'Corrector de carencias para aplicación post-recolección'],
+  ['AminoHumic®', 3, 'Ácidos húmicos de leonardita con aminoácidos'],
+  ['AminoPhos®', 0, 'Aminoácidos con activadores de defensas'],
+  ['Botania®-Zn', 1, 'Producto natural respetuoso con insectos auxiliares'],
+  ['CalciFruit®', 4, 'Corrector de carencias de calcio'],
+  ['Clariagua®', 3, 'Algicida - Floculante para balsas de riego'],
+  ['CopStar®', 1, 'Corrector de carencias de cobre'],
+  ['Coyote®', 1, 'Producto natural que favorece el vigor del cultivo'],
+  ['Crisostar®', 1, 'Insecticida en forma de concentrado emulsionable (EC). Inscrito en España en el Registro Oficial de Productos Fitosanitarios con el nº 25.297'],
+  ['Cytoplant®400', 0, 'Promotor fisiológico de origen vegetal'],
+  ['Efical®WSP', 4, 'Producto nutricional con gran riqueza de calcio asimilable'],
+  ['EnerPlus®', 2, 'Biofertilizante para solubilizar fósforo, potasio y otros nutrientes.'],
+  ['Folitex®', 4, 'Corrector de palo negro en vid'],
+  ['Foshield®', 1, 'Fungicida'],
+  ['Garlitrol®Forte Zn/Mn', 1, 'Corrector de carencias de Zinc y Manganeso'],
+  ['Guardian®', 1, 'Producto natural para favorecer el desarrollo de las hortícolas'],
+  ['Kaliol®', 1, 'Corrector de potasio'],
+  ['Kelpak®', 0, 'Bioestimulante de plantas no microbiano (UE)'],
+  ['Madurel®', 0, 'Potenciador del color'],
+  ['Myskiam®', 2, 'Producto biológico natural a base de micorrizas.'],
+  ['Naturacid®', 3, 'Regulador de pH del caldo de pulverización'],
+  ['Natural®WSP', 0, 'Activador del desarrollo del cultivo'],
+  ['Naturamin® Radicular', 0, 'Aminoácidos para promover el desarrollo radicular'],
+  ['Naturamin®-Ca', 0, 'Aminoácidos enriquecidos con calcio'],
+  ['Naturamin®-Ca/B', 0, 'Aminoácidos enriquecidos con calcio y boro'],
+  ['Naturamin®-Co/Mo', 0, 'Aminoácidos con cobalto y molibdeno para soja y otros cultivos extensivos'],
+  ['Naturamin®-Zn', 0, 'Aminoácidos enriquecidos con zinc'],
+  ['Naturamin®-Zn/Mn', 0, 'Aminoácidos enriquecidos con zinc y manganeso'],
+  ['Naturamin®NPK', 0, 'Aminoácidos de efecto antiestrés'],
+  ['Naturamin®Plus', 0, 'Aminoácidos de efecto antiestrés con micronutrientes.'],
+  ['Naturamin®WSP', 0, 'Aminoácidos solubles de alta concentración.'],
+  ['Naturcomplet®G', 3, 'Ácidos húmicos activados de Leonardita en forma granulada'],
+  ['Naturestim®', 0, 'Bionutriente con AATC y ácido fólico'],
+  ['Naturfos®', 1, 'Fósforo y potasio de alta asimilación'],
+  ['Naturfos®-Ca', 1, 'Formulación rica en fósforo enriquecida con calcio'],
+  ['Naturfos®-Ca/B', 1, 'Abono NP 4-14'],
+  ['Naturfos®-Mg', 1, 'Formulación rica en fósforo enriquecida con magnesio'],
+  ['Naturfruit®', 0, 'Potenciador de la maduración con potasio'],
+  ['Naturfruit®Plus', 4, 'Corrector de carencias de potasio'],
+  ['Naturgard®', 1, 'Protector del equilibrio hídrico de la planta'],
+  ['Naturmix®-Fe7', 4, 'Corrector de carencias de microelementos'],
+  ['Naturmix®-Mg', 4, 'Corrector de magnesio con micronutrientes'],
+  ['Naturmix®L', 4, 'Corrector de carencias de microelementos'],
+  ['Naturquel®-B', 4, 'Corrector de carencias de boro'],
+  ['Naturquel®-Ca', 4, 'Corrector de carencias de calcio'],
+  ['Naturquel®-Ca/B', 4, 'Corrector de carencias de calcio y de boro'],
+  ['Naturquel®-Fe Classic', 4, 'Corrector de carencias de hierro EDDHA'],
+  ['Naturquel®-Fe Core', 4, 'Corrector de carencias de hierro'],
+  ['Naturquel®-Fe Evolution', 4, 'Quelato de hierro EDDHA - HBED'],
+  ['Naturquel®-Mg', 4, 'Corrector de carencias de magnesio'],
+  ['Naturquel®-Mn', 4, 'Corrector de carencias de manganeso'],
+  ['Naturquel®-Zn', 4, 'Corrector de carencias de zinc'],
+  ['Naturquel®-Zn/Mn', 4, 'Corrector de carencias de Zinc y de Manganeso'],
+  ['Natursal®', 3, 'Corrector de la salinidad del suelo enriquecido con magnesio'],
+  ['Natursal®Express', 3, 'Corrector de la salinidad y desbloqueador de suelos'],
+  ['Naturvital®-Boro', 3, 'Ácidos húmicos con boro'],
+  ['Naturvital®16', 3, 'Ácidos húmicos líquidos de Leonardita'],
+  ['Naturvital®Plus', 3, 'Bioestimulante de plantas no microbiano (UE)'],
+  ['Nitroactive®', 4, ''],
+  ['Nuptak®', 2, 'Microorganismos para la fijación de nitrógeno y bioestimulación'],
+  ['Oxytur®', 3, 'Limpiador de los sistemas de riego'],
+  ['Parka®', 0, 'Bioestimulante para potenciar la calidad del fruto'],
+  ['PleniFlor®', 0, 'Activador de la floración y el cuajado.'],
+  ['Podex®', 1, 'Pintura para uso agrícola'],
+  ['ProFilm®', 1, 'Arcilla caolinítica para reducir el golpe de calor'],
+  ['PromoStart®', 4, 'Fertilizante nitrogenado de disponibilidad controlada.'],
+  ['Raiza®', 0, 'Potenciador del desarrollo radicular.'],
+  ['Regulacid®', 3, 'Regulador del pH del agua y del suelo'],
+  ['Signafresh®', 0, 'Bionutriente especial para homogeneizar el color del fruto'],
+  ['Syncron®', 0, 'Sincronía y adelanto de la brotación.'],
+  ['Terrenova®', 3, 'Ácidos húmicos de Leonardita con fósforo asimilable'],
+  ['Thunder®-Zn', 1, 'Producto natural para el desarrollo del tomate y otras hortícolas'],
+  ['Valtar®', 1, 'Producto natural para favorecer el desarrollo del cultivo'],
+  ['Viproots®', 2, 'Producto biológico natural con Trichoderma y bacterias de la rizosfera.']
+];
+
+/* Propuesta de clasificación funcional. Cada producto se asigna a la necesidad
+   que describe su propio texto en daymsa.com. Pendiente de validar por el
+   equipo técnico de Daymsa. */
+const NECESIDADES = [
+  'Enraizamiento y trasplante',
+  'Crecimiento y antiestrés',
+  'Brotación, floración y cuajado',
+  'Maduración, calibre y calidad',
+  'Suelo y agua',
+  'Carencias y nutrición',
+  'Protección y refuerzo'
+];
+
+const NECESIDAD_DE = {
+  'Raiza®': 0, 'Naturamin® Radicular': 0, 'Viproots®': 0, 'Myskiam®': 0,
+  'Naturamin®WSP': 1, 'Naturamin®NPK': 1, 'Naturamin®Plus': 1, 'Natural®WSP': 1,
+  'AminoPhos®': 1, 'Naturestim®': 1, 'Kelpak®': 1, 'Naturvital®Plus': 1,
+  'Naturamin®-Ca': 1, 'Naturamin®-Ca/B': 1, 'Naturamin®-Zn': 1, 'Naturamin®-Zn/Mn': 1,
+  'Naturamin®-Co/Mo': 1,
+  'Syncron®': 2, 'PleniFlor®': 2, 'Cytoplant®400': 2,
+  'Naturfruit®': 3, 'Madurel®': 3, 'Signafresh®': 3, 'Parka®': 3, 'AfterFruit®': 3,
+  'Kaliol®': 3, 'Naturfruit®Plus': 3,
+  'AminoHumic®': 4, 'Naturcomplet®G': 4, 'Naturvital®16': 4, 'Naturvital®-Boro': 4,
+  'Terrenova®': 4, 'Natursal®': 4, 'Natursal®Express': 4, 'Naturacid®': 4,
+  'Regulacid®': 4, 'Clariagua®': 4, 'Oxytur®': 4, 'EnerPlus®': 4, 'Nuptak®': 4,
+  'Naturquel®-B': 5, 'Naturquel®-Ca': 5, 'Naturquel®-Ca/B': 5, 'Naturquel®-Fe Classic': 5,
+  'Naturquel®-Fe Core': 5, 'Naturquel®-Fe Evolution': 5, 'Naturquel®-Mg': 5,
+  'Naturquel®-Mn': 5, 'Naturquel®-Zn': 5, 'Naturquel®-Zn/Mn': 5, 'Naturmix®-Fe7': 5,
+  'Naturmix®-Mg': 5, 'Naturmix®L': 5, 'CopStar®': 5, 'Garlitrol®Forte Zn/Mn': 5,
+  'Efical®WSP': 5, 'CalciFruit®': 5, 'Folitex®': 5, 'Naturfos®': 5, 'Naturfos®-Ca': 5,
+  'Naturfos®-Ca/B': 5, 'Naturfos®-Mg': 5, 'PromoStart®': 5, 'Nitroactive®': 5,
+  'Crisostar®': 6, 'Foshield®': 6, 'Podex®': 6, 'ProFilm®': 6, 'Naturgard®': 6,
+  'Coyote®': 6, 'Guardian®': 6, 'Valtar®': 6, 'Thunder®-Zn': 6, 'Botania®-Zn': 6
+};
+
+const CULTIVOS = ['Acelga', 'Achicoria', 'Aguacate', 'Ajo', 'Albaricoque', 'Alcachofa', 'Alcaparra', 'Alfalfa', 'Algodón', 'Almendra', 'Anacardo', 'Apio', 'Arándano', 'Aromáticas', 'Arroz', 'Avellana', 'Avena', 'Banana / Plátano', 'Batata / Boniato', 'Berenjena', 'Borraja', 'Brécol / Brocoli', 'Cacahuete / Maní', 'Cacao', 'Café', 'Calabacín', 'Calabaza', 'Caña de azúcar', 'Canónigos', 'Caqui', 'Cardo', 'Castaña', 'Caucho', 'Cebada', 'Centeno', 'Cereales', 'Cereza', 'Césped', 'Chalota', 'Chile / Ají', 'Chirimoya', 'Chufa', 'Ciruela', 'Coco', 'Col / Repollo', 'Coles de bruselas', 'Coliflor', 'Colza', 'Dátil', 'Endibias', 'Endrinas', 'Escarola', 'Espárrago', 'Espinaca', 'Frambuesa', 'Fresa', 'Garbanzo', 'Girasol', 'Granada', 'Grosella', 'Guanabana', 'Guayaba', 'Guisantes', 'Habas', 'Higos', 'Judías / Frijoles', 'Kiwi', 'Lechuga', 'Leguminosas forrajeras', 'Lentejas', 'Lichi', 'Lima', 'Limón', 'Lino', 'Lúpulo', 'Maíz', 'Mandarina', 'Mango', 'Manzana', 'Maracuyá / Fruta de la pasión', 'Melocotón', 'Melón', 'Membrillo', 'Mijo', 'Mora', 'Morera', 'Nabo', 'Naranja', 'Nectarina', 'Níspero', 'Nuez', 'Nuez de Macadamia', 'Oliva', 'Ornamentales', 'Palma de aceite', 'Papaya', 'Paraguayo', 'Patata', 'Pepino', 'Pera', 'Pimiento', 'Piña', 'Pistacho', 'Platerina', 'Pomelo', 'Puerro', 'Rábano', 'Rambután', 'Remolacha / R. Azucarera', 'Rosa', 'Salsifí', 'Sandía', 'Sésamo / Ajonjolí', 'Soja', 'Sorgo', 'Tabaco', 'Té', 'Tomate', 'Trigo', 'Triticale', 'Uva de mesa', 'Uva de vinificación', 'Zanahoria'];
+
+const CULTIVO_PRODUCTOS = {
+  'Café': ['Raiza®', 'Naturamin®WSP', 'Naturfos®', 'Cytoplant®400', 'Naturfruit®'],
+  'Tomate': ['Naturvital®Plus', 'Raiza®', 'Naturquel®-Ca/B', 'Naturamin®WSP', 'Naturfruit®'],
+  'Uva de mesa': ['Naturvital®Plus', 'Syncron®', 'Cytoplant®400', 'Folitex®', 'Madurel®'],
+  'Arándano': ['Naturvital®Plus', 'Naturquel®-Ca/B', 'Naturfos®', 'Cytoplant®400', 'Naturfruit®'],
+  'Aguacate': ['Naturvital®Plus', 'Naturquel®-B', 'Naturfos®', 'Cytoplant®400', 'Naturfruit®'],
+  'Oliva': ['Naturquel®-Fe Evolution', 'Naturquel®-B', 'Naturamin®WSP', 'Podex®'],
+  'Fresa': ['Naturvital®Plus', 'Naturmix®-Fe7', 'Naturamin®WSP', 'Naturfos®'],
+  'Naranja': ['Naturvital®Plus', 'Naturquel®-Fe Evolution', 'Naturquel®-Mn', 'Naturamin®WSP', 'Cytoplant®400'],
+  'Patata': ['Naturcomplet®G', 'Raiza®', 'Naturamin®WSP', 'Naturfos®', 'Naturfruit®'],
+  'Pimiento': ['Naturvital®Plus', 'Naturmix®-Fe7', 'Naturquel®-Ca/B', 'Naturamin®WSP', 'Naturfruit®'],
+  'Maíz': ['Naturcomplet®G', 'Raiza®', 'PromoStart®', 'Naturamin®WSP', 'Naturfos®'],
+  'Manzana': ['Naturvital®Plus', 'Naturquel®-B', 'Naturquel®-Ca/B', 'Cytoplant®400', 'Naturfruit®'],
+  'Melocotón': ['Naturvital®Plus', 'Naturamin®WSP', 'Naturquel®-Fe Evolution', 'Naturfruit®'],
+  'Almendra': ['Naturvital®Plus', 'Naturquel®-Ca/B', 'Naturamin®WSP', 'Naturfruit®'],
+  'Lechuga': ['Naturvital®Plus', 'Naturquel®-Ca/B', 'Naturamin®WSP', 'Naturfruit®'],
+  'Trigo': ['Raiza®', 'Naturamin®-Zn', 'PromoStart®', 'Naturamin®WSP', 'Naturfruit®'],
+  'Pepino': ['Valtar®', 'Naturmix®L', 'Naturquel®-Ca/B', 'Cytoplant®400', 'Naturfruit®'],
+  'Cereza': ['Naturvital®Plus', 'Syncron®', 'Naturquel®-Ca/B', 'Naturamin®WSP', 'Cytoplant®400'],
+  'Sandía': ['Naturvital®Plus', 'Naturquel®-Ca/B', 'Naturfos®', 'Cytoplant®400', 'Naturfruit®'],
+  'Banana / Plátano': ['Naturcomplet®G', 'Raiza®', 'Naturamin®WSP', 'Cytoplant®400', 'Naturfruit®'],
+  'Limón': ['Naturvital®Plus', 'Naturquel®-Fe Evolution', 'Naturquel®-Mn', 'Naturamin®WSP', 'Cytoplant®400'],
+  'Mandarina': ['Naturvital®Plus', 'Naturquel®-Fe Evolution', 'Naturquel®-Mn', 'Naturamin®WSP', 'Cytoplant®400'],
+  'Uva de vinificación': ['Naturvital®Plus', 'Syncron®', 'Naturquel®-Fe Evolution', 'Folitex®', 'AfterFruit®'],
+  'Kiwi': ['Naturvital®Plus', 'Naturquel®-Ca/B', 'Naturfos®', 'Cytoplant®400', 'Naturfruit®'],
+  'Melón': ['Naturvital®Plus', 'Naturquel®-Ca/B', 'Naturfos®', 'Cytoplant®400', 'Naturfruit®'],
+  'Berenjena': ['Naturvital®Plus', 'Raiza®', 'Naturmix®L', 'Naturfos®', 'Naturfruit®'],
+  'Ajo': ['Naturvital®Plus', 'Kelpak®', 'Naturamin®WSP', 'Naturfos®', 'Naturfruit®'],
+  'Cebada': ['Raiza®', 'Naturamin®-Zn', 'PromoStart®', 'Naturamin®WSP', 'Naturfruit®'],
+  'Pera': ['Naturvital®Plus', 'Naturquel®-B', 'Naturquel®-Fe Evolution', 'Cytoplant®400', 'Naturfruit®'],
+  'Nuez': ['Naturcomplet®G', 'Naturquel®-Ca/B', 'Naturquel®-Zn', 'Cytoplant®400', 'Naturfos®'],
+  'Arroz': ['Naturcomplet®G', 'Naturamin®-Zn', 'Cytoplant®400', 'Naturfruit®'],
+  'Soja': ['Raiza®', 'Naturamin®-Co/Mo', 'Naturamin®WSP', 'Naturfruit®']
+};
+
+const CULTIVO_IMG = {
+  'Café': 'img/web/cafe-coffee.jpg',
+  'Tomate': 'img/web/tomate-tomato.jpg',
+  'Uva de mesa': 'img/web/uva-de-mesa-table-grapes.jpg',
+  'Arándano': 'img/web/arandanos-blueberries.jpg',
+  'Aguacate': 'img/web/Aguacate.jpg',
+  'Oliva': 'img/web/Olivas.jpg',
+  'Fresa': 'img/web/fresa-strawberry.jpg',
+  'Naranja': 'img/web/Naranja.jpg',
+  'Patata': 'img/web/Patata.jpg',
+  'Pimiento': 'img/web/pimientos-peppers-capsicum.jpg',
+  'Maíz': 'img/web/maiz-corn.jpg',
+  'Manzana': 'img/web/manzanas-apples.jpg',
+  'Melocotón': 'img/web/melocoton-peach.jpg',
+  'Almendra': 'img/web/almendras-almond.jpg',
+  'Lechuga': 'img/web/Lechuga.jpg',
+  'Trigo': 'img/web/Trigo-wheat-1.jpg',
+  'Pepino': 'img/web/pepino-cucumber.jpg',
+  'Cereza': 'img/web/cerezas-cherries.jpg',
+  'Sandía': 'img/web/sandia-watermelon.jpg',
+  'Banana / Plátano': 'img/web/banana-platano.jpg',
+  'Limón': 'img/web/Limon.jpg',
+  'Mandarina': 'img/web/mandarinas-tangerines.jpg',
+  'Uva de vinificación': 'img/web/uva-de-vinificacion-wine-grapes.jpg',
+  'Kiwi': 'img/web/kiwi.jpg',
+  'Melón': 'img/web/Melon.jpg',
+  'Berenjena': 'img/web/Berenjena.jpg',
+  'Ajo': 'img/web/Ajo.jpg',
+  'Cebada': 'img/web/cebada-barley.jpg',
+  'Pera': 'img/web/Pera.jpg',
+  'Nuez': 'img/web/nueces-walnuts.jpg',
+  'Arroz': 'img/web/arroz-rice.jpg',
+  'Soja': 'img/web/Soja.jpg'
+};
+
+const CULTIVO_TEXTO = {
+  'Café': [
+    'El programa nutricional para café de Daymsa tiene como objetivo conseguir una plantación equilibrada, lo que se traduce en un incremento en la producción y en la calidad del café.',
+    'La actividad inicial del árbol comienza a partir de las reservas acumuladas durante el año anterior. La incorporación de bioestimulantes y mejoradores del suelo favorece el desarrollo radicular y la absorción de nutrientes. Los aminoácidos incrementan la actividad fisiológica global del árbol, principalmente en momentos de estrés del cultivo (hídrico, fitotoxicidades, temperaturas extremas, etc.).',
+    'Resulta recomendable la aplicación de un inductor de fitoalexinas de efecto sistémico. Las fitoalexinas estimulan las defensas naturales de las plantas. Un bioestimulante de acción citoquinínica favorece la división celular, mejorando el peso y el tamaño de los granos de café.',
+    'A partir del cuajado de los frutos se recomienda una fertilización potásica de aplicación foliar, con el fin de mejorar la calidad de la cosecha.'
+  ],
+  'Tomate': [
+    'El programa nutricional de Daymsa tiene como objetivo conseguir un crecimiento ordenado del cultivo, lo que se traduce en incrementos en la producción y en la calidad de los tomates.',
+    'Ya desde el inicio, la incorporación de bioestimulantes y mejoradores del suelo minimiza el estrés del trasplante, estimulando el desarrollo de las raíces y la absorción de nutrientes. Así conseguimos plantas más vigorosas y mejor desarrolladas, capaces de soportar nuestra cosecha.',
+    'Antes de floración, un aporte de calcio mejora la firmeza de los frutos, y evita la necrosis apical o “Blossom end rot”, fisiopatía muy común en el cultivo del tomate provocada por la deficiencia de calcio. Esta fisiopatía, también llamada “peseta”, se manifiesta por una pérdida de turgencia en las partes distales de los frutos, que avanza en forma de círculos concéntricos.',
+    'Los aminoácidos ayudan al cultivo a superar situaciones de estrés provocado por temperaturas extremas, sequías, fitotoxicidades, etc. Durante el llenado del fruto, recomendamos el uso de una de nuestras especialidades nutricionales de aplicación foliar, para asegurarnos elevados rendimientos y una alta calidad de los tomates.'
+  ],
+  'Uva de mesa': [
+    'El programa nutricional de Daymsa tiene como objetivo alcanzar árboles equilibrados y así conseguir incrementos en la producción y en la calidad de los frutos.',
+    'La actividad inicial del árbol se desarrolla a partir de las reservas acumuladas en el año anterior. En esta fase es fundamental el aporte de bioestimulantes y mejoradores de suelo para minimizar el estrés del trasplante y favorecer el desarrollo radicular.',
+    'Al objeto de evitar que la brotación sea errática es necesario aportar un suplemento que compense el frío invernal para uniformizar la brotación y aumentar el número de yemas brotadas. Así conseguimos incrementar la producción y disminuir los costes de recolección. Después del cuajado es importante el uso de bioestimulantes para estimular la división celular e incrementar el calibre del fruto.',
+    'La fertilización foliar con calcio, boro y magnesio nos permitirá un óptimo desarrollo del fruto, evitando la deshidratación del raquis llamada “palo negro”. Esta fisiopatía está causada por desórdenes nutricionales, y se manifiesta por la aparición de puntos negros en el raquis, pasando a la desecación parcial o total de éste, así como de los pedicelos y las bayas.',
+    'Para incrementar la coloración de las variedades rojas proponemos el uso de una de nuestras especialidades nutricionales de aplicación foliar.'
+  ],
+  'Arándano': [
+    'El programa nutricional de Daymsa para arándano tiene como objetivo obtener arbustos equilibrados, para así conseguir incrementos en la producción y en la calidad visual y organoléptica de los arándanos.',
+    'La incorporación de bioestimulantes y mejoradores del suelo minimiza el estrés del trasplante, y favorece el desarrollo de las raíces y la absorción de nutrientes. Esto se traduce en arbustos con un óptimo vigor y desarrollo. A partir del cuajado, el aporte de calcio mejora la firmeza de los frutos, evitando el rajado de los mismos o “cracking”.',
+    'Un bioestimulante de acción citoquinínica estimula la división celular en los órganos de desarrollo, mejorando el calibre de los frutos. Finalmente una fertilización potásica mejora el tamaño, color y contenido en azúcares de los arándanos.'
+  ],
+  'Aguacate': [
+    'El programa nutricional de Daymsa para aguacate tiene como objetivo obtener árboles equilibrados, lo que se traduce en incrementos en la producción y en la calidad de los aguacates.',
+    'La actividad inicial del árbol comienza a partir de las reservas acumuladas en el año anterior. La incorporación de productos que activan el crecimiento y de mejoradores del suelo favorecen el desarrollo radicular y la absorción de nutrientes, lo que redunda en árboles con un mejor vigor y desarrollo. Antes de floración, un aporte de boro mejora el cuajado de los frutos, minimizando los abortos florales.',
+    'La aplicación de un inductor de fitoalexinas de efecto sistémico estimula los sistemas naturales de defensa de las plantas. Un bioestimulante de acción citoquinínica estimula la división celular en los órganos de desarrollo, incrementando el calibre de los frutos.',
+    'Para finalizar el ciclo, una fertilización potásica de aplicación foliar asegura elevados rendimientos y una alta calidad de los aguacates.'
+  ],
+  'Oliva': [
+    'El programa nutricional para olivo de Daymsa tiene como objetivo la obtención de árboles equilibrados, bien nutridos, lo que se traduce en incrementos en la producción y en la calidad del aceite y de las aceitunas.',
+    'Nada más finalizar las tareas de poda, debemos cubrir las heridas con un cicatrizante, que proteja al olivo impidiendo la entrada de agentes patógenos.',
+    'El olivo inicia su actividad a partir de las reservas acumuladas durante el año anterior. Una incorporación de bioestimulantes y mejoradores del suelo reduce el estrés del trasplante, y estimula el desarrollo de las raíces y la absorción de nutrientes.',
+    'Antes de floración, un aporte de boro favorece el cuajado de las olivas, minimizando los abortos florales; los aminoácidos estimulan al árbol frente a situaciones de estrés. Para mejorar la eficacia de los tratamientos foliares resulta conveniente aplicarlos junto a un mojante, que incremente la retención y la persistencia de los productos junto con los que se añade.'
+  ],
+  'Fresa': [
+    'El programa nutricional para fresa de Daymsa tiene como objetivo la obtención de plantas equilibradas, lo que redunda en un incremento en la producción y calidad de las fresas.',
+    'Ya desde el inicio, la incorporación de bioestimulantes y mejoradores del suelo estimula la formación del sistema radicular y la absorción de nutrientes, mejorando así el desarrollo de la planta.',
+    'El aporte de un corrector de carencias de hierro evita la clorosis férrica, fisiopatía muy común en el cultivo de la fresa. Se manifiesta por el amarilleamiento de las hojas y produce una disminución de la producción.',
+    'Los aminoácidos activan el crecimiento de la planta durante situaciones de estrés (hídrico, debido a temperaturas extremas, fitotoxicidades, etc.). Para que las aplicaciones foliares resulten más efectivas deben aplicarse junto a un retentor-fijador.'
+  ],
+  'Naranja': [
+    'El programa nutricional para naranjo de Daymsa tiene como objetivo conseguir árboles equilibrados, lo que se traduce en incrementos en la producción y la calidad de las naranjas.',
+    'El aporte de bioestimulantes y mejoradores del suelo desde el inicio del cultivo reduce el estrés del trasplante, estimulando el desarrollo de las raíces y la absorción de nutrientes, lo que redunda en un mejor desarrollo del árbol.',
+    'La naranja es un cultivo especialmente sensible a la clorosis férrica, fisiopatía que se manifiesta a través de un amarilleamiento de las hojas, disminuyendo la producción de manera significativa. Está causada por el déficit de hierro, el cual debemos corregir.',
+    'El suministro de aminoácidos estimula al cultivo ante situaciones de estrés (hídrico, temperaturas extremas, fitotoxicidades, etc.). Un bioestimulante de acción citoquinínica estimula la división celular de los órganos de desarrollo, mejorando el calibre de las naranjas.'
+  ],
+  'Patata': [
+    'El programa nutricional para patata de Daymsa tiene como objetivo conseguir un crecimiento ordenado del cultivo, con el fin de lograr incrementos en la producción y la calidad de las patatas.',
+    'Ya desde el inicio, la incorporación de bioestimulantes específicos y mejoradores del suelo favorece el desarrollo de las raíces y la absorción de nutrientes. Los aminoácidos activan el crecimiento de las plantas frente a situaciones de estrés.',
+    'Recomendamos el uso de un inductor de fitoalexinas de efecto sistémico. Las fitoalexinas estimulan las defensas naturales de las plantas. Al iniciarse el crecimiento de los tubérculos una fertilización potásica foliar favorece el engorde y la maduración de las patatas.'
+  ],
+  'Pimiento': [
+    'El programa nutricional para pimiento de Daymsa tiene como objetivo incrementar la producción y la calidad del cultivo, a través de una nutrición equilibrada de los pimientos.',
+    'El aporte de los microelementos adecuados evita posibles carencias nutricionales que mermen la producción. El calcio mejora la firmeza de los frutos, y evita la necrosis apical o “Blossom end rot”, fisiopatía muy común en el cultivo del pimiento que se manifiesta por la pérdida de turgencia de las zonas distales de los frutos, avanzando de forma concéntrica. El déficit de hierro causa clorosis férrica, que se manifiesta por el amarilleamiento de las hojas, reduciendo de forma significativa la producción.',
+    'Los aminoácidos provocan un efecto estimulante en el desarrollo de las plantas ante situaciones de estrés (hídrico, heladas, fitotoxicidades, etc.). Finalmente, una fertilización potásica de aplicación foliar una vez comience el desarrollo de los pimientos mejora el color, calibre y calidad de los mismos.'
+  ],
+  'Maíz': [
+    'El programa nutricional para maíz de Daymsa tiene como objetivo conseguir una nutrición equilibrada del cultivo, lo que nos proporcionará un incremento en el rendimiento por hectárea y en la calidad del maíz.',
+    'Ya desde el inicio, la incorporación de bioestimulantes y mejoradores del suelo provocará una germinación más uniforme y un mejor desarrollo de las raíces. La aplicación de aminoácidos ejercerá un efecto estimulante en el cultivo ante situaciones de estrés (hídrico, temperaturas extremas, granizo, etc.).',
+    'Un aporte nitrogenado vía foliar complementará la fertilización nitrogenada aplicada al suelo, promoviendo el desarrollo vegetativo del maíz de manera continuada.'
+  ],
+  'Manzana': [
+    'El programa nutricional para manzano de Daymsa tiene como objetivo la obtención de árboles bien nutridos, equilibrados, lo que se traduce en incrementos en la producción y la calidad visual y organoléptica de las manzanas.',
+    'Resulta necesario el aporte de un suplemento que compense el frío invernal, para uniformizar la brotación y la floración y disminuir así los costes de recolección. El manzano comienza su actividad a partir de las reservas acumuladas durante el año anterior.',
+    'La aplicación de mejoradores de suelo y bioestimulantes en brotación estimulan el desarrollo de las raíces y la absorción de nutrientes, lo que redunda en un fortalecimiento y vigorización del manzano, que va a ser el soporte de nuestra cosecha.',
+    'Una aplicación de boro antes de floración mejora el cuajado de los frutos, minimizando los abortos florales. El “bitter pit” es una fisiopatía muy común en manzano debida al déficit de calcio, la cual debemos prevenir mediante su aplicación. Se manifiesta durante el almacenamiento a través de la aparición de pequeñas manchas concéntricas, y causa importantes pérdidas económicas. Finalmente, una fertilización potásica de aplicación foliar mejora el color, calibre y contenido en azúcares de las manzanas.'
+  ],
+  'Melocotón': [
+    'El programa nutricional para melocotón de Daymsa tiene como objetivo conseguir árboles equilibrados, lo que se traduce en incrementos en la producción y en la calidad de los frutos.',
+    'La actividad inicial del melocotonero se desarrolla a partir de las reservas acumuladas en el año anterior. Cuando comienza la actividad el sistema radicular también inicia el crecimiento. En esta fase es fundamental el aporte de bioestimulantes y mejoradores de suelo, para favorecer el desarrollo radicular. Los aminoácidos estimulan al árbol en situaciones de estrés: sequía, heladas, fitotoxicidades, crecimiento acelerado, etc.',
+    'Las deficiencias de hierro son muy frecuentes en el melocotonero, debiéndose corregir vía suelo. Estas deficiencias pueden llegar a causar clorosis férrica, fisiopatía que se manifiesta por el amarilleamiento de las hojas, causando importantes pérdidas económicas.',
+    'A partir del endurecimiento del hueso es importante la fertilización con potasio para obtener melocotones de buen calibre, color y contenido en azúcares. Para finalizar, destacamos el aporte de nutrientes en post-cosecha, muy importante para preparar al árbol para el año siguiente.'
+  ],
+  'Almendra': [
+    'El objetivo del programa nutricional de Daymsa para almendro consiste en obtener árboles equilibrados, y por tanto incrementos en la producción y la calidad de las almendras.',
+    'La actividad inicial del árbol comienza a partir de las reservas acumuladas en el año anterior. Cuando comienza el desarrollo radicular también inicia el crecimiento, por lo que resulta fundamental durante esta fase el aporte de bioestimulantes y mejoradores del suelo. Éstos favorecen el desarrollo de las raíces y la absorción de nutrientes, lo que redunda en almendros vigorosos y bien desarrollados.',
+    'Un aporte foliar de calcio antes de la floración mejora la firmeza del fruto. Los aminoácidos estimulan al árbol en situaciones de estrés (hídrico, temperaturas extremas, fitotoxicidades, etc.)',
+    'A partir del endurecimiento del hueso, una fertilización potásica vía foliar asegura elevados rendimientos y una alta calidad de las almendras.'
+  ],
+  'Lechuga': [
+    'El programa nutricional para lechuga de Daymsa tiene como objetivo conseguir un crecimiento ordenado del cultivo, con el consiguiente incremento en la producción y calidad de las lechugas.',
+    'Ya desde el inicio, la incorporación de bioestimulantes y mejoradores del suelo reduce el estrés del trasplante, mejorando la absorción de nutrientes y el desarrollo de la raíz.',
+    'El aporte de calcio mejora la firmeza de los tejidos y evita la aparición de “tip-burn”, fisiopatía muy común en lechugas que se manifiesta con la aparición de quemaduras en los bordes y puntas de las hojas más jóvenes.',
+    'Para estimular el crecimiento y el desarrollo foliar frente a situaciones de estrés (hídrico, temperaturas extremas, fitopatologías, etc.) resulta necesario un tratamiento a base de aminoácidos. Finalmente, una fertilización potásica de aplicación foliar antes de la formación de la cabeza de la lechuga mejora el engorde de la misma.'
+  ],
+  'Trigo': [
+    'El programa nutricional de Daymsa tiene como objetivo conseguir una nutrición equilibrada del cereal, lo que se traduce en incrementos en la producción y en la calidad del trigo.',
+    'El tratamiento de las semillas con bioestimulantes y mejoradores del suelo mejora la germinación, y estimula el desarrollo de las raíces y la absorción de nutrientes. Los aminoácidos ayudan al cultivo a superar situaciones de estrés provocado por heladas, sequías, fitotoxicidades, etc.',
+    'El trigo es un cultivo sensible a la carencia de zinc, debiéndose corregir mediante su aplicación foliar. Su déficit se manifiesta por la aparición de una mancha blanca entre el nervio central y el borde de la hoja, y produce una disminución del rendimiento por hectárea.',
+    'Un aporte nitrogenado vía foliar complementará la fertilización nitrogenada aplicada al suelo, promoviendo el desarrollo vegetativo del cultivo de manera continuada. Finalmente, una fertilización potásica antes de la formación del grano logra maximizar el peso de la semilla, obteniendo mejores rendimientos.'
+  ],
+  'Pepino': [
+    'El programa nutricional para pepino de Daymsa tiene como objetivo incrementar la producción y la calidad del cultivo. Esto se consigue a través de una nutrición equilibrada los pepinos.',
+    'Ya desde el inicio, la incorporación de materia orgánica y de bioestimulantes específicos reduce el estrés del trasplante, y estimula el desarrollo de las raíces y la absorción de nutrientes. El aporte de los microelementos adecuados evita posibles carencias nutricionales que mermen la producción.',
+    'Un bioestimulante de acción citoquinínica estimula la división celular, mejorando el calibre de los frutos.',
+    'Finalmente recomendamos el uso de una de nuestras especialidades nutricionales de aplicación foliar, para mejorar el tamaño, la firmeza y la calidad de los pepinos.'
+  ],
+  'Cereza': [
+    'El programa nutricional para cerezo de Daymsa tiene como objetivo obtener árboles equilibrados, lo que redunda en una producción alta y de calidad.',
+    'Resulta necesario el aporte de un suplemento que compense el frío invernal, para uniformizar la brotación y disminuir así los costes de recolección.',
+    'Antes de que comience la floración resulta muy importante la aplicación foliar de calcio, para mejorar la firmeza y evitar el “cracking” o rajado de los frutos. El suministro de aminoácidos estimula al cultivo frente a situaciones de estrés (hídrico, temperaturas extremas, fitotoxicidades, etc.). Un bioestimulante de acción auxinínica mejora el cuajado y el calibre de las cerezas.'
+  ],
+  'Sandía': [
+    'El programa nutricional de Daymsa tiene como objetivo conseguir un crecimiento ordenado del cultivo, lo que se traduce en incrementos en la producción y en la calidad de las sandías.',
+    'La incorporación de bioestimulantes y mejoradores del suelo reducen el estrés provocado por el trasplante, y estimula el desarrollo radicular y la absorción de nutrientes. Esto supone una vigorización y fortificación de las plantas.',
+    'Durante la floración recomendamos el suministro de un inductor de fitoalexinas de efecto sistémico. Estas fitoalexinas estimulan las defensas naturales de las. Un bioestimulante de acción citoquinínica estimula la división celular, mejorando el calibre de las sandías.',
+    'Durante la fructificación, un aporte vía foliar de potasio asegura elevados rendimientos y una alta calidad visual y organoléptica de las sandías.'
+  ],
+  'Banana / Plátano': [
+    'El programa nutricional para banano de Daymsa tiene como objetivo obtener un crecimiento ordenado del cultivo, lo que redunda en incrementos en la producción y en la calidad de las bananas.',
+    'La actividad del banano comienza a partir de las reservas acumuladas durante el año anterior. La incorporación de bioestimulantes y mejoradores del suelo minimiza el estrés del trasplante, y estimula el desarrollo de las raíces y la absorción de nutrientes, lo que se traduce en un fortalecimiento del cultivo.',
+    'Los aminoácidos activan el crecimiento de los bananos frente a situaciones de estrés. Un bioestimulante de acción citoquinínica estimula la división celular, mejorando el tamaño de los frutos.',
+    'Finalmente, una fertilización potásica durante el desarrollo del fruto mejora el peso, calibre y calidad de las bananas.'
+  ],
+  'Limón': [
+    'El programa nutricional de Daymsa tiene como objetivo conseguir árboles equilibrados, lo que se traduce en un incremento en la producción y en la calidad de los limones.',
+    'La actividad inicial del árbol comienza a partir de las reservas acumuladas durante el año anterior. Durante esta fase resulta fundamental el aporte de bioestimulantes y mejoradores del suelo para mejorar el desarrollo de las raíces y la absorción de nutrientes.',
+    'El limón es un cultivo especialmente sensible a la clorosis férrica, fisiopatía que se manifiesta a través de un amarilleamiento de las hojas del limonero, disminuyendo la producción de manera significativa. Está causada por el déficit de hierro, el cual debemos corregir.',
+    'Las carencias de Zinc y Manganeso suelen afectar la calidad y el tamaño de los frutos. Los aminoácidos ayudan al limonero a superar situaciones de estrés (hídrico, temperaturas extremas, fitotoxicidades, etc.) Durante la etapa final del ciclo, un bioestimulante de acción citoquinínica estimula la división celular, mejorando el calibre de los limones.'
+  ],
+  'Mandarina': [
+    'El programa nutricional para mandarina de Daymsa tiene como objetivo conseguir árboles equilibrados, lo que redunda en incrementos en la producción y en la calidad visual y organoléptica de los frutos.',
+    'La actividad inicial del árbol comienza a partir de las reservas acumuladas durante el año anterior. La incorporación de bioestimulantes y mejoradores del suelo mejora el desarrollo de las raíces y la absorción de nutrientes. Esto se traduce en mandarinos más vigorosos y mejor desarrollados.',
+    'La mandarina es un cultivo especialmente sensible a la clorosis férrica, fisiopatía muy común en este tipo de cultivos causada por el déficit de hierro, el cual debemos corregir ya desde el inicio. Se manifiesta por un amarilleamiento de las hojas, y se traduce en un descenso en la producción.',
+    'Los aminoácidos estimulan al cultivo frente a situaciones de estrés (hídrico, temperaturas extremas, fitotoxicidades, etc.). Durante la etapa final del ciclo, un bioestimulante de acción citoquinínica estimula la división celular, incrementando el calibre de las mandarinas.'
+  ],
+  'Uva de vinificación': [
+    'El objetivo del programa nutricional de Daymsa radica en la obtención de incrementos en la producción y en la calidad de la uva. Esto se consigue a través una nutrición equilibrada de las vides.',
+    'La actividad inicial del árbol se desarrolla a partir de las reservas acumuladas durante el año anterior. La incorporación de bioestimulantes y mejoradores del suelo minimiza el estrés del trasplante, y favorece el desarrollo radicular y la absorción de nutrientes.',
+    'Con el fin de evitar que la brotación sea errática es necesario aportar un suplemento que compense el frío invernal, para uniformizar la brotación y aumentar el número de yemas brotadas. Así conseguimos incrementar la producción y disminuir los costes de recolección.',
+    'La carencia de hierro es muy común en la viña. Provoca clorosis férrica, que se manifiesta por el amarilleamiento de las hojas, y se traduce en disminuciones del rendimiento. El aporte de los micronutrientes adecuados permite un óptimo desarrollo del fruto, y evita la deshidratación del raquis llamada “palo negro”. Esta fisiopatía está causada por desórdenes nutricionales, y se manifiesta por la aparición de puntos negros en el raquis, pasando a la desecación parcial o total de éste, así como de los pedicelos y las bayas.',
+    'Una buena finalización requiere el aporte de nutrientes en post-cosecha, muy importante para preparar al árbol para el año siguiente.'
+  ],
+  'Kiwi': [
+    'El programa nutricional de Daymsa para kiwi tiene como objetivo obtener árboles equilibrados, lo que se traduce en incrementos en la producción y la calidad de los kiwis.',
+    'Resulta necesario el aporte de un suplemento que compense el frío invernal, para uniformizar la brotación. La actividad inicial del árbol comienza a partir de las reservas acumuladas durante el año anterior. La incorporación de bioestimulantes y mejoradores del suelo favorece el desarrollo radicular y la absorción de nutrientes. Así obtenemos árboles mejor desarrollados, capaces de soportar nuestra cosecha.',
+    'Un aporte de calcio antes de floración mejora la firmeza de los frutos. La aplicación de bioestimulantes de acción citoquinínica a partir de la floración favorece la división celular, incrementando el calibre de los frutos.',
+    'Finalmente una fertilización potásica de aplicación foliar nos permite obtener kiwis con un excelente calibre, color y contenido en azúcares.'
+  ],
+  'Melón': [
+    'El programa nutricional para melón de Daymsa tiene como objetivo la obtención de plantas equilibradas, lo que se traduce en incrementos en la producción y en la calidad de los melones.',
+    'Ya desde el inicio, la incorporación de bioestimulantes y mejoradores del suelo reducen el estrés del trasplante y estimula el desarrollo de las raíces y la absorción de nutrientes. Antes de floración, un aporte de calcio mejora la firmeza de los melones.',
+    'Un bioestimulante de acción citoquinínica estimula la división celular, mejorando el calibre de los melones. Una fertilización potásica de aplicación foliar durante la fructificación asegura elevados rendimientos y una alta calidad visual y organoléptica del melón.'
+  ],
+  'Berenjena': [
+    'El programa nutricional para berenjena de Daymsa tiene como objetivo obtener plantas equilibradas, lo que se traduce en incrementos en la producción y en la calidad de las berenjenas.',
+    'Ya desde el inicio del cultivo, la incorporación de bioestimulantes y mejoradores del suelo reduce el estrés del trasplante, y estimula el desarrollo de las raíces y la absorción de nutrientes. Los microelementos adecuados evitan posibles carencias nutricionales que mermen la producción.',
+    'Durante el desarrollo vegetativo recomendamos el uso de un inductor de fitoalexinas de efecto sistémico, para que éstas potencien los sistemas naturales de defensa de las plantas. Una vez comience la fructificación, una fertilización potásica de aplicación foliar mejora el llenado y la calidad de las berenjenas.'
+  ],
+  'Ajo': [
+    'El programa nutricional de Daymsa para ajo tiene como objetivo conseguir un crecimiento ordenado del cultivo, lo que redunda en incrementos en la producción y calidad de los ajos.',
+    'Ya desde el inicio, la incorporación de activadores del crecimiento y mejoradores del suelo favorece una germinación más uniforme, así como una mejora en el desarrollo del sistema radicular y en la absorción de nutrientes. El aporte de aminoácidos estimula el crecimiento y la formación del bulbo, ayudándole a superar situaciones de estrés (hídrico, temperaturas extremas, fitopatologías, etc.).',
+    'Recomendamos el uso de un inductor de fitoalexinas de efecto sistémico. Éstas activan las defensas naturales de las plantas. Una aplicación final de potasio asegura elevados rendimientos y una alta calidad de los ajos.'
+  ],
+  'Cebada': [
+    'El objetivo del programa nutricional para cebada de Daymsa consiste en conseguir una nutrición equilibrada del cereal, lo que se traduce en incrementos en la producción y en la calidad de la cebada.',
+    'Ya desde la siembra de la cebada, la incorporación de bioestimulantes y mejoradores del suelo estimula el desarrollo de las raíces y la absorción de nutrientes, favoreciendo el desarrollo de las plantas. Los aminoácidos estimulan al cultivo en situaciones de estrés (hídrico, temperaturas extremas, fitotoxicidades, etc.).',
+    'La cebada es un cultivo sensible a la carencia de zinc, debiéndose corregir mediante su aplicación foliar. Su déficit se manifiesta por la aparición de una mancha blanca entre el nervio central y el borde de la hoja, y produce una disminución del rendimiento y por tanto del beneficio económico.',
+    'Un aporte nitrogenado vía foliar complementará la fertilización nitrogenada aplicada al suelo, promoviendo el desarrollo vegetativo del cultivo de manera continuada. Finalmente, para mejorar el llenado del grano, resulta imprescindible una aplicación foliar de potasio antes de la formación del mismo.'
+  ],
+  'Pera': [
+    'El programa nutricional para peral de Daymsa tiene como objetivo conseguir árboles equilibrados, lo que se traduce en incrementos en la producción y en la calidad de las peras.',
+    'La actividad inicial del árbol comienza a partir de las reservas acumuladas en el año anterior. La incorporación de bioestimulantes y mejoradores del suelo minimizan el estrés del trasplante, y favorece el desarrollo radicular y la captación de nutrientes.',
+    'Los microelementos adecuados evitan posibles carencias nutricionales que mermen la producción. El boro antes de floración mejora el cuajado de los frutos, minimizando los abortos florales; el hierro previene la clorosis férrica, fisiopatía muy común en los perales que se manifiesta a través del amarilleamiento de las hojas, provocando pérdidas económicas significativas.',
+    'Durante la floración, un bioestimulante de acción citoquinínica estimula la división celular, mejorando el calibre de los frutos. En la fase final del ciclo una fertilización potásica de aplicación foliar asegura elevados rendimientos y una alta calidad visual y organoléptica de las peras.'
+  ],
+  'Nuez': [
+    'El objetivo del programa nutricional de Daymsa consiste en obtener incrementos en la producción y en la calidad de las nueces. Esto se consigue a través de una nutrición equilibrada del cultivo.',
+    'El nogal inicia su actividad a partir de las reservas acumuladas durante el año anterior. El desarrollo del sistema radicular coincide con la fase de crecimiento, por lo que resulta fundamental en este periodo la incorporación de bioestimulantes y mejoradores del suelo. Éstos reducen el estrés del trasplante, y favorecen el desarrollo de las raíces y la absorción de nutrientes.',
+    'El aporte de calcio antes de floración mejora la firmeza de las nueces. Durante la floración, resulta imprescindible la aplicación de un inductor de fitoalexinas de efecto sistémico, con el fin de activar las defensas naturales de los árboles. El suministro de un bioestimulante de acción citoquinínica estimula la división celular, mejorando el calibre de los frutos.',
+    'Finalmente, una fertilización potásica asegura elevados rendimientos y una alta calidad de las nueces.'
+  ],
+  'Arroz': [
+    'El arroz es el alimento base del 41% de la población mundial y la mejora en su producción y en sus técnicas de cultivo son esenciales en los programas de alimentación humana a nivel mundial.',
+    'El programa de Daymsa tiene como objetivo nutrir de forma equilibrada a las plantas para conseguir un incremento en la producción y en la calidad de los granos.',
+    'Unos pocos días antes de la siembra es preciso aportar materia orgánica para mejorar la calidad del suelo, sustento básico de todo el programa posterior. Durante los primeros días tras la siembra aplicamos bioestimulantes para ayudar al crecimiento de la planta.',
+    'Preferentemente junto a la aplicación de bioestimulantes o alternativamente en una aplicación posterior, el arroz precisa de un aporte de un corrector de carencias quelatado de zinc para asegurar e incrementar el rendimiento.',
+    'En la fase de desarrollo, el grano requiere aportes de calcio y potasio, que permiten obtener granos firmes y mejorar el tamaño y el peso del grano respectivamente. Los productos Daymsa son compatibles con la mayoría de herbicidas y fungicidas comúnmente utilizados.'
+  ],
+  'Soja': [
+    'La Soja es una especie oleaginosa que destaca por producir semillas con un contenido muy elevado en proteína y aceite.',
+    'El programa nutricional de Daymsa tiene como objetivo conseguir plantas equilibradas y de este modo obtener un incremento en el rendimiento por hectárea y en el contenido proteico del cultivo.',
+    'Ya desde el inicio, el tratamiento de las semillas con bioestimulantes mejora la germinación de las plantas. Tras la germinación, es preciso el aporte de micronutrientes tales como el cobalto y el molibdeno. Por un lado, el molibdeno favorece la transformación del nitrógeno en proteínas, y por el otro, tanto el cobalto como el molibdeno se complementan en la asimilación biológica del nitrógeno.',
+    'El aporte de aminoácidos ayuda a las plantas a superar situaciones de estrés. La aplicación de potasio en la fase de llenado del grano logra maximizar el peso de la semilla, obteniendo mejores rendimientos.'
+  ]
+};
+
+const FICHAS = {
+  'Naturamin®WSP': {
+    img: 'naturamin',
+    formatos: '1 KG, 5 KG',
+    beneficios: ['Estimular la actividad del cultivo', 'Ayudar a superar situaciones de estrés', 'Brotación, sequías, plagas y enfermedades, heladas, etc.'],
+    parrafos: [
+      'Naturamin®WSP es un activador del crecimiento en forma de microgránulos solubles de gran pureza y con una muy elevada concentración en aminoácidos libres, un 80%.',
+      'Naturamin®WSP se recomienda para estimular la actividad del cultivo en los momentos de mayor exigencia energética, ayudando al cultivo a superar situaciones de estrés (brotación, sequías, plagas y enfermedades, heladas, etc.).'
+    ],
+    relacionados: ['Naturfruit®', 'Cytoplant®400']
+  },
+  'Raiza®': {
+    img: 'raiza',
+    formatos: '1 L, 5 L, 20 L',
+    beneficios: ['Reducir el shock post-trasplante', 'Estimular el desarrollo radicular y la absorción de nutrientes', 'Incrementar la producción y la calidad de la cosecha'],
+    parrafos: [
+      'Raiza®, reduce el shock post-trasplante ya que promueve el desarrollo radicular, mejora la absorción de nutrientes tras el trasplante y la germinación. Así se obtiene un mayor número de plantas viables y más vigorosas.',
+      'Elaborado con extractos naturales y activadores metabólicos y agentes osmoprotectores.',
+      'Raiza® mejora el desarrollo general del cultivo, especialmente en situaciones ambientales adversas, incrementando la producción y la calidad de la cosecha.'
+    ],
+    relacionados: ['Naturamin®WSP']
+  }
+};
+
+const VALORES = [
+  ['Trabajando por un futuro sostenible', 'Respeto y cuidado del medioambiente gracias al origen natural de nuestros productos'],
+  ['Desarrollo y compromiso', 'Creciendo junto al agricultor, resolviendo y aportando soluciones eficaces desde hace 40 años.'],
+  ['Investigación al servicio de la agricultura', 'Con una apuesta constante por la superación y la investigación de nuevas tecnologías, desarrollamos nuevos productos que cumplan todas las exigencias']
+];
+
+const GAMA_DESC = [
+  'Estos productos tienen como función activar en el cultivo procesos fisiológicos específicos, involucrados en el desarrollo del cultivo, desde la germinación o la brotación de cultivos leñosos hasta cosecha.',
+  'La gama de Especialidades engloba una serie de productos de origen natural que permiten el fortalecimiento de los cultivos.',
+  'La gama Microorganismos engloba soluciones biotecnológicas en base a microorganismos que maximizan la rentabilidad de los cultivos.',
+  'Los tratamientos con estos productos se hacen indispensables para el cumplimiento de los objetivos de calidad requeridos en la agricultura actual.',
+  'Productos de nutrición vegetal, microelementos y también elementos secundarios, quelatados por distintas moléculas orgánicas.'
+];
+
+const NOTICIAS = [
+  ['Veralion® demuestra una alta eficacia preventiva frente a botrytis en pepino bajo invernadero', 'Los ensayos realizados en Torrox (Málaga) durante la campaña 2025/2026 confirman la eficacia de Veralion® en la reducción de la severidad e incidencia de botrytis en pepino. El biofungicida mostró un comportamiento comparable a la referencia química en tallo y destacó…'],
+  ['Parka® reduce drásticamente el rajado en uva de mesa', 'El biofilm Parka® de Daymsa ha logrado reducir en un 70% el rajado en uva de mesa de la variedad Magenta en un ensayo en Murcia, reforzando su tolerancia frente a lluvia y estrés abiótico, manteniendo la calidad comercial del fruto.'],
+  ['Naturamin® WSP aumenta el rendimiento del tomate y mantiene la producción en condiciones de estrés hídrico', 'Con el objetivo de evaluar los beneficios de este bioestimulante, Daymsa ha llevado a cabo un estudio en tomate, bajo condiciones de riego completo y estrés hídrico, confirmando un mayor rendimiento del cultivo tanto en aplicaciones vía foliar o fertirriego.']
+];
+
+const normalizar = (s) => s.toLowerCase().normalize('NFD').replace(/[\u0300-\u036f]/g, '');
+
+class Component extends DCLogic {
+  state = { screen: 'inicio', gamaSel: [], necSel: [], cultivo: null, culMax: 8, q: '', qc: '', producto: 'Raiza®', cultivoView: 'Café', tab: 0, comparar: [], comparando: false, modal: false, acepto: false, desbloqueada: false };
+
+  ir(screen) { this.setState({ screen: screen, menu: false, sheet: false }); window.scrollTo(0, 0); }
+
+  abrirProducto(nombre) { this.setState({ screen: 'producto', producto: nombre, tab: 0, menu: false, sheet: false }); window.scrollTo(0, 0); }
+
+  toggleEn(campo, valor) {
+    const arr = (this.state[campo] || []).slice();
+    const i = arr.indexOf(valor);
+    if (i !== -1) arr.splice(i, 1); else arr.push(valor);
+    const next = {};
+    next[campo] = arr;
+    this.setState(next);
+  }
+
+  toggleComparar(nombre, e) {
+    if (e) { e.stopPropagation(); }
+    const sel = (this.state.comparar || []).slice();
+    const i = sel.indexOf(nombre);
+    if (i !== -1) { sel.splice(i, 1); }
+    else if (sel.length < 3) { sel.push(nombre); }
+    this.setState({ comparar: sel });
+  }
+
+  renderVals() {
+    const s = this.state;
+    const gate = this.props.gateFicha !== false;
+    const permitidos = s.cultivo ? CULTIVO_PRODUCTOS[s.cultivo] : null;
+    const sinDatosCultivo = !!(s.cultivo && !permitidos);
+    const qn = normalizar(s.q.trim());
+
+    const sel = s.comparar || [];
+    const gamaSel = sel.length ? PRODUCTOS.filter((x) => x[0] === sel[0])[0][1] : null;
+
+    const tarjeta = (p) => {
+      const activo = sel.indexOf(p[0]) !== -1;
+      const bloqueado = !activo && gamaSel !== null && gamaSel !== p[1];
+      return {
+        n: p[0], gama: GAMAS[p[1]], 
+        d: p[2] || 'Ficha comercial disponible bajo solicitud.',
+        open: () => this.abrirProducto(p[0]),
+        cmpLabel: activo ? '✓ Comparando' : (bloqueado ? 'Otra gama' : '+ Comparar'),
+        cmpFg: activo ? '#2f8b20' : (bloqueado ? '#b4bdaf' : '#6f7d6a'),
+        cmpSel: (e) => { if (bloqueado) { if (e) e.stopPropagation(); return; } this.toggleComparar(p[0], e); },
+        color: GAMA_COLOR[p[1]],
+        nCorto: p[0].replace(/®/g, '').toUpperCase(),
+        esPolvo: esSolido(p[0]),
+        esLiquido: !esSolido(p[0])
+      };
+    };
+
+    const gsel = s.gamaSel || [];
+    const nsel = s.necSel || [];
+
+    const resultados = PRODUCTOS
+      .filter((p) => gsel.length === 0 || gsel.indexOf(p[1]) !== -1)
+      .filter((p) => nsel.length === 0 || nsel.indexOf(NECESIDAD_DE[p[0]]) !== -1)
+      .filter((p) => !qn || normalizar(p[0]).indexOf(qn) !== -1)
+      .filter((p) => !s.cultivo || (permitidos && permitidos.indexOf(p[0]) !== -1))
+      .map(tarjeta);
+
+    const gamas = GAMAS.map((g, i) => ({
+      label: g,
+      count: PRODUCTOS.filter((p) => p[1] === i).length,
+      on: gsel.indexOf(i) !== -1,
+      fg: gsel.indexOf(i) !== -1 ? '#2f8b20' : '#3f4c3a',
+      sel: () => this.toggleEn('gamaSel', i)
+    }));
+
+    const necesidades = NECESIDADES.map((n, i) => ({
+      label: n,
+      count: PRODUCTOS.filter((p) => NECESIDAD_DE[p[0]] === i).length,
+      on: nsel.indexOf(i) !== -1,
+      fg: nsel.indexOf(i) !== -1 ? '#2f8b20' : '#3f4c3a',
+      sel: () => this.toggleEn('necSel', i)
+    }));
+
+    const qcn = normalizar(s.qc.trim());
+    const culCoinciden = CULTIVOS.filter((c) => !qcn || normalizar(c).indexOf(qcn) !== -1);
+    const culMax = qcn ? culCoinciden.length : (s.culMax || 8);
+    const cultivosFiltrados = culCoinciden.slice(0, culMax).map((c) => ({
+      label: c,
+      on: s.cultivo === c,
+      fg: s.cultivo === c ? '#2f8b20' : '#3f4c3a',
+      sel: () => this.setState({ cultivo: s.cultivo === c ? null : c })
+    }));
+    const culRestantes = Math.max(0, culCoinciden.length - culMax);
+
+    const buscar = (n) => PRODUCTOS.filter((p) => p[0] === n)[0];
+    const cv = CULTIVO_PRODUCTOS[s.cultivoView] ? s.cultivoView : 'Café';
+    const productosCultivo = CULTIVO_PRODUCTOS[cv].map((n) => tarjeta(buscar(n)));
+
+    const actual = buscar(s.producto) || PRODUCTOS[0];
+    const ficha = FICHAS[s.producto] || {};
+    const cultivosDe = CULTIVOS.filter((c) => CULTIVO_PRODUCTOS[c] && CULTIVO_PRODUCTOS[c].indexOf(s.producto) !== -1);
+
+    const gamasCultivo = [];
+    productosCultivo.forEach((p) => {
+      const hit = gamasCultivo.filter((g) => g.label === p.gama)[0];
+      if (hit) hit.n += 1; else gamasCultivo.push({ label: p.gama, n: 1 });
+    });
+    const chipsCultivo = gamasCultivo.map((g) => ({
+      label: g.label,
+      n: g.n,
+      sel: () => {
+        this.setState({ screen: 'catalogo', cultivo: cv, gamaSel: [GAMAS.indexOf(g.label)], necSel: [] });
+        window.scrollTo(0, 0);
+      }
+    }));
+
+    const chipsActivos = [];
+    gsel.forEach((i) => chipsActivos.push({ label: GAMAS[i], quitar: () => this.toggleEn('gamaSel', i) }));
+    nsel.forEach((i) => chipsActivos.push({ label: NECESIDADES[i], quitar: () => this.toggleEn('necSel', i) }));
+    if (s.cultivo) chipsActivos.push({ label: 'Cultivo: ' + s.cultivo, quitar: () => this.setState({ cultivo: null }) });
+    if (s.q.trim()) chipsActivos.push({ label: '“' + s.q.trim() + '”', quitar: () => this.setState({ q: '' }) });
+    const nActivos = chipsActivos.length;
+
+
+    // El panel de filtros a pantalla completa bloquea el scroll del fondo.
+    // Se recalcula en cada render, asi nunca puede quedarse bloqueado.
+    try { document.body.style.overflow = s.sheet ? 'hidden' : ''; } catch (e) {}
+
+    return {
+      isInicio: s.screen === 'inicio',
+      goInicio: () => this.ir('inicio'),
+      valores: VALORES.map((v) => ({ titulo: v[0], texto: v[1] })),
+      noticias: NOTICIAS.map((n) => ({ titulo: n[0], extracto: n[1] })),
+      gamasInicio: GAMAS.map((g, i) => ({
+        label: g,
+        desc: GAMA_DESC[i],
+        n: PRODUCTOS.filter((p) => p[1] === i).length + ' productos',
+        sel: () => { this.setState({ screen: 'catalogo', gamaSel: [i], necSel: [], cultivo: null }); window.scrollTo(0, 0); }
+      })),
+      isCatalogo: s.screen === 'catalogo',
+      isCultivos: s.screen === 'cultivos',
+      isCultivo: s.screen === 'cultivo',
+      isProducto: s.screen === 'producto',
+      goCatalogo: () => this.ir('catalogo'),
+      goCultivos: () => this.ir('cultivos'),
+      goCatalogoCultivo: () => { this.setState({ screen: 'catalogo', cultivo: cv, gamaSel: [], necSel: [] }); window.scrollTo(0, 0); },
+      abrirCultivo: (e) => {
+        const c = e.currentTarget.getAttribute('data-c');
+        if (CULTIVO_PRODUCTOS[c]) { this.setState({ screen: 'cultivo', cultivoView: c }); }
+        else { this.setState({ screen: 'catalogo', cultivo: c, gamaSel: [], necSel: [] }); }
+        window.scrollTo(0, 0);
+      },
+      cultivoNombre: cv,
+      cultivoLead: CULTIVO_PRODUCTOS[cv].length + ' productos recomendados dentro del programa de Daymsa para este cultivo.',
+      cultivoTexto: CULTIVO_TEXTO[cv] || [],
+      otrosCultivos: Object.keys(CULTIVO_PRODUCTOS).filter((c) => c !== cv).map((c) => ({ label: c })),
+      heroImg: React.createElement('img', {
+        src: CULTIVO_IMG[cv], alt: cv,
+        style: { width: '100%', height: '100%', minHeight: '100%', objectFit: 'cover', display: 'block' }
+      }),
+      cultivosInicio: Object.keys(CULTIVO_PRODUCTOS).slice(0, 6).map((c) => ({
+        label: c,
+        n: CULTIVO_PRODUCTOS[c].length + ' productos',
+        img: React.createElement('img', {
+          src: CULTIVO_IMG[c], alt: c,
+          style: { width: '100%', height: '130px', objectFit: 'cover', display: 'block' }
+        }),
+        sel: () => { this.setState({ screen: 'cultivo', cultivoView: c }); window.scrollTo(0, 0); }
+      })),
+      gridCultivos: Object.keys(CULTIVO_PRODUCTOS).map((c) => ({
+        label: c,
+        n: CULTIVO_PRODUCTOS[c].length + ' productos',
+        img: React.createElement('img', {
+          src: CULTIVO_IMG[c], alt: c,
+          style: { width: '100%', height: '150px', objectFit: 'cover', display: 'block' }
+        }),
+        sel: () => { this.setState({ screen: 'cultivo', cultivoView: c }); window.scrollTo(0, 0); }
+      })),
+      totalProductos: PRODUCTOS.length,
+      totalCultivos: CULTIVOS.length,
+      gamas: gamas,
+      gamasFooter: GAMAS.map((g, i) => ({ label: g, sel: () => { this.setState({ screen: 'catalogo', gamaSel: [i], necSel: [], cultivo: null }); window.scrollTo(0, 0); } })),
+      cultivosFiltrados: cultivosFiltrados,
+      q: s.q,
+      qc: s.qc,
+      setQ: (e) => this.setState({ q: e.target.value }),
+      setQc: (e) => this.setState({ qc: e.target.value }),
+      limpiar: () => this.setState({ screen: 'catalogo', gamaSel: [], necSel: [], cultivo: null, q: '', qc: '', culMax: 8 }),
+      necesidades: necesidades,
+      openGama: s.fGama !== false,
+      openNec: !!s.fNec,
+      openCul: !!s.fCul,
+      signoGama: s.fGama !== false ? '−' : '+',
+      signoNec: s.fNec ? '−' : '+',
+      signoCul: s.fCul ? '−' : '+',
+      toggleGama: () => this.setState({ fGama: s.fGama === false }),
+      toggleNec: () => this.setState({ fNec: !s.fNec }),
+      toggleCul: () => this.setState({ fCul: !s.fCul }),
+      resumenGama: gsel.length === 0 ? 'Todas' : gsel.length + ' de 5',
+      resumenNec: nsel.length === 0 ? 'Todas' : nsel.length + ' de 7',
+      culRestantes: culRestantes,
+      hayMasCultivos: culRestantes > 0,
+      verMasCultivos: () => this.setState({ culMax: (s.culMax || 8) + 24 }),
+      resumenCultivo: s.cultivo || 'Todos',
+      asideClase: s.sheet ? 'dy-aside open' : 'dy-aside',
+      menuClase: s.menu ? 'dy-menu open' : 'dy-menu',
+      menuAbierto: !!s.menu,
+      menuCerrado: !s.menu,
+      toggleMenu: () => this.setState({ menu: !s.menu }),
+      abrirSheet: () => this.setState({ sheet: true }),
+      cerrarSheet: () => this.setState({ sheet: false }),
+      etiquetaFiltros: nActivos ? '(' + nActivos + ')' : '',
+      chipsActivos: chipsActivos,
+      hayChips: chipsActivos.length > 0,
+      chipsCultivo: chipsCultivo,
+      nGamasCultivo: chipsCultivo.length,
+      comparar: sel.map((n) => ({ label: n, quitar: (e) => this.toggleComparar(n, e) })),
+      nComparar: sel.length,
+      hayComparar: sel.length > 0,
+      fabClase: sel.length > 0 ? 'dy-fab subido' : 'dy-fab',
+      puedeComparar: sel.length > 1,
+      gamaComparar: gamaSel === null ? '' : GAMAS[gamaSel],
+      abrirComparador: () => { if (sel.length > 1) this.setState({ comparando: true }); },
+      cerrarComparador: () => this.setState({ comparando: false }),
+      vaciarComparar: () => this.setState({ comparar: [], comparando: false }),
+      comparando: s.comparando && sel.length > 1,
+      colsComparar: sel.map((n) => {
+        const p = PRODUCTOS.filter((x) => x[0] === n)[0];
+        const f = FICHAS[n] || {};
+        const cul = CULTIVOS.filter((c) => CULTIVO_PRODUCTOS[c] && CULTIVO_PRODUCTOS[c].indexOf(n) !== -1);
+        return {
+          n: n,
+          gama: GAMAS[p[1]],
+          necesidad: NECESIDADES[NECESIDAD_DE[n]] || '—',
+          d: p[2] || '—',
+          formatos: f.formatos || 'Pendiente',
+          cultivos: cul.length ? cul.join(', ') : 'Pendiente',
+          open: () => this.abrirProducto(n)
+        };
+      }),
+      resultados: resultados,
+      hayResultados: resultados.length > 0,
+      sinResultados: resultados.length === 0 && !sinDatosCultivo,
+      necesidadProducto: NECESIDADES[NECESIDAD_DE[actual[0]]] || '',
+      tab0: s.tab === 0, tab1: s.tab === 1, tab2: s.tab === 2, tab3: s.tab === 3,
+      tabs: NECESIDADES.length && [
+        { label: 'Descripción', sel: () => this.setState({ tab: 0 }), bg: s.tab === 0 ? '#22301d' : '#fff', fg: s.tab === 0 ? '#fff' : '#3f4c3a' },
+        { label: 'Composición', sel: () => this.setState({ tab: 1 }), bg: s.tab === 1 ? '#22301d' : '#fff', fg: s.tab === 1 ? '#fff' : '#3f4c3a' },
+        { label: 'Dosis y aplicación', sel: () => this.setState({ tab: 2 }), bg: s.tab === 2 ? '#22301d' : '#fff', fg: s.tab === 2 ? '#fff' : '#3f4c3a' },
+        { label: 'Modo de acción y precauciones', sel: () => this.setState({ tab: 3 }), bg: s.tab === 3 ? '#22301d' : '#fff', fg: s.tab === 3 ? '#fff' : '#3f4c3a' }
+      ],
+      nResultados: resultados.length,
+      sinDatosCultivo: sinDatosCultivo,
+      productosCultivo: productosCultivo,
+      nProductosCultivo: productosCultivo.length,
+      verPrograma: this.props.mostrarPrograma !== false,
+      prodNombre: actual[0],
+      prodGama: GAMAS[actual[1]],
+      prodDesc: actual[2] || 'Descripción pendiente de migrar desde la base de datos de Daymsa.',
+      prodFormatos: ficha.formatos || 'Consultar',
+      prodColor: GAMA_COLOR[actual[1]],
+      prodNCorto: actual[0].replace(/®/g, '').toUpperCase(),
+      esRaiza: ficha.img === 'raiza',
+      esNaturamin: ficha.img === 'naturamin',
+      sinImg: !ficha.img,
+      sinTexto: !(ficha.parrafos && ficha.parrafos.length),
+      beneficios: ficha.beneficios || [],
+      tieneBeneficios: s.tab === 0 && !!(ficha.beneficios && ficha.beneficios.length),
+      verTexto: s.tab === 0,
+      sinTextoTab: s.tab === 0 && !(ficha.parrafos && ficha.parrafos.length),
+      parrafos: ficha.parrafos || [],
+      prodCultivos: cultivosDe.map((c) => ({ label: c, open: () => { this.setState({ screen: 'cultivo', cultivoView: c }); window.scrollTo(0, 0); } })),
+      tieneCultivos: cultivosDe.length > 0,
+      sinCultivos: cultivosDe.length === 0,
+      prodRelacionados: (ficha.relacionados || []).map((r) => ({ label: r, open: () => this.abrirProducto(r) })),
+      tieneRelacionados: !!(ficha.relacionados && ficha.relacionados.length),
+      relacionadosGama: PRODUCTOS.filter((p) => p[1] === actual[1] && p[0] !== actual[0]).slice(0, 4).map(tarjeta),
+      hayRelacionadosGama: PRODUCTOS.filter((p) => p[1] === actual[1] && p[0] !== actual[0]).length > 0,
+      pedirDatos: !s.desbloqueada,
+      gamaActual: GAMAS[actual[1]],
+      irAlFormulario: () => {
+        const el = document.getElementById('dy-form');
+        if (el) window.scrollTo(0, el.getBoundingClientRect().top + window.scrollY - 90);
+      },
+      enviarFicha: () => this.setState({ desbloqueada: true }),
+      ctaFicha: s.desbloqueada || !gate ? 'Descargar ficha técnica (PDF)' : 'Solicitar ficha técnica',
+      fichaDesbloqueada: s.desbloqueada,
+      modalAbierto: s.modal,
+      aceptado: s.acepto,
+      abrirFicha: () => { if (s.desbloqueada || !gate) return; this.setState({ modal: true }); },
+      cerrarModal: () => this.setState({ modal: false }),
+      toggleAcepto: (e) => this.setState({ acepto: e.target.checked }),
+      confirmarFicha: () => this.setState({ modal: false, desbloqueada: true })
+    };
+  }
+}
+
+</script>
+</body>
+</html>
