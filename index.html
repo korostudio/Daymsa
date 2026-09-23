@@ -47,16 +47,16 @@ window.__resources = {
   .dy-menu { display: contents; }
 
 
-  /* ===== Hero a pantalla completa con carrusel ===== */
-  :root { --dy-head: 73px; }          /* alto real de la cabecera */
-
+  /* ===== Hero con carrusel =====
+     Tres cuartos de pantalla: sigue siendo grande, fuerza menos unas fotos
+     de solo 600 px de alto y deja asomar la seccion siguiente. */
   .dy-hero {
     position: relative; overflow: hidden; background: #16240f;
-    height: calc(100vh - var(--dy-head));
-    min-height: 460px;
+    height: 75vh;
+    min-height: 420px;
   }
-  @supports (height: 100dvh) {
-    .dy-hero { height: calc(100dvh - var(--dy-head)); }
+  @supports (height: 75dvh) {
+    .dy-hero { height: 75dvh; }
   }
   .dy-hero > div[class*="dy-slide"] { position: absolute; inset: 0; }
   .dy-slide, .dy-slide-on {
@@ -127,8 +127,7 @@ window.__resources = {
   .dy-dot-on { background: #fff; width: 26px; }
 
   @media (max-width: 900px) {
-    :root { --dy-head: 67px; }
-    .dy-hero { min-height: 420px; }
+    .dy-hero { min-height: 380px; }
     .dy-hero-txt { padding: 0 20px 58px; }
     .dy-hero-h1 { font-size: 34px; max-width: 16ch; }
     .dy-hero-p { font-size: 15px; margin-bottom: 22px; }
