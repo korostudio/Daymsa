@@ -46,6 +46,101 @@ window.__resources = {
   .dy-fab.subido { bottom: 88px !important; }
   .dy-menu { display: contents; }
 
+
+  /* ===== Hero a pantalla completa con carrusel ===== */
+  :root { --dy-head: 73px; }          /* alto real de la cabecera */
+
+  .dy-hero {
+    position: relative; overflow: hidden; background: #16240f;
+    height: calc(100vh - var(--dy-head));
+    min-height: 460px;
+  }
+  @supports (height: 100dvh) {
+    .dy-hero { height: calc(100dvh - var(--dy-head)); }
+  }
+  .dy-hero > div[class*="dy-slide"] { position: absolute; inset: 0; }
+  .dy-slide, .dy-slide-on {
+    position: absolute; inset: 0;
+    opacity: 0; pointer-events: none;
+    transition: opacity 1.1s ease;
+  }
+  .dy-slide-on { opacity: 1; pointer-events: auto; }
+  .dy-slide img, .dy-slide-on img {
+    width: 100%; height: 100%; object-fit: cover; display: block;
+  }
+  /* scrim: el degradado que hace legible el texto sin apagar la foto entera */
+  .dy-slide::after, .dy-slide-on::after {
+    content: ""; position: absolute; inset: 0; pointer-events: none;
+    background: linear-gradient(to top,
+      rgba(11,22,8,.90) 0%,
+      rgba(11,22,8,.74) 20%,
+      rgba(11,22,8,.42) 42%,
+      rgba(11,22,8,.10) 64%,
+      rgba(11,22,8,0)   80%);
+  }
+  .dy-hero-txt {
+    position: absolute; left: 0; right: 0; bottom: 0; z-index: 2;
+    padding: 0 28px 64px;
+  }
+  .dy-hero-in { max-width: 1240px; margin: 0 auto; color: #fff; }
+  .dy-hero-kicker {
+    display: block; color: #b6f0a6; font-weight: 700; font-size: 10.5px;
+    letter-spacing: .14em; text-transform: uppercase; margin-bottom: 14px;
+    text-shadow: 0 1px 10px rgba(0,0,0,.55);
+  }
+  .dy-hero-h1 {
+    font-size: 52px; font-weight: 700; line-height: 1.08;
+    margin: 0 0 14px; max-width: 18ch;
+    text-shadow: 0 2px 18px rgba(0,0,0,.35);
+  }
+  .dy-hero-p {
+    font-size: 17px; line-height: 1.5; color: #e4ece0;
+    max-width: 58ch; margin: 0 0 26px;
+    text-shadow: 0 1px 12px rgba(0,0,0,.40);
+  }
+  .dy-hero-btns { display: flex; gap: 10px; flex-wrap: wrap; }
+  .dy-hero-b1, .dy-hero-b2 {
+    font: inherit; font-weight: 600; font-size: 14px;
+    padding: 11px 20px; border-radius: 6px; cursor: pointer;
+    transition: background .15s ease, border-color .15s ease;
+  }
+  .dy-hero-b1 { border: 1px solid #3daf29; background: #3daf29; color: #fff; }
+  .dy-hero-b1:hover { background: #2f8b20; border-color: #2f8b20; }
+  .dy-hero-b2 {
+    border: 1px solid rgba(255,255,255,.55); background: rgba(255,255,255,.10);
+    color: #fff; backdrop-filter: blur(2px);
+  }
+  .dy-hero-b2:hover { background: rgba(255,255,255,.20); border-color: #fff; }
+  /* alineados con la columna de texto: a la derecha chocaban con el boton flotante */
+  .dy-hero-dots {
+    position: absolute; z-index: 3; bottom: 26px;
+    left: 50%; transform: translateX(-50%);
+    width: min(1240px, calc(100% - 56px));
+    display: flex; gap: 9px;
+  }
+  .dy-dot, .dy-dot-on {
+    width: 9px; height: 9px; border-radius: 999px; cursor: pointer;
+    border: 1px solid rgba(255,255,255,.85);
+    transition: background .2s ease, width .2s ease;
+  }
+  .dy-dot { background: rgba(255,255,255,.18); }
+  .dy-dot-on { background: #fff; width: 26px; }
+
+  @media (max-width: 900px) {
+    :root { --dy-head: 67px; }
+    .dy-hero { min-height: 420px; }
+    .dy-hero-txt { padding: 0 20px 58px; }
+    .dy-hero-h1 { font-size: 34px; max-width: 16ch; }
+    .dy-hero-p { font-size: 15px; margin-bottom: 22px; }
+    .dy-hero-dots { width: calc(100% - 40px); bottom: 22px; }
+    .dy-slide img, .dy-slide-on img { object-position: var(--pos-mov) !important; }
+    .dy-hero-btns > button { flex: 1 1 auto; }
+  }
+  @media (max-width: 420px) {
+    .dy-hero-h1 { font-size: 29px; }
+    .dy-hero-p { font-size: 14.5px; }
+  }
+
   /* ===== Tablet y movil (<= 900px) ===== */
   @media (max-width: 900px) {
     .dy-cat { grid-template-columns: 1fr !important; }
@@ -169,19 +264,31 @@ window.__resources = {
   </header>
 
   <sc-if value="{{ isInicio }}" hint-placeholder-val="{{ true }}">
-    <main style="max-width:1240px;margin:0 auto;padding:28px 28px 80px">
-      <section class="dy-two" style="background:#fff;border:1px solid #e4ebe0;border-radius:6px;overflow:hidden;display:grid;grid-template-columns:minmax(0,1.05fr) minmax(0,1fr)">
-        <div class="dy-pad-lg" style="padding:48px 44px">
-          <span style="display:block;color:#2f8b20;font-weight:700;font-size:10.5px;letter-spacing:.14em;text-transform:uppercase;margin-bottom:16px">Desarrollo Agrícola y Minero, S.A. · Grupo Samca</span>
-          <h1 style="font-size:40px;font-weight:700;line-height:1.14;margin:0 0 16px">Trabajando por un futuro sostenible</h1>
-          <p style="font-size:16px;color:#55634f;max-width:52ch;margin:0 0 28px">Respeto y cuidado del medioambiente gracias al origen natural de nuestros productos. Bionutrientes, microorganismos, especialidades, mejoradores de suelo y correctores de carencias para {{ totalCultivos }} cultivos.</p>
-          <div style="display:flex;gap:10px;flex-wrap:wrap">
-            <button onClick="{{ goCatalogo }}" style="border:1px solid #3daf29;border-radius:6px;background:#3daf29;color:#fff;font:inherit;font-weight:600;font-size:13px;padding:8px 15px;cursor:pointer">Ver catálogo de productos</button>
-            <button onClick="{{ goCultivos }}" style="border:1px solid #d6e0d2;border-radius:6px;background:#fff;color:#22301d;font:inherit;font-weight:600;font-size:13px;padding:8px 15px;cursor:pointer">Buscar por cultivo</button>
+    <section class="dy-hero">
+      <sc-for list="{{ heroSlides }}" as="h" hint-placeholder-count="3">
+        <div class="{{ h.clase }}">
+          <img src="{{ h.img }}" alt="{{ h.alt }}" style="--pos-esc:{{ h.pos }};--pos-mov:{{ h.posm }};object-position:var(--pos-esc)">
+          <div class="dy-hero-txt">
+            <div class="dy-hero-in">
+              <span class="dy-hero-kicker">Desarrollo Agrícola y Minero, S.A. · Grupo Samca</span>
+              <h1 class="dy-hero-h1">{{ h.titulo }}</h1>
+              <p class="dy-hero-p">{{ h.texto }}</p>
+              <div class="dy-hero-btns">
+                <button onClick="{{ goCatalogo }}" class="dy-hero-b1">Ver catálogo de productos</button>
+                <button onClick="{{ goCultivos }}" class="dy-hero-b2">Buscar por cultivo</button>
+              </div>
+            </div>
           </div>
         </div>
-        <img src="img/web/cereal.jpg" alt="Campo de cereal" style="width:100%;height:100%;min-height:340px;object-fit:cover">
-      </section>
+      </sc-for>
+      <div class="dy-hero-dots">
+        <sc-for list="{{ heroDots }}" as="d" hint-placeholder-count="3">
+          <span onClick="{{ d.sel }}" class="{{ d.clase }}" role="button" aria-label="{{ d.alt }}"></span>
+        </sc-for>
+      </div>
+    </section>
+
+    <main style="max-width:1240px;margin:0 auto;padding:28px 28px 80px">
 
       <section style="display:grid;grid-template-columns:repeat(auto-fit,minmax(160px,1fr));gap:1px;background:#e4ebe0;border:1px solid #e4ebe0;border-radius:6px;overflow:hidden;margin-top:20px">
         <div style="background:#fff;padding:22px">
@@ -1287,6 +1394,21 @@ const FICHAS = {
   }
 };
 
+/* Carrusel del hero. Las fotos son del slider de daymsa.com y los textos
+   son los tres valores de la propia web. `pos` encuadra cada foto sobre su
+   sujeto: son 1600x600 muy apaisadas y en movil el recorte es agresivo. */
+const HERO = [
+  ['img/hero/slider_2.jpg', '25% center', '26% center', 'Plántula brotando de la tierra',
+   'Trabajando por un futuro sostenible',
+   'Respeto y cuidado del medioambiente gracias al origen natural de nuestros productos.'],
+  ['img/hero/slider_5.jpg', '30% center', '52% center', 'Agricultor entre espigas de trigo',
+   'Desarrollo y compromiso',
+   'Creciendo junto al agricultor, resolviendo y aportando soluciones eficaces desde hace 40 años.'],
+  ['img/hero/slider_6.jpg', '38% center', '34% center', 'Técnico revisando un cultivo en invernadero',
+   'Investigación al servicio de la agricultura',
+   'Apostamos por la investigación de nuevas tecnologías para desarrollar productos que cumplan todas las exigencias.']
+];
+
 const VALORES = [
   ['Trabajando por un futuro sostenible', 'Respeto y cuidado del medioambiente gracias al origen natural de nuestros productos'],
   ['Desarrollo y compromiso', 'Creciendo junto al agricultor, resolviendo y aportando soluciones eficaces desde hace 40 años.'],
@@ -1310,7 +1432,21 @@ const NOTICIAS = [
 const normalizar = (s) => s.toLowerCase().normalize('NFD').replace(/[\u0300-\u036f]/g, '');
 
 class Component extends DCLogic {
-  state = { screen: 'inicio', gamaSel: [], necSel: [], cultivo: null, culMax: 8, q: '', qc: '', producto: 'Raiza®', cultivoView: 'Café', tab: 0, comparar: [], comparando: false, modal: false, acepto: false, desbloqueada: false };
+  state = { hero: 0, screen: 'inicio', gamaSel: [], necSel: [], cultivo: null, culMax: 8, q: '', qc: '', producto: 'Raiza®', cultivoView: 'Café', tab: 0, comparar: [], comparando: false, modal: false, acepto: false, desbloqueada: false };
+
+  componentDidMount() { this.arrancarHero(); }
+  componentWillUnmount() { clearInterval(this.tHero); }
+
+  /* El carrusel avanza solo; al tocar un punto se reinicia la cuenta para que
+     no cambie de foto justo despues de elegirla. */
+  arrancarHero() {
+    clearInterval(this.tHero);
+    this.tHero = setInterval(() => {
+      this.setState({ hero: ((this.state.hero || 0) + 1) % HERO.length });
+    }, 6000);
+  }
+
+  verHero(i) { this.setState({ hero: i }); this.arrancarHero(); }
 
   ir(screen) { this.setState({ screen: screen, menu: false, sheet: false }); window.scrollTo(0, 0); }
 
@@ -1435,6 +1571,15 @@ class Component extends DCLogic {
     return {
       isInicio: s.screen === 'inicio',
       goInicio: () => this.ir('inicio'),
+      heroSlides: HERO.map((h, i) => ({
+        img: h[0], pos: h[1], posm: h[2], alt: h[3], titulo: h[4], texto: h[5],
+        clase: (s.hero || 0) === i ? 'dy-slide-on' : 'dy-slide'
+      })),
+      heroDots: HERO.map((h, i) => ({
+        clase: (s.hero || 0) === i ? 'dy-dot-on' : 'dy-dot',
+        alt: 'Ver ' + h[3],
+        sel: () => this.verHero(i)
+      })),
       valores: VALORES.map((v) => ({ titulo: v[0], texto: v[1] })),
       noticias: NOTICIAS.map((n) => ({ titulo: n[0], extracto: n[1] })),
       gamasInicio: GAMAS.map((g, i) => ({
