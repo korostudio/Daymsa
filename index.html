@@ -233,6 +233,83 @@ window.__resources = {
     .dy-mosaico img { object-position: center; }
   }
 
+
+  /* ===== Noticias ===== */
+  .dy-noti-img { height: 168px; background: #dfe6da; overflow: hidden; }
+  .dy-noti-img img { width: 100%; height: 100%; object-fit: cover; display: block; }
+  .dy-noti:hover .dy-noti-img img { transform: scale(1.03); }
+  .dy-noti-img img { transition: transform .35s ease; }
+  .dy-noti-meta {
+    font-size: 10.5px; font-weight: 700; letter-spacing: .09em;
+    text-transform: uppercase; color: #6f7d6a;
+  }
+  .dy-noti-meta span { color: #b4bdaf; margin: 0 3px; }
+  /* titulares largos: se recorta el extracto para que las tarjetas no bailen */
+  .dy-noti-ext {
+    display: -webkit-box; -webkit-line-clamp: 4; -webkit-box-orient: vertical;
+    overflow: hidden;
+  }
+
+  /* filtros por categoria */
+  .dy-nfils { display: flex; gap: 8px; flex-wrap: wrap; margin: 4px 0 20px; }
+  .dy-nfil {
+    border: 1px solid #d6e0d2; border-radius: 999px; background: #fff;
+    padding: 7px 15px; font-size: 13px; font-weight: 600; color: #3f4c3a;
+    cursor: pointer; transition: border-color .15s ease, color .15s ease;
+  }
+  .dy-nfil b { color: #8a9585; font-weight: 700; margin-left: 3px; }
+  .dy-nfil:hover { border-color: #3daf29; color: #2f8b20; }
+  .dy-nfil-on { background: #2f8b20; border-color: #2f8b20; color: #fff; }
+  .dy-nfil-on b { color: #bfe6b6; }
+
+  /* destacada */
+  .dy-dest {
+    background: #fff; border: 1px solid #e4ebe0; border-radius: 6px; overflow: hidden;
+    display: grid; grid-template-columns: minmax(0, 1.05fr) minmax(0, 1fr);
+  }
+  .dy-dest-img { min-height: 320px; background: #dfe6da; }
+  .dy-dest-img img { width: 100%; height: 100%; object-fit: cover; display: block; }
+  .dy-dest-txt { padding: 34px 36px; display: flex; flex-direction: column; gap: 12px; justify-content: center; }
+  .dy-dest-h2 { font-size: 26px; font-weight: 700; line-height: 1.2; margin: 0; }
+  .dy-dest-p { margin: 0; font-size: 14.5px; color: #55634f; line-height: 1.55; }
+
+  /* chips de producto y cultivo */
+  .dy-chips { display: flex; gap: 8px; flex-wrap: wrap; }
+  .dy-chip {
+    display: inline-flex; align-items: center;
+    border: 1px solid #cfe0c9; border-radius: 999px; background: #f4faf2;
+    padding: 5px 12px; font-size: 12px; font-weight: 600; color: #2f8b20;
+    cursor: pointer; transition: background .15s ease, border-color .15s ease;
+  }
+  .dy-chip:hover { background: #e4f3df; border-color: #3daf29; }
+  .dy-chip-g { font-size: 13px; padding: 9px 16px; }
+
+  /* ficha de noticia */
+  .dy-art {
+    background: #fff; border: 1px solid #e4ebe0; border-radius: 6px;
+    padding: 40px 44px 36px; max-width: 860px; margin: 0 auto;
+  }
+  .dy-art-h1 { font-size: 30px; font-weight: 700; line-height: 1.18; margin: 10px 0 22px; }
+  .dy-art-img { border-radius: 6px; overflow: hidden; margin-bottom: 26px; background: #dfe6da; }
+  .dy-art-img img { width: 100%; display: block; }
+  .dy-art-p { font-size: 16px; line-height: 1.65; color: #3f4c3a; margin: 0 0 16px; }
+  .dy-art-pend { font-size: 13.5px; color: #8a9585; font-style: italic; margin: 0; }
+  .dy-art-pie { border-top: 1px solid #eef2eb; margin-top: 28px; padding-top: 22px; }
+  .dy-art-pie-t {
+    display: block; font-size: 10.5px; font-weight: 700; letter-spacing: .12em;
+    text-transform: uppercase; color: #8a9585; margin-bottom: 12px;
+  }
+
+  @media (max-width: 900px) {
+    .dy-dest { grid-template-columns: 1fr; }
+    .dy-dest-img { min-height: 200px; }
+    .dy-dest-txt { padding: 24px 22px 26px; }
+    .dy-dest-h2 { font-size: 21px; }
+    .dy-art { padding: 26px 22px 24px; }
+    .dy-art-h1 { font-size: 23px; }
+    .dy-art-p { font-size: 15px; }
+  }
+
   /* ===== Tablet y movil (<= 900px) ===== */
   @media (max-width: 900px) {
     .dy-cat { grid-template-columns: 1fr !important; }
@@ -338,7 +415,7 @@ window.__resources = {
         <span onClick="{{ goCatalogo }}" class="dylink">Productos</span>
         <span onClick="{{ goCultivos }}" class="dylink">Cultivos</span>
         <span class="dylink">Nosotros</span>
-        <span class="dylink">Noticias</span>
+        <span onClick="{{ goNoticias }}" class="dylink">Noticias</span>
       </nav>
       <div class="dy-navcta" style="flex:1 1 0;display:flex;justify-content:flex-end">
         <button onClick="{{ goCultivos }}" style="border:1px solid #cfe0c9;border-radius:6px;background:#fff;color:#2f8b20;font:inherit;font-weight:600;font-size:13px;padding:8px 14px;cursor:pointer;white-space:nowrap">Asesoría técnica</button>
@@ -445,15 +522,18 @@ window.__resources = {
       <section style="margin-top:44px">
         <div style="display:flex;align-items:baseline;gap:14px;flex-wrap:wrap;margin-bottom:18px">
           <h2 style="font-size:22px;font-weight:700;margin:0">Últimas noticias</h2>
-          <span class="dylink" style="margin-left:auto;font-size:13px;font-weight:700;color:#2f8b20">Toda la actualidad →</span>
+          <span onClick="{{ goNoticias }}" class="dylink" style="margin-left:auto;font-size:13px;font-weight:700;color:#2f8b20">Toda la actualidad →</span>
         </div>
         <div style="display:grid;grid-template-columns:repeat(auto-fill,minmax(280px,1fr));gap:18px">
           <sc-for list="{{ noticias }}" as="n" hint-placeholder-count="3">
-            <div class="dyc" style="background:#fff;border:1px solid #e4ebe0;border-radius:6px;padding:24px;display:flex;flex-direction:column;gap:10px">
-              <div style="font-size:10.5px;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:#6f7d6a">Ensayo de campo</div>
-              <div style="font-weight:700;font-size:16px;line-height:1.3">{{ n.titulo }}</div>
-              <p style="margin:0;font-size:13px;color:#61705b;flex:1">{{ n.extracto }}</p>
-              <span style="font-size:13px;font-weight:700;color:#2f8b20">Leer más →</span>
+            <div onClick="{{ n.abrir }}" class="dyc dy-noti" style="background:#fff;border:1px solid #e4ebe0;border-radius:6px;overflow:hidden;display:flex;flex-direction:column">
+              <div class="dy-noti-img"><img src="{{ n.foto }}" alt="" aria-hidden="true" loading="lazy"></div>
+              <div style="padding:18px 20px 20px;display:flex;flex-direction:column;gap:8px;flex:1">
+                <div class="dy-noti-meta">{{ n.cat }} <span>·</span> {{ n.fecha }}</div>
+                <div style="font-weight:700;font-size:16px;line-height:1.3">{{ n.titulo }}</div>
+                <p class="dy-noti-ext" style="margin:0;font-size:13px;color:#61705b;flex:1">{{ n.extracto }}</p>
+                <span style="font-size:13px;font-weight:700;color:#2f8b20">Leer más →</span>
+              </div>
             </div>
           </sc-for>
         </div>
@@ -977,6 +1057,95 @@ window.__resources = {
         <button onClick="{{ abrirComparador }}" style="border:1px solid #3daf29;border-radius:6px;background:#3daf29;color:#fff;font:inherit;font-weight:600;font-size:13px;padding:8px 15px;cursor:pointer">Ver comparación</button>
       </div>
     </div>
+  </sc-if>
+
+  <sc-if value="{{ isNoticias }}" hint-placeholder-val="{{ false }}">
+    <section class="dy-banner">
+      <img src="img/hero/slider_6.jpg" alt="Técnico revisando un cultivo en invernadero" style="object-position:50% 38%">
+      <div class="dy-banner-txt">
+        <div class="dy-banner-in">
+          <span class="dy-hero-kicker">Actualidad</span>
+          <h1 class="dy-banner-h1">Noticias y artículos técnicos</h1>
+          <p class="dy-banner-p">Resultados de ensayo en campo, novedades de producto y la actividad de Daymsa en el sector.</p>
+        </div>
+      </div>
+    </section>
+
+    <main style="max-width:1240px;margin:0 auto;padding:0 28px 80px">
+      <div style="padding:16px 0;font-size:13px;color:#6f7d6a"><span onClick="{{ goInicio }}" class="dylink">Inicio</span> / Noticias</div>
+
+      <div class="dy-nfils">
+        <sc-for list="{{ noticiasFiltros }}" as="f" hint-placeholder-count="3">
+          <span onClick="{{ f.sel }}" class="{{ f.clase }}">{{ f.label }} <b>{{ f.n }}</b></span>
+        </sc-for>
+      </div>
+
+      <sc-if value="{{ hayDestacada }}" hint-placeholder-val="{{ true }}">
+        <div onClick="{{ noticiaDestacada.abrir }}" class="dyc dy-dest">
+          <div class="dy-dest-img"><img src="{{ noticiaDestacada.foto }}" alt="" aria-hidden="true"></div>
+          <div class="dy-dest-txt">
+            <div class="dy-noti-meta">{{ noticiaDestacada.cat }} <span>·</span> {{ noticiaDestacada.fecha }}</div>
+            <h2 class="dy-dest-h2">{{ noticiaDestacada.titulo }}</h2>
+            <p class="dy-dest-p">{{ noticiaDestacada.extracto }}</p>
+            <div class="dy-chips">
+              <sc-if value="{{ noticiaDestacada.tieneProducto }}" hint-placeholder-val="{{ true }}">
+                <span onClick="{{ noticiaDestacada.verProducto }}" class="dy-chip">{{ noticiaDestacada.producto }}</span>
+              </sc-if>
+              <sc-if value="{{ noticiaDestacada.tieneCultivo }}" hint-placeholder-val="{{ true }}">
+                <span onClick="{{ noticiaDestacada.verCultivo }}" class="dy-chip">{{ noticiaDestacada.cultivo }}</span>
+              </sc-if>
+            </div>
+            <span style="font-size:13.5px;font-weight:700;color:#2f8b20">Leer más →</span>
+          </div>
+        </div>
+      </sc-if>
+
+      <div style="display:grid;grid-template-columns:repeat(auto-fill,minmax(280px,1fr));gap:18px;margin-top:22px">
+        <sc-for list="{{ noticiasLista }}" as="n" hint-placeholder-count="6">
+          <div onClick="{{ n.abrir }}" class="dyc dy-noti" style="background:#fff;border:1px solid #e4ebe0;border-radius:6px;overflow:hidden;display:flex;flex-direction:column">
+            <div class="dy-noti-img"><img src="{{ n.foto }}" alt="" aria-hidden="true" loading="lazy"></div>
+            <div style="padding:18px 20px 20px;display:flex;flex-direction:column;gap:8px;flex:1">
+              <div class="dy-noti-meta">{{ n.cat }} <span>·</span> {{ n.fecha }}</div>
+              <div style="font-weight:700;font-size:16px;line-height:1.3">{{ n.titulo }}</div>
+              <p class="dy-noti-ext" style="margin:0;font-size:13px;color:#61705b;flex:1">{{ n.extracto }}</p>
+              <div class="dy-chips">
+            <sc-if value="{{ n.tieneProducto }}" hint-placeholder-val="{{ true }}">
+                  <span onClick="{{ n.verProducto }}" class="dy-chip">{{ n.producto }}</span>
+                </sc-if>
+                <sc-if value="{{ n.tieneCultivo }}" hint-placeholder-val="{{ true }}">
+                  <span onClick="{{ n.verCultivo }}" class="dy-chip">{{ n.cultivo }}</span>
+                </sc-if>
+              </div>
+              <span style="font-size:13px;font-weight:700;color:#2f8b20">Leer más →</span>
+            </div>
+          </div>
+        </sc-for>
+      </div>
+    </main>
+  </sc-if>
+
+  <sc-if value="{{ isNoticia }}" hint-placeholder-val="{{ false }}">
+    <main style="max-width:1240px;margin:0 auto;padding:0 28px 80px">
+      <div style="padding:16px 0;font-size:13px;color:#6f7d6a"><span onClick="{{ goNoticias }}" class="dylink">Noticias</span> / {{ noti.cat }}</div>
+      <article class="dy-art">
+        <div class="dy-noti-meta">{{ noti.cat }} <span>·</span> {{ noti.fecha }}</div>
+        <h1 class="dy-art-h1">{{ noti.titulo }}</h1>
+        <div class="dy-art-img"><img src="{{ noti.foto }}" alt="{{ noti.titulo }}"></div>
+        <p class="dy-art-p">{{ noti.extracto }}</p>
+        <p class="dy-art-pend">Texto completo pendiente de migrar desde la web actual.</p>
+        <div class="dy-art-pie">
+          <span class="dy-art-pie-t">Relacionado</span>
+          <div class="dy-chips">
+            <sc-if value="{{ noti.tieneProducto }}" hint-placeholder-val="{{ true }}">
+              <span onClick="{{ noti.verProducto }}" class="dy-chip dy-chip-g">Ver {{ noti.producto }} →</span>
+            </sc-if>
+            <sc-if value="{{ noti.tieneCultivo }}" hint-placeholder-val="{{ true }}">
+              <span onClick="{{ noti.verCultivo }}" class="dy-chip dy-chip-g">Programa de {{ noti.cultivo }} →</span>
+            </sc-if>
+          </div>
+        </div>
+      </article>
+    </main>
   </sc-if>
 
   <sc-if value="{{ comparando }}" hint-placeholder-val="{{ false }}">
@@ -1525,16 +1694,37 @@ const GAMA_DESC = [
   'Productos de nutrición vegetal, microelementos y también elementos secundarios, quelatados por distintas moléculas orgánicas.'
 ];
 
+/* Noticias reales de daymsa.com: cinco de cada categoria, ordenadas de mas
+   reciente a mas antigua. Campos: titulo, extracto, fecha, categoria (0 tecnico,
+   1 corporativo), imagen, producto del catalogo y cultivo, cuando los cita. */
+const NOTICIA_CAT = ['Artículos técnicos', 'Actualidad Daymsa'];
 const NOTICIAS = [
-  ['Veralion® demuestra una alta eficacia preventiva frente a botrytis en pepino bajo invernadero', 'Los ensayos realizados en Torrox (Málaga) durante la campaña 2025/2026 confirman la eficacia de Veralion® en la reducción de la severidad e incidencia de botrytis en pepino. El biofungicida mostró un comportamiento comparable a la referencia química en tallo y destacó…'],
-  ['Parka® reduce drásticamente el rajado en uva de mesa', 'El biofilm Parka® de Daymsa ha logrado reducir en un 70% el rajado en uva de mesa de la variedad Magenta en un ensayo en Murcia, reforzando su tolerancia frente a lluvia y estrés abiótico, manteniendo la calidad comercial del fruto.'],
-  ['Naturamin® WSP aumenta el rendimiento del tomate y mantiene la producción en condiciones de estrés hídrico', 'Con el objetivo de evaluar los beneficios de este bioestimulante, Daymsa ha llevado a cabo un estudio en tomate, bajo condiciones de riego completo y estrés hídrico, confirmando un mayor rendimiento del cultivo tanto en aplicaciones vía foliar o fertirriego.']
+  ["Veralion® demuestra una alta eficacia preventiva frente a botrytis en pepino bajo invernadero", "Los ensayos realizados en Torrox (Málaga) durante la campaña 2025/2026 confirman la eficacia de Veralion® en la reducción de la severidad e incidencia de botrytis en pepino. El biofungicida mostró un comportamiento comparable a la referencia química en tallo y destacó...",
+   "1 de septiembre de 2026", 0, "img/noticias/veralion-demuestra-una-alta-eficacia-preve.jpg", null, "Pepino"],
+  ["Parka® reduce drásticamente el rajado en uva de mesa", "El biofilm Parka® de Daymsa ha logrado reducir en un 70% el rajado en uva de mesa de la variedad Magenta en un ensayo en Murcia, reforzando su tolerancia frente a lluvia y estrés abiótico, manteniendo la calidad comercial del fruto. El rajado de la baya es uno de los...",
+   "1 de agosto de 2026", 0, "img/noticias/parka-reduce-drasticamente-el-rajado-en-uv.jpg", "Parka®", "Uva de mesa"],
+  ["Naturamin® WSP aumenta el rendimiento del tomate y mantiene la producción en condiciones de estrés hídrico", "Con el objetivo de evaluar los beneficios de este bioestimulante, Daymsa ha llevado a cabo un estudio en tomate, bajo condiciones de riego completo y estrés hídrico, confirmando un mayor rendimiento del cultivo tanto en aplicaciones vía foliar o fertirriego.   El...",
+   "10 de julio de 2026", 0, "img/noticias/naturamin-wsp-aumenta-el-rendimiento-del-t.jpg", "Naturamin®WSP", "Tomate"],
+  ["DAYMSA certifica su Sistema Integrado de Gestión de Calidad y Medio Ambiente certificado por LRQA", "Esta nueva certificación incluye las normas ISO 9001:2015 e ISO 14001:2015. DAYMSA (DESARROLLO AGRÍCOLA Y MINERO, S.A.) refuerza su compromiso con la calidad, la sostenibilidad y la mejora continua con la certificación de su Sistema Integrado de Gestión de Calidad y...",
+   "10 de junio de 2026", 1, "img/noticias/daymsa-certifica-su-sistema-integrado-de-g.jpg", null, null],
+  ["Daymsa refuerza su compromiso con el sector en DemoAlmendro 2026", "Daymsa, patrocinador de DemoAlmendro 2026, impulsa la eficiencia del cultivo en la jornada celebrada en la Finca Terreu (Huesca) Daymsa ha participado como patrocinador en DemoAlmendro 2026, celebrada el 2 de junio en la Finca Terreu (Huesca), una jornada que reunió a...",
+   "5 de junio de 2026", 1, "img/noticias/daymsa-refuerza-su-compromiso-con-el-secto.jpg", null, null],
+  ["Nuptak® aplicado en maíz mejora el rendimiento tanto al aplicarlo sobre la fertilización convencional como al reducir el aporte de nitrógeno en un 30%", "El ensayo independiente realizado por Eurofins en Funes (Navarra) demuestra que Nuptak® a 0,75 kg/ha permite aumentar la cosecha, mejorar la calidad del grano y optimizar la rentabilidad incluso con una reducción del 30% de nitrógeno (equivalente a 90Kg de nitrógeno)....",
+   "1 de junio de 2026", 0, "img/noticias/nuptak-aplicado-en-maiz-mejora-el-rendimie.jpg", "Nuptak®", "Maíz"],
+  ["BIOAQUAPEF: biorrefinería integral de biomasas acuáticas en el espacio POCTEFA", "BIOAQUAPEF: biorrefinería integral de biomasas acuáticas en el espacio POCTEFA: un modelo sostenible para la producción de proteínas alternativas y biomoléculas mediante Campos Eléctricos Pulsados BIOAQUAPEF es un proyecto de cooperación transfronteriza...",
+   "20 de mayo de 2026", 1, "img/noticias/bioaquapef-biorrefineria-integral-de-bioma.jpg", null, null],
+  ["EnerPlus®, bioestimulante estratégico para mejorar la calidad y la producción en uva de mesa", "EnerPlus® ha demostrado ser una herramienta técnica de referencia, capaz de mejorar el desarrollo vegetativo, mejorar la calidad de la fruta y aumentar y adelantar la producción de uva de mesa. La Región de Murcia, líder en producción de uva de mesa en España, afronta...",
+   "1 de mayo de 2026", 0, "img/noticias/enerplus-bioestimulante-estrategico-para-m.jpg", "EnerPlus®", "Uva de mesa"],
+  ["Daymsa refuerza su compromiso con la eficiencia agronómica en la 3ª Convención Profesional de Badajoz", "DAYMSA reafirma su papel como agente clave en la búsqueda de modelos agrícolas más eficientes e innovadores. Daymsa participó en la 3ª Convención Profesional para Agricultores, Fondos de inversión y Family Offices, celebrada el pasado 16 de abril en Badajoz, un foro...",
+   "20 de abril de 2026", 1, "img/noticias/daymsa-refuerza-su-compromiso-con-la-efici.jpg", null, null],
+  ["DAYMSA impulsa su crecimiento en Asia con su participación en CAC Shanghai 2026", "Se trata de uno de los eventos profesionales más importantes del mundo, y donde DAYMSA ha podido fortalecer relaciones con socios estratégicos. DAYMSA ha participado una edición más en CAC Shanghai 2026, la feria internacional de agroquímicos y protección de cultivos...",
+   "23 de marzo de 2026", 1, "img/noticias/daymsa-impulsa-su-crecimiento-en-asia-con-.jpg", null, null]
 ];
 
 const normalizar = (s) => s.toLowerCase().normalize('NFD').replace(/[\u0300-\u036f]/g, '');
 
 class Component extends DCLogic {
-  state = { hero: 0, cuenta: 0, screen: 'inicio', gamaSel: [], necSel: [], cultivo: null, culMax: 8, q: '', qc: '', producto: 'Raiza®', cultivoView: 'Café', tab: 0, comparar: [], comparando: false, modal: false, acepto: false, desbloqueada: false };
+  state = { hero: 0, cuenta: 0, notiCat: -1, noticia: 0, screen: 'inicio', gamaSel: [], necSel: [], cultivo: null, culMax: 8, q: '', qc: '', producto: 'Raiza®', cultivoView: 'Café', tab: 0, comparar: [], comparando: false, modal: false, acepto: false, desbloqueada: false };
 
   componentDidMount() { this.arrancarHero(); this.vigilarCifras(); }
   componentWillUnmount() {
@@ -1597,6 +1787,8 @@ class Component extends DCLogic {
     window.scrollTo(0, 0);
     if (screen === 'inicio') { this.setState({ cuenta: 0 }); this.vigilarCifras(); }
   }
+
+  abrirNoticia(i) { this.setState({ screen: 'noticia', noticia: i, menu: false }); window.scrollTo(0, 0); }
 
   abrirProducto(nombre) { this.setState({ screen: 'producto', producto: nombre, tab: 0, menu: false, sheet: false }); window.scrollTo(0, 0); }
 
@@ -1712,6 +1904,24 @@ class Component extends DCLogic {
     const nActivos = chipsActivos.length;
 
 
+    /* Cada noticia se presenta igual en la home, el listado y su ficha. Los chips
+       de producto y cultivo solo aparecen si la noticia los cita y estan cargados. */
+    const tarjetaNoticia = (n) => ({
+      titulo: n[0], extracto: n[1], fecha: n[2], cat: NOTICIA_CAT[n[3]], foto: n[4],
+      abrir: () => this.abrirNoticia(NOTICIAS.indexOf(n)),
+      tieneProducto: !!n[5],
+      producto: n[5] || '',
+      verProducto: (e) => { if (e) e.stopPropagation(); if (n[5]) this.abrirProducto(n[5]); },
+      tieneCultivo: !!n[6],
+      cultivo: n[6] || '',
+      verCultivo: (e) => {
+        if (e) e.stopPropagation();
+        if (n[6]) { this.setState({ screen: 'cultivo', cultivoView: n[6], menu: false }); window.scrollTo(0, 0); }
+      }
+    });
+    const notiCat = s.notiCat === undefined ? -1 : s.notiCat;
+    const noticiasVis = notiCat === -1 ? NOTICIAS : NOTICIAS.filter((n) => n[3] === notiCat);
+
     // El panel de filtros a pantalla completa bloquea el scroll del fondo.
     // Se recalcula en cada render, asi nunca puede quedarse bloqueado.
     try { document.body.style.overflow = s.sheet ? 'hidden' : ''; } catch (e) {}
@@ -1724,6 +1934,28 @@ class Component extends DCLogic {
         const fin = c[1] || (i === 0 ? PRODUCTOS.length : CULTIVOS.length);
         return { valor: Math.round(fin * (s.cuenta || 0)), sufijo: c[2], etiqueta: c[0] };
       }),
+      isNoticias: s.screen === 'noticias',
+      isNoticia: s.screen === 'noticia',
+      goNoticias: () => this.ir('noticias'),
+
+      /* Listado: se filtra por categoria y la primera hace de destacada. */
+      noticiasFiltros: [-1, 0, 1].map((c) => ({
+        label: c === -1 ? 'Todas' : NOTICIA_CAT[c],
+        n: c === -1 ? NOTICIAS.length : NOTICIAS.filter((x) => x[3] === c).length,
+        clase: (s.notiCat === undefined ? -1 : s.notiCat) === c ? 'dy-nfil dy-nfil-on' : 'dy-nfil',
+        sel: () => this.setState({ notiCat: c })
+      })),
+      noticiasLista: noticiasVis.slice(1).map(tarjetaNoticia),
+      noticiaDestacada: noticiasVis.length ? tarjetaNoticia(noticiasVis[0]) : null,
+      hayDestacada: noticiasVis.length > 0,
+      nNoticias: noticiasVis.length,
+
+      /* Home: solo las tres mas recientes. */
+      noticias: NOTICIAS.slice(0, 3).map((n) => tarjetaNoticia(n)),
+
+      /* Ficha de una noticia. */
+      noti: tarjetaNoticia(NOTICIAS[s.noticia] || NOTICIAS[0]),
+
       heroSlides: HERO.map((h, i) => ({
         img: h[0], pos: h[1], posm: h[2], alt: h[3], titulo: h[4], texto: h[5],
         clase: (s.hero || 0) === i ? 'dy-slide-on' : 'dy-slide'
@@ -1734,7 +1966,6 @@ class Component extends DCLogic {
         sel: () => this.verHero(i)
       })),
       valores: VALORES.map((v) => ({ titulo: v[0], texto: v[1] })),
-      noticias: NOTICIAS.map((n) => ({ titulo: n[0], extracto: n[1] })),
       gamasInicio: GAMAS.map((g, i) => ({
         label: g,
         desc: GAMA_DESC[i],
