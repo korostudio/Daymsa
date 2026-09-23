@@ -208,7 +208,7 @@ window.__resources = {
         <div style="display:grid;grid-template-columns:repeat(auto-fill,minmax(230px,1fr));gap:18px">
           <sc-for list="{{ gamasInicio }}" as="g" hint-placeholder-count="5">
             <div onClick="{{ g.sel }}" class="dyc" style="background:#fff;border:1px solid #e4ebe0;border-radius:6px;padding:22px;display:flex;flex-direction:column;gap:9px">
-              <div style="font-size:10.5px;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:#6f7d6a">{{ g.n }}</div>
+              <img src="{{ g.icono }}" alt="" aria-hidden="true" style="width:26px;height:26px;display:block;margin-bottom:5px">
               <div style="font-weight:700;font-size:17px;line-height:1.25">{{ g.label }}</div>
               <p style="margin:0;font-size:13px;color:#61705b;flex:1">{{ g.desc }}</p>
               <span style="font-size:13px;font-weight:700;color:#2f8b20">Ver productos →</span>
@@ -871,6 +871,15 @@ window.__resources = {
 <script type="text/x-dc" data-dc-script data-props="{&quot;gateFicha&quot;:{&quot;editor&quot;:&quot;boolean&quot;,&quot;default&quot;:true,&quot;tsType&quot;:&quot;boolean&quot;,&quot;section&quot;:&quot;Ficha de producto&quot;},&quot;mostrarPrograma&quot;:{&quot;editor&quot;:&quot;boolean&quot;,&quot;default&quot;:true,&quot;tsType&quot;:&quot;boolean&quot;,&quot;section&quot;:&quot;Ficha de cultivo&quot;}}">
 const GAMA_COLOR = ['#2f8b20', '#1f6f4a', '#5f7d2e', '#7a6a3a', '#2c6e8f'];
 
+/* Iconos de gama (Daymsa), en el mismo orden que GAMAS. */
+const GAMA_ICONO = [
+  'img/iconos/bionutrientes.svg',
+  'img/iconos/especialidades.svg',
+  'img/iconos/microorganismos.svg',
+  'img/iconos/mejoradores.svg',
+  'img/iconos/correctores.svg'
+];
+
 /* Forma del envase deducida del formato declarado en la ficha: kg/g = sólido
    (sobre o saco), el resto = líquido (botella / garrafa). */
 const esSolido = (n) => {
@@ -1431,6 +1440,7 @@ class Component extends DCLogic {
       gamasInicio: GAMAS.map((g, i) => ({
         label: g,
         desc: GAMA_DESC[i],
+        icono: GAMA_ICONO[i],
         n: PRODUCTOS.filter((p) => p[1] === i).length + ' productos',
         sel: () => { this.setState({ screen: 'catalogo', gamaSel: [i], necSel: [], cultivo: null }); window.scrollTo(0, 0); }
       })),
