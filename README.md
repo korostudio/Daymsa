@@ -50,6 +50,7 @@ vendor/  img/                dependencias y assets locales
 
 ## Pendiente
 
-- El número de WhatsApp es un marcador (`34XXXXXXXXX`)
+- El número de WhatsApp es un marcador (`52XXXXXXXXXX`, México)
 - Solo los cultivos cargados en la maqueta tienen programa completo
 - Textos de ficha técnica pendientes de migrar desde la web actual
+- Autocompletar la ciudad a partir del código postal: requiere el catálogo de SEPOMEX (~145.000 CP), queda para la web real
