@@ -319,6 +319,12 @@ window.__resources = {
     background: #fbfcfa url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' fill='none' stroke='%236f7d6a' stroke-width='1.5' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='m3 4.5 3 3 3-3'/%3E%3C/svg%3E") no-repeat right 14px center;
   }
   .dy-sel:focus { border-color: #3daf29; outline: none; }
+  .dy-sel-btn {
+    display: block; text-align: left; line-height: 1.55;
+    white-space: nowrap; overflow: hidden; text-overflow: ellipsis;
+  }
+  .dy-sel-btn.vacio { color: #8a9585; }
+  .dy-sel-btn.abierto { border-color: #3daf29; }
 
   /* ===== Sugerencias de municipio bajo Ciudad / Localidad ===== */
   .dy-sug {
@@ -328,7 +334,12 @@ window.__resources = {
   }
   .dy-sug-op { padding: 9px 14px; font-size: 14px; color: #22301d; cursor: pointer; }
   .dy-sug-op:hover, .dy-sug-op.on { background: #f0f7ed; color: #2f8b20; }
+  .dy-sug-op.sel { font-weight: 700; color: #2f8b20; }
   .dy-sug-vacia { padding: 10px 14px; font-size: 13px; color: #8a9585; }
+  .dy-sug-scroll {
+    max-height: 290px; overflow-y: auto; overscroll-behavior: contain;
+    scrollbar-width: thin; scrollbar-color: #cfd9ca transparent;
+  }
 
   /* ===== Tablet y movil (<= 900px) ===== */
   @media (max-width: 900px) {
@@ -1012,59 +1023,33 @@ window.__resources = {
                   <label for="dy-fc" style="display:block;font-size:12px;font-weight:700;color:#6f7d6a;margin-bottom:6px">Empresa</label>
                   <input id="dy-fc" type="text" style="width:100%;border:1px solid #dde5d8;border-radius:6px;padding:11px 14px;font:inherit;font-size:14px;background:#fbfcfa">
                 </div>
-                <div>
-                  <label for="dy-fr" style="display:block;font-size:12px;font-weight:700;color:#6f7d6a;margin-bottom:6px">Rol</label>
-                  <select id="dy-fr" class="dy-sel" value="{{ rol }}" onChange="{{ setRol }}">
-                    <option value="" disabled="true">Seleccione una opción</option>
-                    <option>Agricultor / Productor</option>
-                    <option>Distribuidor</option>
-                    <option>Técnico / Asesor</option>
-                    <option>Otro</option>
-                  </select>
+                <div class="dy-dd" style="position:relative">
+                  <label for="dy-fr" style="display:block;font-size:12px;font-weight:700;color:#6f7d6a;margin-bottom:6px">Puesto / Actividad</label>
+                  <button id="dy-fr" type="button" class="{{ ddRol.claseBoton }}" aria-haspopup="listbox" aria-expanded="{{ ddRol.expandido }}" aria-controls="dy-fr-lista" onClick="{{ ddRol.alternar }}" onKeyDown="{{ ddRol.tecla }}" onBlur="{{ ddRol.cerrar }}">{{ ddRol.texto }}</button>
+                  <sc-if value="{{ ddRol.abierto }}" hint-placeholder-val="{{ false }}">
+                    <div id="dy-fr-lista" role="listbox" class="dy-sug dy-sug-scroll" onMouseDown="{{ mantenerFoco }}">
+                      <sc-for list="{{ ddRol.opciones }}" as="o" hint-placeholder-count="4">
+                        <div role="option" aria-selected="{{ o.elegida }}" class="{{ o.clase }}" onMouseDown="{{ o.sel }}">{{ o.label }}</div>
+                      </sc-for>
+                    </div>
+                  </sc-if>
                 </div>
                 <sc-if value="{{ rolEsOtro }}" hint-placeholder-val="{{ false }}">
                   <div style="grid-column:1 / -1">
                     <label for="dy-fro" style="display:block;font-size:12px;font-weight:700;color:#6f7d6a;margin-bottom:6px">¿Cuál? <span style="font-weight:400;color:#8a9585">(opcional)</span></label>
-                    <input id="dy-fro" type="text" placeholder="Especifique su rol" style="width:100%;border:1px solid #dde5d8;border-radius:6px;padding:11px 14px;font:inherit;font-size:14px;background:#fbfcfa">
+                    <input id="dy-fro" type="text" placeholder="Especifique su puesto o actividad" style="width:100%;border:1px solid #dde5d8;border-radius:6px;padding:11px 14px;font:inherit;font-size:14px;background:#fbfcfa">
                   </div>
                 </sc-if>
-                <div>
+                <div class="dy-dd" style="position:relative">
                   <label for="dy-fst" style="display:block;font-size:12px;font-weight:700;color:#6f7d6a;margin-bottom:6px">Estado</label>
-                  <select id="dy-fst" class="dy-sel" value="{{ estado }}" onChange="{{ setEstado }}">
-                    <option value="" disabled="true">Seleccione un estado</option>
-                    <option>Aguascalientes</option>
-                    <option>Baja California</option>
-                    <option>Baja California Sur</option>
-                    <option>Campeche</option>
-                    <option>Chiapas</option>
-                    <option>Chihuahua</option>
-                    <option>Ciudad de México</option>
-                    <option>Coahuila</option>
-                    <option>Colima</option>
-                    <option>Durango</option>
-                    <option>Estado de México</option>
-                    <option>Guanajuato</option>
-                    <option>Guerrero</option>
-                    <option>Hidalgo</option>
-                    <option>Jalisco</option>
-                    <option>Michoacán</option>
-                    <option>Morelos</option>
-                    <option>Nayarit</option>
-                    <option>Nuevo León</option>
-                    <option>Oaxaca</option>
-                    <option>Puebla</option>
-                    <option>Querétaro</option>
-                    <option>Quintana Roo</option>
-                    <option>San Luis Potosí</option>
-                    <option>Sinaloa</option>
-                    <option>Sonora</option>
-                    <option>Tabasco</option>
-                    <option>Tamaulipas</option>
-                    <option>Tlaxcala</option>
-                    <option>Veracruz</option>
-                    <option>Yucatán</option>
-                    <option>Zacatecas</option>
-                  </select>
+                  <button id="dy-fst" type="button" class="{{ ddEstado.claseBoton }}" aria-haspopup="listbox" aria-expanded="{{ ddEstado.expandido }}" aria-controls="dy-fst-lista" onClick="{{ ddEstado.alternar }}" onKeyDown="{{ ddEstado.tecla }}" onBlur="{{ ddEstado.cerrar }}">{{ ddEstado.texto }}</button>
+                  <sc-if value="{{ ddEstado.abierto }}" hint-placeholder-val="{{ false }}">
+                    <div id="dy-fst-lista" role="listbox" class="dy-sug dy-sug-scroll" onMouseDown="{{ mantenerFoco }}">
+                      <sc-for list="{{ ddEstado.opciones }}" as="o" hint-placeholder-count="8">
+                        <div role="option" aria-selected="{{ o.elegida }}" class="{{ o.clase }}" onMouseDown="{{ o.sel }}">{{ o.label }}</div>
+                      </sc-for>
+                    </div>
+                  </sc-if>
                 </div>
                 <div style="position:relative">
                   <label for="dy-fci" style="display:block;font-size:12px;font-weight:700;color:#6f7d6a;margin-bottom:6px">Ciudad / Localidad</label>
@@ -1849,6 +1834,11 @@ const MUNICIPIOS = {
   "Zacatecas": "Fresnillo|Guadalupe|Zacatecas|Pinos|Río Grande|Sombrerete|Jerez|Loreto|Calera|Ojocaliente|Villa de Cos|Valparaíso|Villanueva|Nochistlán de Mejía|Tlaltenango de Sánchez Román|Jalpa|Miguel Auza|General Pánfilo Natera|Sain Alto|Trancoso|General Francisco R. Murguía|Juan Aldama|Villa García|Villa Hidalgo|Mazapil|Pánuco|Tabasco|Noria de Ángeles|Cuauhtémoc|Villa González Ortega|Morelos|Luis Moya|Juchipila|Concepción del Oro|Vetagrande|Chalchihuites|Monte Escobedo|Tepechitlán|Cañitas de Felipe Pescador|Genaro Codina|General Enrique Estrada|Tepetongo|Apozol|Teúl de González Ortega|Apulco|Huanusco|Moyahua de Estrada|Benito Juárez|Jiménez del Teul|Trinidad García de la Cadena|Santa María de la Paz|Melchor Ocampo|El Salvador|Mezquital del Oro|Momax|Atolinga|El Plateado de Joaquín Amaro|Susticacán"
 };
 
+const ROLES = ['Agricultor / Productor', 'Distribuidor', 'Técnico / Asesor', 'Otro'];
+
+// Orden y nombres tal como los envio el cliente
+const ESTADOS = ['Aguascalientes', 'Baja California', 'Baja California Sur', 'Campeche', 'Chiapas', 'Chihuahua', 'Ciudad de México', 'Coahuila', 'Colima', 'Durango', 'Estado de México', 'Guanajuato', 'Guerrero', 'Hidalgo', 'Jalisco', 'Michoacán', 'Morelos', 'Nayarit', 'Nuevo León', 'Oaxaca', 'Puebla', 'Querétaro', 'Quintana Roo', 'San Luis Potosí', 'Sinaloa', 'Sonora', 'Tabasco', 'Tamaulipas', 'Tlaxcala', 'Veracruz', 'Yucatán', 'Zacatecas'];
+
 const sugerirMunicipios = (estado, texto) => {
   const lista = MUNICIPIOS[estado] ? MUNICIPIOS[estado].split('|') : [];
   const q = normalizar(texto.trim());
@@ -1864,14 +1854,79 @@ const sugerirMunicipios = (estado, texto) => {
 };
 
 class Component extends DCLogic {
-  state = { hero: 0, cuenta: 0, notiCat: -1, noticia: 0, screen: 'inicio', gamaSel: [], necSel: [], cultivo: null, culMax: 8, q: '', qc: '', producto: 'Raiza®', cultivoView: 'Café', tab: 0, comparar: [], comparando: false, modal: false, acepto: false, desbloqueada: false, rol: '', estado: '', ciudad: '', ciudadAbierta: false, ciudadIdx: -1, cp: '' };
+  state = { hero: 0, cuenta: 0, notiCat: -1, noticia: 0, screen: 'inicio', gamaSel: [], necSel: [], cultivo: null, culMax: 8, q: '', qc: '', producto: 'Raiza®', cultivoView: 'Café', tab: 0, comparar: [], comparando: false, modal: false, acepto: false, desbloqueada: false, rol: '', estado: '', ciudad: '', ciudadAbierta: false, ciudadIdx: -1, cp: '', despl: null, desplIdx: -1 };
 
-  componentDidMount() { this.arrancarHero(); this.vigilarCifras(); }
+  componentDidMount() {
+    this.arrancarHero();
+    this.vigilarCifras();
+    // Safari no da foco a los botones al pulsarlos, asi que el blur no basta para cerrar
+    // el desplegable: se cierra tambien al tocar fuera de el.
+    this.fueraDespl = (e) => { if (this.state.despl && !e.target.closest('.dy-dd')) this.setState({ despl: null, desplIdx: -1 }); };
+    document.addEventListener('pointerdown', this.fueraDespl);
+  }
   componentWillUnmount() {
+    document.removeEventListener('pointerdown', this.fueraDespl);
     clearInterval(this.tHero);
     clearInterval(this.tBusca);
     cancelAnimationFrame(this.rafCifras);
     this.obs && this.obs.disconnect();
+  }
+
+  /* Desplegable propio para Puesto / Actividad y Estado. La lista que abre un <select> nativo la dibuja
+     el sistema operativo y no admite el estilo de la web; esta se ve igual en todos los
+     dispositivos. Se maneja tambien con teclado: flechas, Enter, Esc e inicial de la opcion. */
+  desplegable(clave, id, opciones, valor, placeholder, elegir) {
+    const s = this.state;
+    const abierto = s.despl === clave;
+    const idx = abierto ? s.desplIdx : -1;
+    const verOpcion = (i) => {
+      const lista = document.getElementById(id + '-lista');
+      const el = lista && lista.children[i];
+      if (el) el.scrollIntoView({ block: 'nearest' });
+    };
+    const mover = (i) => this.setState({ despl: clave, desplIdx: i }, () => verOpcion(i));
+    const abrir = () => mover(Math.max(opciones.indexOf(valor), 0));
+    const cerrar = () => this.setState({ despl: null, desplIdx: -1 });
+    const escoger = (o) => { elegir(o); cerrar(); };
+    return {
+      abierto,
+      expandido: abierto ? 'true' : 'false',
+      texto: valor || placeholder,
+      claseBoton: 'dy-sel dy-sel-btn' + (valor ? '' : ' vacio') + (abierto ? ' abierto' : ''),
+      opciones: opciones.map((o, i) => ({
+        label: o,
+        clase: 'dy-sug-op' + (o === valor ? ' sel' : '') + (i === idx ? ' on' : ''),
+        elegida: o === valor ? 'true' : 'false',
+        sel: (e) => { e.preventDefault(); escoger(o); }
+      })),
+      alternar: () => (abierto ? cerrar() : abrir()),
+      cerrar: () => { if (abierto) cerrar(); },
+      tecla: (e) => {
+        const k = e.key;
+        if (k === 'ArrowDown' || k === 'ArrowUp') {
+          e.preventDefault();
+          if (!abierto) abrir();
+          else mover(k === 'ArrowDown' ? Math.min(idx + 1, opciones.length - 1) : Math.max(idx - 1, 0));
+        } else if (abierto && (k === 'Home' || k === 'End')) {
+          e.preventDefault();
+          mover(k === 'Home' ? 0 : opciones.length - 1);
+        } else if ((k === 'Enter' || k === ' ') && abierto && idx >= 0) {
+          e.preventDefault();
+          escoger(opciones[idx]);
+        } else if (k === 'Escape' && abierto) {
+          e.preventDefault();
+          cerrar();
+        } else if (k.length === 1 && k !== ' ' && !e.ctrlKey && !e.metaKey && !e.altKey) {
+          // Salta a la siguiente opcion que empieza por esa letra, como el select nativo
+          const letra = normalizar(k);
+          const desde = abierto ? idx : opciones.indexOf(valor);
+          const orden = opciones.map((_, i) => (desde + 1 + i) % opciones.length);
+          const i = orden.find((j) => normalizar(opciones[j]).startsWith(letra));
+          if (i === undefined) return;
+          if (abierto) mover(i); else elegir(opciones[i]);
+        }
+      }
+    };
   }
 
   /* Las cifras suben de 0 a su valor cuando la banda entra en pantalla.
@@ -2268,12 +2323,15 @@ class Component extends DCLogic {
       abrirFicha: () => { if (s.desbloqueada || !gate) return; this.setState({ modal: true }); },
       cerrarModal: () => this.setState({ modal: false }),
       toggleAcepto: (e) => this.setState({ acepto: e.target.checked }),
-      rol: s.rol,
       rolEsOtro: s.rol === 'Otro',
-      setRol: (e) => this.setState({ rol: e.target.value }),
+      ddRol: this.desplegable('rol', 'dy-fr', ROLES, s.rol, 'Seleccione una opción', (v) => this.setState({ rol: v })),
       estado: s.estado,
       // Al cambiar de estado se vacia la ciudad para no dejar un municipio de otro estado
-      setEstado: (e) => this.setState({ estado: e.target.value, ciudad: '', ciudadIdx: -1 }),
+      ddEstado: this.desplegable('estado', 'dy-fst', ESTADOS, s.estado, 'Seleccione un estado', (v) => {
+        if (v !== s.estado) this.setState({ estado: v, ciudad: '', ciudadIdx: -1 });
+      }),
+      // Evita que pulsar en la lista (o en su barra de desplazamiento) quite el foco al boton
+      mantenerFoco: (e) => e.preventDefault(),
       ciudad: s.ciudad,
       ciudadPlaceholder: s.estado ? 'Escriba para ver sugerencias' : 'Elija antes el estado',
       ciudadExpandida: sugCiudad.length > 0 ? 'true' : 'false',
